@@ -35,7 +35,7 @@ export const profile: Profile = {
   philosophy: 'Think architecturally before implementing. Understand the purpose, impact and consequences of a feature instead of simply writing code that satisfies the apparent requirement.',
   yearsExperience: 14,
   email: 'haider.abbas.solutions@gmail.com',
-  linkedin: 'https://linkedin.com/in/haider-abbas',
+  linkedin: 'https://www.linkedin.com/in/haiderabbassolutions/',
   github: 'https://github.com/habbas-labs',
   location: 'Pune, Maharashtra, India',
   resumeUrl: './resume.docx',
@@ -1401,7 +1401,7 @@ export const resumeData: ResumeData = {
   contact: {
     location: 'Pune, Maharashtra, India',
     email: 'haider.abbas.solutions@gmail.com',
-    linkedin: 'https://linkedin.com/in/haider-abbas',
+    linkedin: 'https://www.linkedin.com/in/haiderabbassolutions/',
     github: 'https://github.com/habbas-labs',
   },
   summary: [
