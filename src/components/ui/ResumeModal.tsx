@@ -71,18 +71,19 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           className="relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border-accent)] shadow-2xl overflow-hidden z-10 text-[var(--color-text-primary)]"
         >
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-2)]">
-            <div className="flex items-center gap-2">
-              <FileText size={18} className="text-[var(--color-accent)]" />
-              <h2 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)]">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-[var(--color-border)] bg-[var(--color-surface-2)] gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <FileText size={18} className="text-[var(--color-accent)] shrink-0" />
+              <h2 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)] truncate">
                 Resume Preview — {profile.name}
               </h2>
-              <span className="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-mono font-medium whitespace-nowrap shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 14+ Years Experience
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               {/* Print Button */}
               <button
                 onClick={handlePrint}
