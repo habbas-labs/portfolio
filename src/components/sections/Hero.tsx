@@ -199,13 +199,13 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-surface-0)] to-[var(--color-surface-0)] opacity-60" />
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--color-accent)] opacity-[0.03] blur-[100px]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-12 sm:pb-16 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — Text */}
           <div>
             {/* Eyebrow */}
             <motion.div {...anim} transition={{ delay: 0.1 }}>
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)] leading-relaxed max-w-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
                 {eyebrowText}
               </span>
@@ -215,7 +215,7 @@ export function Hero() {
             <motion.h1
               {...anim}
               transition={{ delay: 0.2 }}
-              className="mt-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.1] text-[var(--color-text-primary)]"
+              className="mt-5 sm:mt-6 text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.15] sm:leading-[1.1] text-[var(--color-text-primary)]"
             >
               I Design Systems{' '}
               <br className="hidden sm:block" />
@@ -226,17 +226,17 @@ export function Hero() {
             <motion.p
               {...anim}
               transition={{ delay: 0.3 }}
-              className="mt-6 text-lg text-[var(--color-text-secondary)] max-w-xl leading-relaxed"
+              className="mt-4 sm:mt-6 text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl leading-relaxed"
             >
               {profile.subheadline}
             </motion.p>
 
             {/* CTAs */}
-            <motion.div {...anim} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
+            <motion.div {...anim} transition={{ delay: 0.4 }} className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
               {showConsultant && (
                 <a
                   href="#consulting"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105 w-full sm:w-auto text-center"
                 >
                   Work With Me
                   <ArrowRight size={16} />
@@ -246,7 +246,7 @@ export function Hero() {
               {showConsultant && (
                 <a
                   href="#projects"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-3)] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-3)] transition-colors w-full sm:w-auto text-center"
                 >
                   Explore Projects
                 </a>
@@ -316,14 +316,14 @@ export function Hero() {
             initial={reduced ? {} : { opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="hidden lg:block"
+            className="mt-10 lg:mt-0"
           >
             <div className="relative">
               <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-[var(--color-accent-glow)] to-transparent opacity-50" />
-              <div className="relative rounded-2xl glass-panel p-6 sm:p-7 border border-[var(--color-border-accent)] shadow-2xl">
+              <div className="relative rounded-2xl glass-panel p-4 sm:p-7 border border-[var(--color-border-accent)] shadow-2xl">
                 <div className="text-xs font-mono text-[var(--color-text-tertiary)] mb-2 flex items-center justify-between">
                   <span>SYSTEM ECOSYSTEM GRAPH</span>
-                  <span className="text-[var(--color-accent)] font-semibold">Hover to trace flows</span>
+                  <span className="text-[var(--color-accent)] font-semibold hidden sm:inline">Hover / tap to trace flows</span><span className="text-[var(--color-accent)] font-semibold sm:hidden">Tap to inspect</span>
                 </div>
                 <EcosystemGraph />
               </div>

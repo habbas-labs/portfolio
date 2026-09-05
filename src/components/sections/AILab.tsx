@@ -26,7 +26,7 @@ export function AILab() {
 
   return (
     <section id="ai-lab" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Intelligent Systems & AI Architecture"
           title="AI Engineering Lab"
@@ -86,7 +86,7 @@ export function AILab() {
             </div>
 
             {/* Level detail card */}
-            <div className="p-6 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
+            <div className="p-4 sm:p-6 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
               <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -118,7 +118,8 @@ export function AILab() {
               </p>
 
               {/* Node diagram */}
-              <div className="relative h-48 rounded-xl bg-[var(--color-surface-0)] border border-[var(--color-border)] overflow-hidden">
+              <div className="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-0)]">
+                <div className="relative min-w-[380px] sm:min-w-0 h-48 sm:h-52 overflow-hidden">
                 {/* SVG Connections */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none">
                   {level.connections.map((conn, i) => {
@@ -144,7 +145,7 @@ export function AILab() {
                 {level.nodes.map(node => (
                   <motion.div
                     key={node.id}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs font-medium border shadow-sm"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border shadow-sm whitespace-nowrap"
                     style={{
                       left: `${node.x}%`,
                       top: `${node.y}%`,
@@ -158,6 +159,7 @@ export function AILab() {
                     {node.label}
                   </motion.div>
                 ))}
+                </div>
               </div>
             </div>
           </div>
@@ -169,7 +171,7 @@ export function AILab() {
         {showConsultant && (
         <>
         <ScrollReveal>
-          <div className="mt-20 p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)] space-y-6">
+          <div className="mt-20 p-4 sm:p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)] space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
                 <span className="text-xs font-bold text-[var(--color-accent)] uppercase tracking-wider">
@@ -244,7 +246,7 @@ export function AILab() {
             </div>
 
             {/* Active Pattern Card */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border-hover)] space-y-6">
+            <div className="p-4 sm:p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border-hover)] space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div>
                   <span className="text-xs font-mono text-[var(--color-accent)] uppercase tracking-wider">

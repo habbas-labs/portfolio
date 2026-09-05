@@ -16,7 +16,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Contact"
           title="Get In Touch"
@@ -65,13 +65,13 @@ export function Contact() {
                       href={item.href}
                       target={item.href.startsWith('mailto:') ? undefined : '_blank'}
                       rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                      className="text-sm text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors"
+                      className="text-sm text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors min-w-0 flex-1 break-all"
                     >
                       <span className="text-xs text-[var(--color-text-muted)] block">{item.label}</span>
                       {item.value}
                     </a>
                   ) : (
-                    <div>
+                    <div className="min-w-0 flex-1 break-all">
                       <span className="text-xs text-[var(--color-text-muted)] block">{item.label}</span>
                       <p className="text-sm text-[var(--color-text-primary)]">{item.value}</p>
                     </div>
@@ -80,10 +80,10 @@ export function Contact() {
               ))}
 
               {/* Resume buttons */}
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <button
                   onClick={openResume}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer shadow-sm w-full sm:w-auto text-center"
                 >
                   <FileText size={15} />
                   View Resume
@@ -91,7 +91,7 @@ export function Contact() {
                 <a
                   href={profile.resumeUrl}
                   download="Haider_Abbas_Resume.docx"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors w-full sm:w-auto text-center"
                 >
                   <Download size={15} />
                   Download Resume

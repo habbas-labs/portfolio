@@ -102,7 +102,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 title="Download original Microsoft Word DOCX"
               >
                 <Download size={14} />
-                <span>Download DOCX</span>
+                <span className="hidden sm:inline">Download </span><span>DOCX</span>
               </a>
 
               {/* Close Button */}
@@ -117,7 +117,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           </div>
 
           {/* Scrollable Resume Body */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-8 bg-[var(--color-surface-0)] font-sans">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 sm:space-y-8 bg-[var(--color-surface-0)] font-sans">
             
             {/* Resume Header */}
             <div className="border-b border-[var(--color-border)] pb-6">
@@ -145,7 +145,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   )}
                   <div className="flex items-center gap-1.5">
                     <Mail size={13} className="text-[var(--color-text-muted)]" />
-                    <a href={`mailto:${resumeData.contact.email}`} className="hover:text-[var(--color-accent)] underline underline-offset-2">
+                    <a href={`mailto:${resumeData.contact.email}`} className="hover:text-[var(--color-accent)] underline underline-offset-2 break-all">
                       {resumeData.contact.email}
                     </a>
                   </div>

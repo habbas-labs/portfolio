@@ -13,7 +13,7 @@ export function SystemDesignLab() {
 
   return (
     <section id="system-design" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Architecture & Distributed Systems"
           title="System Design Lab"
@@ -50,7 +50,7 @@ export function SystemDesignLab() {
             </div>
 
             {/* Requirements */}
-            <div className="p-6 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
+            <div className="p-4 sm:p-6 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">Functional & Technical Requirements</h4>
               <div className="grid sm:grid-cols-2 gap-3">
                 {design.requirements.map((req, i) => (

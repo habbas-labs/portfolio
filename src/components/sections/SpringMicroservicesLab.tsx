@@ -24,7 +24,7 @@ export function SpringMicroservicesLab() {
 
   return (
     <section id="microservices-lab" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Interactive Architecture"
           title="Spring & Microservices Lab"
@@ -33,20 +33,21 @@ export function SpringMicroservicesLab() {
 
         {/* View Mode Toggle */}
         <div className="mt-12 flex justify-center">
-          <div className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl inline-flex gap-1">
+          <div className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl flex flex-col sm:flex-row gap-1 w-full sm:w-auto max-w-md sm:max-w-none">
             <button
               onClick={() => setViewMode('distributed')}
-              className={`px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+              className={`px-4 sm:px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all text-center ${
                 viewMode === 'distributed'
                   ? 'bg-[var(--color-accent)] text-white shadow-md'
                   : 'text-[var(--color-text-secondary)] hover:text-white'
               }`}
             >
-              Distributed Architecture (Event-Driven)
+              <span className="sm:hidden">Distributed (Event-Driven)</span>
+              <span className="hidden sm:inline">Distributed Architecture (Event-Driven)</span>
             </button>
             <button
               onClick={() => setViewMode('layered')}
-              className={`px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+              className={`px-4 sm:px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all text-center ${
                 viewMode === 'layered'
                   ? 'bg-[var(--color-accent)] text-white shadow-md'
                   : 'text-[var(--color-text-secondary)] hover:text-white'
@@ -59,7 +60,7 @@ export function SpringMicroservicesLab() {
 
         {/* Interactive Architecture Flow Diagram */}
         <ScrollReveal>
-          <div className="mt-8 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div className="mt-8 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-4 sm:p-8 shadow-xl">
             {viewMode === 'distributed' ? (
               <div>
                 <div className="flex items-center justify-between mb-6">

@@ -71,39 +71,42 @@ export function InterviewMode() {
           </div>
 
           {/* Depth Mode Switcher */}
-          <div className="flex items-center gap-1 sm:gap-2 bg-[var(--color-surface-2)] p-1 rounded-xl border border-[var(--color-border)] overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1 bg-[var(--color-surface-2)] p-1 rounded-xl border border-[var(--color-border)] overflow-x-auto max-w-full">
             <span className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] px-2 hidden lg:inline whitespace-nowrap">
               Technical Depth:
             </span>
             <button
               onClick={() => setDepth('30s')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 depth === '30s'
                   ? 'bg-[var(--color-accent)] text-white shadow-sm'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
-              30s Recruiter View
+              <span className="sm:hidden">30s</span>
+              <span className="hidden sm:inline">30s Recruiter View</span>
             </button>
             <button
               onClick={() => setDepth('2m')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 depth === '2m'
                   ? 'bg-[var(--color-accent)] text-white shadow-sm'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
-              2m Tech Overview
+              <span className="sm:hidden">2m Tech</span>
+              <span className="hidden sm:inline">2m Tech Overview</span>
             </button>
             <button
               onClick={() => setDepth('10m')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
                 depth === '10m'
                   ? 'bg-amber-500 text-white dark:text-zinc-950 shadow-sm'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
-              10m Deep Dive (Trade-offs)
+              <span className="sm:hidden">10m Deep</span>
+              <span className="hidden sm:inline">10m Deep Dive (Trade-offs)</span>
             </button>
           </div>
         </div>
@@ -117,14 +120,15 @@ export function InterviewMode() {
             Interview Topics ({interviewTopicDetails.length})
           </span>
 
-          <div className="space-y-1.5 overflow-y-auto max-h-[calc(100vh-200px)] pr-1">
+          <div className="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-y-auto max-h-none lg:max-h-[calc(100vh-200px)] pb-2 lg:pb-0 pr-1">
             {interviewTopicDetails.map((topic) => {
               const isSelected = selectedTopicId === topic.id;
               return (
                 <button
                   key={topic.id}
                   onClick={() => setSelectedTopicId(topic.id)}
-                  className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 group ${
+                  className={`shrink-0 lg:shrink w-auto lg:w-full text-left p-2.5 sm:p-3.5 rounded-xl border transition-all flex items-center lg:items-start gap-2 sm:gap-3 group ${
+
                     isSelected
                       ? 'bg-[var(--color-surface-2)] border-[var(--color-accent)] shadow-md'
                       : 'bg-[var(--color-surface-1)] border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-2)]/60'

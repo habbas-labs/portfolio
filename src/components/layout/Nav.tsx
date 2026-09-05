@@ -84,7 +84,7 @@ export function Nav() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden xl:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-0.5 2xl:gap-1">
           {navLinks.map(link => (
             <Link
               key={link.label}
@@ -103,7 +103,7 @@ export function Nav() {
         </div>
 
         {/* Action Controls & Fast Paths */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-1.5 md:gap-2">
           {/* Command Palette Search Trigger */}
           <button
             onClick={openCommandPalette}
@@ -150,43 +150,46 @@ export function Nav() {
         </div>
 
         {/* Mobile Hamburger & Quick Actions */}
-        <div className="flex sm:hidden items-center gap-1.5">
+        <div className="flex xl:hidden items-center gap-1">
+          {/* Quick 30s/Client button on tablet/sm screens */}
+          <div className="hidden sm:flex items-center gap-1.5 mr-1">
+            {showConsultant && (
+              <button
+                onClick={openClient}
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all"
+              >
+                Client 60s
+              </button>
+            )}
+            {showRecruiter && (
+              <button
+                onClick={openRecruiter}
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white transition-all"
+              >
+                Recruiter 30s
+              </button>
+            )}
+          </div>
+
           <button
             onClick={openCommandPalette}
-            className="p-2 rounded-md text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)]"
+            className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] transition-colors"
             aria-label="Search"
           >
             <Search size={16} />
           </button>
 
-          {showConsultant && (
-            <button
-              onClick={openClient}
-              className="px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-            >
-              Client
-            </button>
-          )}
-
-          {showRecruiter && (
-            <button
-              onClick={openRecruiter}
-              className="px-2 py-1 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20"
-            >
-              30s
-            </button>
-          )}
-
           <button
             onClick={toggleTheme}
-            className="p-1.5 rounded-md text-[var(--color-text-tertiary)]"
+            className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
+
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-1.5 rounded-md text-[var(--color-text-secondary)]"
+            className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -202,7 +205,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 glass-panel border-b border-[var(--color-border)] lg:hidden shadow-xl"
+            className="fixed inset-x-0 top-16 z-40 bg-[var(--color-surface-1)]/95 backdrop-blur-xl border-b border-[var(--color-border)] xl:hidden shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               {navLinks.map(link => (

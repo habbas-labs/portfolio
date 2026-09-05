@@ -32,13 +32,13 @@ export function ClientModal({ isOpen, onClose, onOpenInquiry }: ClientModalProps
           className="relative w-full max-w-3xl bg-[var(--color-surface-1)] border border-[var(--color-border-hover)] rounded-2xl shadow-2xl overflow-hidden z-10 max-h-[90vh] flex flex-col"
         >
           {/* Header */}
-          <div className="p-6 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface-2)]">
+          <div className="p-4 sm:p-6 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface-2)]">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-[var(--color-accent-subtle)] text-[var(--color-accent)]">
                 <Briefcase size={20} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
+                <h3 className="text-base sm:text-lg font-bold text-[var(--color-text-primary)]">
                   Client & Engineering Leader Fast-Path (60-Second Overview)
                 </h3>
                 <p className="text-xs text-[var(--color-text-tertiary)]">
@@ -57,7 +57,7 @@ export function ClientModal({ isOpen, onClose, onOpenInquiry }: ClientModalProps
           </div>
 
           {/* Body Content */}
-          <div className="p-6 overflow-y-auto space-y-6 text-sm">
+          <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 text-sm">
             {/* Value Proposition */}
             <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] space-y-2">
               <div className="flex items-center gap-2 text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wider">
@@ -170,7 +170,7 @@ export function ClientModal({ isOpen, onClose, onOpenInquiry }: ClientModalProps
           </div>
 
           {/* Footer Actions */}
-          <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] flex flex-wrap items-center justify-between gap-3">
+          <div className="p-4 sm:p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <a
               href={`mailto:${profile.email}`}
               className="inline-flex items-center gap-2 text-xs text-[var(--color-text-secondary)] hover:text-white transition-colors"
@@ -184,7 +184,7 @@ export function ClientModal({ isOpen, onClose, onOpenInquiry }: ClientModalProps
                 onClose();
                 onOpenInquiry();
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-semibold shadow-lg shadow-[var(--color-accent)]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-semibold shadow-lg shadow-[var(--color-accent)]/20 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto text-center"
             >
               <span>Start a Project / Inquiry</span>
               <ArrowRight size={14} />

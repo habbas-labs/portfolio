@@ -43,7 +43,7 @@ export function ExperienceSection() {
 
   return (
     <section id="experience" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Flagship Case Study"
           title="Enterprise Experience"
@@ -53,7 +53,7 @@ export function ExperienceSection() {
         <ScrollReveal>
           <div className="mt-8 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-xl">
             {/* Header */}
-            <div className="p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
+            <div className="p-4 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
                   <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">SS&C DomaniRx Adjudication</h3>
@@ -70,7 +70,7 @@ export function ExperienceSection() {
             </div>
 
             {/* Interactive Legacy Modernization Pipeline (Master Prompt Section 21) */}
-            <div className="p-6 md:p-8 border-b border-[var(--color-border)] bg-[var(--color-surface-2)]/40">
+            <div className="p-4 sm:p-8 border-b border-[var(--color-border)] bg-[var(--color-surface-2)]/40">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-2">
                   <Cpu size={16} className="text-[var(--color-accent)]" />

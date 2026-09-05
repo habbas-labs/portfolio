@@ -23,7 +23,7 @@ export function JavaDeepDive() {
 
   return (
     <section id="java-deep-dive" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Core Competency"
           title="Java Engineering Deep Dive"
@@ -55,7 +55,7 @@ export function JavaDeepDive() {
         <ScrollReveal key={activeTopic.id}>
           <div className="mt-8 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-xl">
             {/* Header info */}
-            <div className="p-6 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
+            <div className="p-4 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <span className="text-xs font-mono font-semibold tracking-wider text-[var(--color-accent)] uppercase">
@@ -77,7 +77,7 @@ export function JavaDeepDive() {
             </div>
 
             {/* Deep Dive & Code Body */}
-            <div className="p-6 sm:p-8 grid lg:grid-cols-12 gap-8">
+            <div className="p-4 sm:p-8 grid lg:grid-cols-12 gap-6 sm:gap-8">
               {/* Architecture & Engineering Analysis */}
               <div className="lg:col-span-6 space-y-6">
                 <div>

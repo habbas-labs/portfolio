@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Send
 } from 'lucide-react';
+import { profile } from '../../data/content';
 import { 
   consultingServices, 
   problemsSolved, 
@@ -408,18 +409,18 @@ export function ConsultingSection({ onOpenInquiry }: ConsultingSectionProps) {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <button
               onClick={() => onOpenInquiry()}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-sm font-semibold shadow-xl shadow-[var(--color-accent)]/20 transition-all hover:scale-105 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-sm font-semibold shadow-xl shadow-[var(--color-accent)]/20 transition-all hover:scale-105 active:scale-95 w-full sm:w-auto text-center"
             >
               <Send size={16} />
               Start a Project Inquiry
             </button>
 
             <a
-              href="mailto:haiderabbas@example.com"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] text-sm font-semibold text-[var(--color-text-primary)] transition-all"
+              href={`mailto:${profile.email}`}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] text-sm font-semibold text-[var(--color-text-primary)] transition-all w-full sm:w-auto text-center"
             >
               Direct Email
             </a>

@@ -13,7 +13,7 @@ export const HowIThink: React.FC = () => {
 
   return (
     <section id="how-i-think" className="py-24 relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="mb-16 text-center lg:text-left">
           <span className="text-accent text-sm font-bold tracking-wider uppercase mb-2 block">
             Engineering Process
@@ -26,7 +26,7 @@ export const HowIThink: React.FC = () => {
           </p>
         </div>
 
-        <div className="relative border-l border-[var(--color-border)] ml-6 md:ml-8 pl-8 md:pl-12 space-y-12">
+        <div className="relative border-l border-[var(--color-border)] ml-4 sm:ml-6 md:ml-8 pl-6 sm:pl-8 md:pl-12 space-y-8 sm:space-y-12">
           {thinkingStages.map((stage, index) => {
             const isActive = activeStage === stage.id;
             const stageQuestion = stage.question || (stage as any).guidingQuestion;
@@ -42,17 +42,20 @@ export const HowIThink: React.FC = () => {
                 onClick={() => setActiveStage(stage.id)}
               >
                 {/* Timeline dot/icon */}
-                <div className={`absolute -left-[49px] md:-left-[65px] top-1 w-10 h-10 rounded-full border-2 flex items-center justify-center bg-[var(--color-surface-0)] transition-colors duration-300 ${
+                <div className={`absolute -left-[40px] sm:-left-[52px] md:-left-[68px] top-0.5 sm:top-1 w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 flex items-center justify-center bg-[var(--color-surface-0)] transition-colors duration-300 ${
+
                   isActive 
                     ? 'border-accent text-accent shadow-[0_0_15px_rgba(59,130,246,0.5)]' 
                     : 'border-[var(--color-border)] text-[var(--color-text-tertiary)] group-hover:border-[var(--color-text-secondary)] group-hover:text-[var(--color-text-secondary)]'
                 }`}>
-                  <DynamicIcon name={stage.icon || 'Brain'} size={18} />
+                  <DynamicIcon name={stage.icon || 'Brain'} size={15} className="sm:hidden" />
+                  <DynamicIcon name={stage.icon || 'Brain'} size={18} className="hidden sm:block" />
                 </div>
 
                 {/* Content */}
                 <div>
-                  <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                  <h3 className={`text-base sm:text-xl font-bold transition-colors duration-300 ${
+
                     isActive ? 'text-accent' : 'text-[var(--color-text-primary)] group-hover:text-[var(--color-text-primary)]'
                   }`}>
                     {stage.title}

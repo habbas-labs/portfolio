@@ -23,7 +23,7 @@ export function KafkaLab() {
 
   return (
     <section id="kafka-lab" className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Distributed Streaming"
           title="Kafka Architecture Lab"
@@ -32,7 +32,7 @@ export function KafkaLab() {
 
         {/* Visual Architecture Schematic */}
         <ScrollReveal>
-          <div className="mt-12 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div className="mt-12 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-4 sm:p-8 shadow-xl">
             <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-6">
               Live Kafka Topology Simulation
             </h4>
@@ -103,7 +103,7 @@ export function KafkaLab() {
         {/* Detailed Topic Explorer Panel */}
         <ScrollReveal key={activeTopic.id}>
           <div className="mt-8 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-xl">
-            <div className="p-6 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
+            <div className="p-4 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">
                   {activeTopic.title}
@@ -118,7 +118,7 @@ export function KafkaLab() {
               </p>
             </div>
 
-            <div className="p-6 sm:p-8 grid lg:grid-cols-12 gap-8">
+            <div className="p-4 sm:p-8 grid lg:grid-cols-12 gap-6 sm:gap-8">
               {/* Deep Dive & Key Trade-off */}
               <div className="lg:col-span-6 space-y-6">
                 <div>
