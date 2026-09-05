@@ -30,3 +30,6 @@ dist-ssr
 .doc
 *.md
 *.MD
+
+# Microsoft Office temporary lock files
+~$*
