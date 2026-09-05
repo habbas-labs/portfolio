@@ -16,6 +16,7 @@ import { Decisions } from '../components/sections/Decisions';
 import { CodeShowcase } from '../components/sections/CodeShowcase';
 import { Contact } from '../components/sections/Contact';
 import { useModals } from '../context/ModalContext';
+import { isConsultantEnabled } from '../config/portfolioConfig';
 
 const SectionDivider = () => (
   <div className="section-divider mx-auto max-w-4xl" />
@@ -23,6 +24,7 @@ const SectionDivider = () => (
 
 export function HomePage() {
   const { openInquiry } = useModals();
+  const showConsultant = isConsultantEnabled();
 
   return (
     <div className="bg-[var(--color-surface-0)] min-h-screen">
@@ -39,12 +41,20 @@ export function HomePage() {
       <SectionDivider />
 
       {/* Master Prompt V4: Consulting & Independent Engineering Services */}
-      <ConsultingSection onOpenInquiry={openInquiry} />
-      <SectionDivider />
+      {showConsultant && (
+        <>
+          <ConsultingSection onOpenInquiry={openInquiry} />
+          <SectionDivider />
+        </>
+      )}
 
       {/* Master Prompt V3/V4: Projects Workbench & Enterprise Systems */}
-      <Projects />
-      <SectionDivider />
+      {showConsultant && (
+        <>
+          <Projects />
+          <SectionDivider />
+        </>
+      )}
 
       <KnowledgeMap />
       <SectionDivider />

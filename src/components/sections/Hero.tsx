@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { profile, techNodes } from '../../data/content';
 import { useReducedMotion } from '../../hooks/useAnimations';
 import { useModals } from '../../context/ModalContext';
+import { isRecruiterEnabled, isConsultantEnabled } from '../../config/portfolioConfig';
 
 const heroTechBadges = ['Java 21', 'Spring Boot 3', 'Kafka', 'Microservices', 'Distributed Systems', 'Spring AI'];
 
@@ -143,8 +144,16 @@ function EcosystemGraph() {
 
 export function Hero() {
   const { openRecruiter, openClient } = useModals();
+  const showRecruiter = isRecruiterEnabled();
+  const showConsultant = isConsultantEnabled();
   const reduced = useReducedMotion();
   const anim = reduced ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
+
+  const eyebrowText = showRecruiter && showConsultant
+    ? 'Senior Backend Engineer · Technology Consultant · Distributed & AI Systems'
+    : showConsultant
+      ? 'Senior Backend Engineer · Technology Consultant · Distributed Systems'
+      : 'Senior Backend Engineer · Distributed Systems · AI Systems';
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -161,7 +170,7 @@ export function Hero() {
             <motion.div {...anim} transition={{ delay: 0.1 }}>
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-                Senior Backend Engineer · Technology Consultant · Distributed & AI Systems
+                {eyebrowText}
               </span>
             </motion.div>
 
@@ -187,46 +196,66 @@ export function Hero() {
 
             {/* CTAs */}
             <motion.div {...anim} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#consulting"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105"
-              >
-                Work With Me
-                <ArrowRight size={16} />
-              </a>
+              {showConsultant && (
+                <a
+                  href="#consulting"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105"
+                >
+                  Work With Me
+                  <ArrowRight size={16} />
+                </a>
+              )}
 
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-3)] transition-colors"
-              >
-                Explore Projects
-              </a>
+              {showConsultant && (
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-3)] transition-colors"
+                >
+                  Explore Projects
+                </a>
+              )}
 
-              <Link
-                to="/interview"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] font-medium text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
-              >
-                <Monitor size={16} />
-                Interview Mode
-              </Link>
+              {!showConsultant && (
+                <a
+                  href="#experience"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105"
+                >
+                  Explore My Work
+                  <ArrowRight size={16} />
+                </a>
+              )}
 
-              <button
-                onClick={openClient}
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-medium text-sm hover:bg-emerald-500 hover:text-white transition-all"
-                title="Client & Founder Fast-Path"
-              >
-                <Briefcase size={16} />
-                Client 60s
-              </button>
+              {showRecruiter && (
+                <Link
+                  to="/interview"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] font-medium text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                >
+                  <Monitor size={16} />
+                  Interview Mode
+                </Link>
+              )}
 
-              <button
-                onClick={openRecruiter}
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 font-medium text-sm hover:bg-blue-500 hover:text-white transition-all"
-                title="Recruiter Fast-Path"
-              >
-                <Clock size={16} />
-                Recruiter 30s
-              </button>
+              {showConsultant && (
+                <button
+                  onClick={openClient}
+                  className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-medium text-sm hover:bg-emerald-500 hover:text-white transition-all"
+                  title="Client & Founder Fast-Path"
+                >
+                  <Briefcase size={16} />
+                  Client 60s
+                </button>
+              )}
+
+              {showRecruiter && (
+                <button
+                  onClick={openRecruiter}
+                  className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 font-medium text-sm hover:bg-blue-500 hover:text-white transition-all"
+                  title="Recruiter Fast-Path"
+                >
+                  <Clock size={16} />
+                  Recruiter 30s
+                </button>
+              )}
             </motion.div>
 
             {/* Tech badges */}

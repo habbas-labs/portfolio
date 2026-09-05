@@ -1,22 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Clock, Briefcase, Search, Command } from 'lucide-react';
+import { Menu, X, Sun, Moon, Clock, Briefcase, Search } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { profile } from '../../data/content';
 import { useModals } from '../../context/ModalContext';
-
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Consulting', href: '/#consulting' },
-  { label: 'Projects', href: '/#projects' },
-  { label: 'Java Deep Dive', href: '/#java-deep-dive' },
-  { label: 'Microservices Lab', href: '/#microservices-lab' },
-  { label: 'Kafka Lab', href: '/#kafka-lab' },
-  { label: 'Enterprise', href: '/#experience' },
-  { label: 'AI Lab', href: '/#ai-lab' },
-  { label: 'Interview', href: '/interview' },
-];
+import { isRecruiterEnabled, isConsultantEnabled } from '../../config/portfolioConfig';
 
 export function Nav() {
   const { theme, toggleTheme } = useTheme();
@@ -24,6 +13,22 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  const showRecruiter = isRecruiterEnabled();
+  const showConsultant = isConsultantEnabled();
+
+  // Mode-aware navigation links
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    ...(showConsultant ? [{ label: 'Consulting', href: '/#consulting' }] : []),
+    ...(showConsultant ? [{ label: 'Projects', href: '/#projects' }] : []),
+    { label: 'Java Deep Dive', href: '/#java-deep-dive' },
+    { label: 'Microservices Lab', href: '/#microservices-lab' },
+    { label: 'Kafka Lab', href: '/#kafka-lab' },
+    { label: 'Enterprise', href: '/#experience' },
+    { label: 'AI Lab', href: '/#ai-lab' },
+    ...(showRecruiter ? [{ label: 'Interview', href: '/interview' }] : []),
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -48,6 +53,12 @@ export function Nav() {
 
   const isSolid = scrolled || location.pathname !== '/';
 
+  const brandSubtitle = showRecruiter && showConsultant
+    ? 'Backend & AI Consultant'
+    : showConsultant
+      ? 'Technology Consultant'
+      : 'Senior Backend Engineer';
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -67,7 +78,7 @@ export function Nav() {
               {profile.name}
             </div>
             <div className="text-xs text-[var(--color-text-tertiary)] truncate max-w-[220px]">
-              Backend & AI Consultant
+              {brandSubtitle}
             </div>
           </div>
         </Link>
@@ -104,25 +115,29 @@ export function Nav() {
             <span className="text-[10px] px-1 py-0.2 rounded bg-[var(--color-surface-3)] border border-[var(--color-border)]">⌘K</span>
           </button>
 
-          {/* Client 60s Fast Path Button */}
-          <button
-            onClick={openClient}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
-            title="60-Second Client & Engineering Leader Overview"
-          >
-            <Briefcase size={13} />
-            <span>Client 60s</span>
-          </button>
+          {/* Client 60s Fast Path Button (Consultant Mode) */}
+          {showConsultant && (
+            <button
+              onClick={openClient}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
+              title="60-Second Client & Engineering Leader Overview"
+            >
+              <Briefcase size={13} />
+              <span>Client 60s</span>
+            </button>
+          )}
 
-          {/* Recruiter 30s Fast Path Button */}
-          <button
-            onClick={openRecruiter}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
-            title="30-Second Fast Path for Recruiters"
-          >
-            <Clock size={13} />
-            <span>Recruiter 30s</span>
-          </button>
+          {/* Recruiter 30s Fast Path Button (Recruiter Mode) */}
+          {showRecruiter && (
+            <button
+              onClick={openRecruiter}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+              title="30-Second Fast Path for Recruiters"
+            >
+              <Clock size={13} />
+              <span>Recruiter 30s</span>
+            </button>
+          )}
 
           {/* Theme Toggle */}
           <button
@@ -143,18 +158,25 @@ export function Nav() {
           >
             <Search size={16} />
           </button>
-          <button
-            onClick={openClient}
-            className="px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-          >
-            Client
-          </button>
-          <button
-            onClick={openRecruiter}
-            className="px-2 py-1 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20"
-          >
-            30s
-          </button>
+
+          {showConsultant && (
+            <button
+              onClick={openClient}
+              className="px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+            >
+              Client
+            </button>
+          )}
+
+          {showRecruiter && (
+            <button
+              onClick={openRecruiter}
+              className="px-2 py-1 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20"
+            >
+              30s
+            </button>
+          )}
+
           <button
             onClick={toggleTheme}
             className="p-1.5 rounded-md text-[var(--color-text-tertiary)]"
@@ -193,27 +215,32 @@ export function Nav() {
                   {link.label}
                 </Link>
               ))}
+
               <div className="pt-3 border-t border-[var(--color-border)] mt-2 space-y-2">
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    openClient();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white"
-                >
-                  <Briefcase size={14} />
-                  Open Client 60s View
-                </button>
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    openRecruiter();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 text-white"
-                >
-                  <Clock size={14} />
-                  Open Recruiter 30s View
-                </button>
+                {showConsultant && (
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      openClient();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white"
+                  >
+                    <Briefcase size={14} />
+                    Open Client 60s View
+                  </button>
+                )}
+                {showRecruiter && (
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      openRecruiter();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 text-white"
+                  >
+                    <Clock size={14} />
+                    Open Recruiter 30s View
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>

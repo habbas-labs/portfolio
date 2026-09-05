@@ -16,6 +16,7 @@ import {
   FolderGit2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { isRecruiterEnabled, isConsultantEnabled } from '../../config/portfolioConfig';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -60,50 +61,65 @@ export function CommandPalette({
     }
   };
 
-  const commands: CommandItem[] = [
-    // Fast Actions
-    {
-      id: 'action-inquiry',
-      title: 'Start a Project Inquiry / Work With Me',
-      category: 'Actions',
-      description: 'Open consulting inquiry drawer to discuss a project',
-      action: () => { onClose(); onOpenInquiry?.(); },
-      icon: Briefcase,
-    },
-    {
-      id: 'action-client',
-      title: 'Client & Founder Fast-Path (60-Sec Overview)',
-      category: 'Actions',
-      description: 'Executive summary of consulting capabilities and engagement models',
-      action: () => { onClose(); onOpenClientModal?.(); },
-      icon: Briefcase,
-    },
-    {
+  const showRecruiter = isRecruiterEnabled();
+  const showConsultant = isConsultantEnabled();
+
+  const commands: CommandItem[] = [];
+
+  if (showConsultant) {
+    commands.push(
+      {
+        id: 'action-inquiry',
+        title: 'Start a Project Inquiry / Work With Me',
+        category: 'Actions',
+        description: 'Open consulting inquiry drawer to discuss a project',
+        action: () => { onClose(); onOpenInquiry?.(); },
+        icon: Briefcase,
+      },
+      {
+        id: 'action-client',
+        title: 'Client & Founder Fast-Path (60-Sec Overview)',
+        category: 'Actions',
+        description: 'Executive summary of consulting capabilities and engagement models',
+        action: () => { onClose(); onOpenClientModal?.(); },
+        icon: Briefcase,
+      }
+    );
+  }
+
+  if (showRecruiter) {
+    commands.push({
       id: 'action-recruiter',
       title: 'Recruiter Fast-Path (30-Sec Overview)',
       category: 'Actions',
       description: 'Quick summary of 13+ years experience, stack, and contact links',
       action: () => { onClose(); onOpenRecruiterModal?.(); },
       icon: HelpCircle,
-    },
+    });
+  }
 
-    // Navigation Sections
-    {
-      id: 'nav-consulting',
-      title: 'Consulting & Independent Engineering',
-      category: 'Navigation',
-      description: 'Problems I solve, consulting packages, engagement models & client journey',
-      action: () => handleNavigate('/#consulting'),
-      icon: Briefcase,
-    },
-    {
-      id: 'nav-projects',
-      title: 'Engineering Workbench & Projects',
-      category: 'Navigation',
-      description: 'Enterprise healthcare claims, Kafka event spine, and 7 AI concept templates',
-      action: () => handleNavigate('/#projects'),
-      icon: FolderGit2,
-    },
+  if (showConsultant) {
+    commands.push(
+      {
+        id: 'nav-consulting',
+        title: 'Consulting & Independent Engineering',
+        category: 'Navigation',
+        description: 'Problems I solve, consulting packages, engagement models & client journey',
+        action: () => handleNavigate('/#consulting'),
+        icon: Briefcase,
+      },
+      {
+        id: 'nav-projects',
+        title: 'Engineering Workbench & Projects',
+        category: 'Navigation',
+        description: 'Enterprise healthcare claims, Kafka event spine, and 7 AI concept templates',
+        action: () => handleNavigate('/#projects'),
+        icon: FolderGit2,
+      }
+    );
+  }
+
+  commands.push(
     {
       id: 'nav-experience',
       title: 'Enterprise Experience (SS&C DomaniRx)',
@@ -169,16 +185,18 @@ export function CommandPalette({
       icon: Terminal,
     },
 
-    // Interview Control
-    {
+  );
+
+  if (showRecruiter) {
+    commands.push({
       id: 'nav-interview-mode',
       title: 'Full Interview Control Center',
       category: 'Interview Mode',
       description: 'Structured technical interview prep with 30s, 2min, and 10min depth answers',
       action: () => handleNavigate('/interview'),
       icon: HelpCircle,
-    },
-  ];
+    });
+  }
 
   const filteredCommands = commands.filter((cmd) => {
     const q = query.toLowerCase().trim();

@@ -5,6 +5,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { Badge } from '../ui/Badge';
 import { aiLevels, aiConceptNodes, aiExistingSoftwareFlow, aiSolutionCatalog } from '../../data/content';
+import { isConsultantEnabled } from '../../config/portfolioConfig';
 import { useReducedMotion } from '../../hooks/useAnimations';
 
 const aiJourney = ['LLM', 'Prompting', 'Structured Output', 'RAG', 'Tools', 'Agents', 'Multi-Agent', 'MCP / A2A'];
@@ -21,6 +22,7 @@ export function AILab() {
 
   const selectedConcept = aiConceptNodes.find(c => c.id === selectedConceptId);
   const activePattern = aiSolutionCatalog[activePatternTab];
+  const showConsultant = isConsultantEnabled();
 
   return (
     <section id="ai-lab" className="py-24">
@@ -164,6 +166,8 @@ export function AILab() {
         {/* ═══════════════════════════════════════════
             MASTER PROMPT V4 — SECTION 33: AI FOR EXISTING SOFTWARE
             ═══════════════════════════════════════════ */}
+        {showConsultant && (
+        <>
         <ScrollReveal>
           <div className="mt-20 p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)] space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -304,6 +308,8 @@ export function AILab() {
             </div>
           </div>
         </ScrollReveal>
+        </>
+        )}
 
         {/* ═══════════════════════════════════════════
             Interactive AI Concept Explorer
