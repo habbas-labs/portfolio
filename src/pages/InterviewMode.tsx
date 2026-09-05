@@ -4,20 +4,15 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowLeft, 
   MonitorPlay, 
-  Clock, 
   Layers, 
   AlertOctagon, 
-  ShieldCheck, 
   Code2, 
   HelpCircle, 
-  CheckCircle2, 
-  Cpu, 
   Radio, 
   GitBranch, 
   Building2, 
   Brain, 
-  Bot, 
-  ExternalLink 
+  Bot 
 } from 'lucide-react';
 import { interviewTopicDetails, profile } from '../data/content';
 import { useReducedMotion } from '../hooks/useAnimations';
@@ -45,30 +40,30 @@ export function InterviewMode() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070709] text-zinc-100 flex flex-col selection:bg-blue-500/30 selection:text-blue-200">
-      {/* Presentation Control Header */}
-      <header className="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 px-6 py-3.5">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-[var(--color-surface-0)] text-[var(--color-text-primary)] flex flex-col pt-16 transition-colors duration-300">
+      {/* Presentation Control Header — docked cleanly under global Nav */}
+      <header className="sticky top-16 z-30 bg-[var(--color-surface-1)]/95 backdrop-blur-md border-b border-[var(--color-border)] px-4 sm:px-6 py-3 shadow-sm transition-colors duration-300">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link
               to="/"
-              className="text-xs font-semibold text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800"
+              className="text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:bg-[var(--color-surface-3)] shrink-0"
             >
               <ArrowLeft size={14} />
               Back to Site
             </Link>
 
-            <div className="h-4 w-px bg-zinc-800" />
+            <div className="h-4 w-px bg-[var(--color-border)] hidden sm:block" />
 
             <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-md bg-blue-500/20 text-blue-400">
+              <div className="p-1.5 rounded-md bg-[var(--color-accent-subtle)] text-[var(--color-accent)] shrink-0">
                 <MonitorPlay size={16} />
               </div>
-              <div>
-                <h1 className="text-sm font-bold tracking-wider uppercase text-zinc-100">
+              <div className="min-w-0">
+                <h1 className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[var(--color-text-primary)] truncate">
                   Interview Control Center
                 </h1>
-                <span className="text-[10px] text-zinc-400 font-mono">
+                <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono block truncate">
                   {profile.name} · {profile.yearsExperience}+ YOE Senior Backend / AI
                 </span>
               </div>
@@ -76,36 +71,36 @@ export function InterviewMode() {
           </div>
 
           {/* Depth Mode Switcher */}
-          <div className="flex items-center gap-2 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800">
-            <span className="text-[10px] uppercase font-mono text-zinc-500 px-2 hidden sm:inline">
+          <div className="flex items-center gap-1 sm:gap-2 bg-[var(--color-surface-2)] p-1 rounded-xl border border-[var(--color-border)] overflow-x-auto max-w-full">
+            <span className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] px-2 hidden lg:inline whitespace-nowrap">
               Technical Depth:
             </span>
             <button
               onClick={() => setDepth('30s')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 depth === '30s'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
               30s Recruiter View
             </button>
             <button
               onClick={() => setDepth('2m')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 depth === '2m'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
               2m Tech Overview
             </button>
             <button
               onClick={() => setDepth('10m')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
                 depth === '10m'
-                  ? 'bg-amber-500 text-black font-bold shadow-md'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-amber-500 text-white dark:text-zinc-950 shadow-sm'
+                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
               }`}
             >
               10m Deep Dive (Trade-offs)
@@ -118,11 +113,11 @@ export function InterviewMode() {
       <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid lg:grid-cols-12 gap-6">
         {/* Left Topic Sidebar (Control Deck) */}
         <div className="lg:col-span-4 flex flex-col gap-2">
-          <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 px-2 mb-1">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-text-muted)] px-2 mb-1">
             Interview Topics ({interviewTopicDetails.length})
           </span>
 
-          <div className="space-y-1.5 overflow-y-auto max-h-[calc(100vh-140px)] pr-1">
+          <div className="space-y-1.5 overflow-y-auto max-h-[calc(100vh-200px)] pr-1">
             {interviewTopicDetails.map((topic) => {
               const isSelected = selectedTopicId === topic.id;
               return (
@@ -131,27 +126,30 @@ export function InterviewMode() {
                   onClick={() => setSelectedTopicId(topic.id)}
                   className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 group ${
                     isSelected
-                      ? 'bg-zinc-800/90 border-blue-500/50 shadow-lg shadow-blue-500/10'
-                      : 'bg-zinc-900/50 border-zinc-800/60 hover:bg-zinc-800/40 hover:border-zinc-700'
+                      ? 'bg-[var(--color-surface-2)] border-[var(--color-accent)] shadow-md'
+                      : 'bg-[var(--color-surface-1)] border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-2)]/60'
                   }`}
                 >
-                  <div className={`p-2 rounded-lg mt-0.5 transition-colors ${
+                  <div className={`p-2 rounded-lg mt-0.5 transition-colors shrink-0 ${
                     isSelected
-                      ? 'bg-blue-500/20 text-blue-400'
-                      : 'bg-zinc-950 text-zinc-400 group-hover:text-zinc-200'
+                      ? 'bg-[var(--color-accent-subtle)] text-[var(--color-accent)]'
+                      : 'bg-[var(--color-surface-2)] text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-primary)]'
                   }`}>
                     {getTopicIcon(topic.icon)}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <p className={`text-xs font-bold leading-snug transition-colors ${
-                      isSelected ? 'text-white' : 'text-zinc-300 group-hover:text-white'
+                      isSelected ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]'
                     }`}>
                       {topic.title}
                     </p>
                     <div className="flex flex-wrap gap-1 mt-1.5">
                       {topic.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-zinc-950 text-zinc-400">
+                        <span 
+                          key={tag} 
+                          className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--color-surface-2)] text-[var(--color-text-tertiary)] border border-[var(--color-border)]"
+                        >
                           {tag}
                         </span>
                       ))}
@@ -172,16 +170,16 @@ export function InterviewMode() {
               animate={{ opacity: 1, y: 0 }}
               exit={reduced ? {} : { opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 sm:p-8 flex flex-col flex-1 shadow-2xl"
+              className="bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 flex flex-col flex-1 shadow-lg transition-colors duration-300"
             >
               {/* Header with Topic and Current Depth Tag */}
-              <div className="pb-6 border-b border-zinc-800/80 flex flex-wrap items-center justify-between gap-3">
+              <div className="pb-6 border-b border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-mono font-semibold text-blue-400 uppercase tracking-wider mb-1">
+                  <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[var(--color-accent)] uppercase tracking-wider mb-1">
                     {getTopicIcon(selectedTopic.icon)}
                     <span>{selectedTopic.category.toUpperCase()} DOMAIN</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-white tracking-tight">
+                  <h2 className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
                     {selectedTopic.title}
                   </h2>
                 </div>
@@ -189,10 +187,10 @@ export function InterviewMode() {
                 <div className="flex items-center gap-2">
                   <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold ${
                     depth === '30s'
-                      ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                      ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
                       : depth === '2m'
-                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                        : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                        ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20'
+                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                   }`}>
                     {depth === '30s' && '30s Elevator Pitch'}
                     {depth === '2m' && '2m Architecture Overview'}
@@ -204,26 +202,26 @@ export function InterviewMode() {
               {/* Dynamic Content Presentation */}
               <div className="py-6 flex-1 space-y-6">
                 {depth === '30s' && (
-                  <div className="p-6 rounded-xl bg-blue-950/20 border border-blue-500/30 text-zinc-200 leading-relaxed text-base">
-                    <p className="font-sans">{selectedTopic.depth.thirtySecond}</p>
+                  <div className="p-6 rounded-xl bg-[var(--color-accent-subtle)] border border-[var(--color-border-accent)] text-[var(--color-text-primary)] leading-relaxed text-base">
+                    <p className="font-sans leading-relaxed">{selectedTopic.depth.thirtySecond}</p>
                   </div>
                 )}
 
                 {depth === '2m' && (
                   <div className="space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                       Key Architectural Foundations & Flow
                     </h4>
                     <div className="grid gap-3">
                       {selectedTopic.depth.twoMinute.map((point, idx) => (
                         <div
                           key={idx}
-                          className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800 flex items-start gap-3"
+                          className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-start gap-3"
                         >
-                          <span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 text-xs font-mono flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="w-5 h-5 rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent)] text-xs font-mono flex items-center justify-center shrink-0 mt-0.5">
                             {idx + 1}
                           </span>
-                          <p className="text-sm text-zinc-200 leading-relaxed">
+                          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                             {point}
                           </p>
                         </div>
@@ -236,26 +234,26 @@ export function InterviewMode() {
                   <div className="space-y-6">
                     {/* Deep Architecture */}
                     <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2 flex items-center gap-2">
-                        <Layers size={14} className="text-amber-400" />
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2 flex items-center gap-2">
+                        <Layers size={14} className="text-amber-500" />
                         In-Depth System Topology & Execution
                       </h4>
-                      <p className="text-sm text-zinc-300 leading-relaxed bg-zinc-950/70 p-4 rounded-xl border border-zinc-800">
+                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed bg-[var(--color-surface-2)] p-4 rounded-xl border border-[var(--color-border)]">
                         {selectedTopic.depth.tenMinute.architecture}
                       </p>
                     </div>
 
                     {/* Trade-offs Matrix */}
                     <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2 flex items-center gap-2">
-                        <AlertOctagon size={14} className="text-amber-400" />
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2 flex items-center gap-2">
+                        <AlertOctagon size={14} className="text-amber-500" />
                         Hard Trade-Offs & Decisions
                       </h4>
                       <div className="space-y-2">
                         {selectedTopic.depth.tenMinute.tradeoffs.map((t, idx) => (
                           <div
                             key={idx}
-                            className="p-3.5 rounded-lg bg-amber-500/5 border-l-2 border-amber-500 text-xs text-zinc-300 leading-relaxed"
+                            className="p-3.5 rounded-lg bg-amber-500/10 border-l-4 border-amber-500 text-xs text-[var(--color-text-secondary)] leading-relaxed"
                           >
                             {t}
                           </div>
@@ -265,20 +263,20 @@ export function InterviewMode() {
 
                     {/* Scaling & Failure Handling */}
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
-                        <span className="text-[10px] font-mono uppercase text-emerald-400 block mb-1">
+                      <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                        <span className="text-[10px] font-mono uppercase text-emerald-600 dark:text-emerald-400 block mb-1 font-bold">
                           Scaling Strategy
                         </span>
-                        <p className="text-xs text-zinc-300 leading-relaxed">
+                        <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
                           {selectedTopic.depth.tenMinute.scaling}
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800">
-                        <span className="text-[10px] font-mono uppercase text-rose-400 block mb-1">
+                      <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                        <span className="text-[10px] font-mono uppercase text-rose-600 dark:text-rose-400 block mb-1 font-bold">
                           Failure Handling & Resiliency
                         </span>
-                        <p className="text-xs text-zinc-300 leading-relaxed">
+                        <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
                           {selectedTopic.depth.tenMinute.failureHandling}
                         </p>
                       </div>
@@ -288,16 +286,16 @@ export function InterviewMode() {
               </div>
 
               {/* Sample Interviewer Questions Toggle */}
-              <div className="pt-4 border-t border-zinc-800/80">
+              <div className="pt-4 border-t border-[var(--color-border)]">
                 <button
                   onClick={() => setShowQuestions(!showQuestions)}
-                  className="flex items-center justify-between w-full p-3 rounded-xl bg-zinc-950 hover:bg-zinc-800/50 border border-zinc-800 transition-colors text-xs font-semibold text-zinc-300"
+                  className="flex items-center justify-between w-full p-3 rounded-xl bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] border border-[var(--color-border)] transition-colors text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                 >
                   <span className="flex items-center gap-2">
-                    <HelpCircle size={15} className="text-blue-400" />
+                    <HelpCircle size={15} className="text-[var(--color-accent)]" />
                     Likely Interviewer Probes & Discussion Prompts
                   </span>
-                  <span className="font-mono text-[10px] text-zinc-500">
+                  <span className="font-mono text-[10px] text-[var(--color-text-tertiary)]">
                     {showQuestions ? 'Hide' : `Show (${selectedTopic.depth.sampleQuestions.length})`}
                   </span>
                 </button>
@@ -311,9 +309,9 @@ export function InterviewMode() {
                     {selectedTopic.depth.sampleQuestions.map((q, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-lg bg-zinc-900 border border-zinc-800/80 text-xs text-zinc-300 flex items-start gap-2"
+                        className="p-3 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] flex items-start gap-2"
                       >
-                        <span className="text-blue-400 font-mono font-bold">Q{idx + 1}:</span>
+                        <span className="text-[var(--color-accent)] font-mono font-bold shrink-0">Q{idx + 1}:</span>
                         <span>{q}</span>
                       </div>
                     ))}
