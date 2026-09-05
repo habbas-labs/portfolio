@@ -19,21 +19,59 @@ const eraAccents = ['#3b82f6', '#06b6d4', '#a855f7', '#8b5cf6', '#f59e0b'];
 
 export function Journey() {
   const [activeEra, setActiveEra] = useState<string | null>(null);
-  const { ref, isInView } = useInView();
+  const { ref } = useInView();
   const reduced = useReducedMotion();
+
+  const renderEraDetails = (era: (typeof journeyEras)[number], i: number) => (
+    <div className="p-4 sm:p-6 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)] shadow-md text-left">
+      <div className="grid md:grid-cols-2 gap-5 sm:gap-6">
+        <div>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2.5">
+            Technologies
+          </h4>
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+            {era.technologies.map(tech => (
+              <span
+                key={tech}
+                className="px-2.5 py-1 text-xs rounded-md border border-[var(--color-border)] bg-[var(--color-surface-2)]"
+                style={{ color: eraAccents[i] }}
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2.5">
+            Highlights
+          </h4>
+          <ul className="space-y-1.5">
+            {era.highlights.map(h => (
+              <li key={h} className="flex items-start gap-2 text-xs sm:text-sm text-[var(--color-text-secondary)]">
+                <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: eraAccents[i] }} />
+                <span>{h}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p className="mt-4 text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed pt-3 border-t border-[var(--color-border)]">
+        {era.description}
+      </p>
+    </div>
+  );
 
   return (
     <section id="journey" className="py-24" ref={ref}>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Evolution"
           title="Engineering Journey"
           description="A natural progression from enterprise Java through distributed systems to intelligent AI-powered applications."
         />
 
-        {/* Desktop: horizontal scroll */}
-        <div className="mt-16">
-          {/* Progress line */}
+        <div className="mt-12 md:mt-16">
+          {/* Progress line (Desktop only) */}
           <div className="hidden md:block relative mb-8">
             <div className="h-px bg-[var(--color-border)] w-full" />
             <div className="flex justify-between absolute -top-1.5 inset-x-0">
@@ -63,7 +101,7 @@ export function Journey() {
           </div>
 
           {/* Era cards */}
-          <div className="grid md:grid-cols-5 gap-4 mt-12 md:mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6 md:mt-16">
             {journeyEras.map((era, i) => {
               const isActive = activeEra === era.id;
               return (
@@ -101,66 +139,50 @@ export function Journey() {
                       {isActive ? 'Collapse' : 'Details'}
                     </div>
                   </motion.button>
+
+                  {/* Mobile inline details: opens immediately below the clicked box in mobile view */}
+                  <div className="md:hidden">
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden mt-3"
+                        >
+                          {renderEraDetails(era, i)}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </ScrollReveal>
               );
             })}
           </div>
 
-          {/* Expanded details */}
-          <AnimatePresence mode="wait">
-            {activeEra && (() => {
-              const era = journeyEras.find(e => e.id === activeEra);
-              const i = journeyEras.findIndex(e => e.id === activeEra);
-              if (!era) return null;
-              return (
-                <motion.div
-                  key={era.id}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="mt-6 p-6 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
-                          Technologies
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {era.technologies.map(tech => (
-                            <span
-                              key={tech}
-                              className="px-2.5 py-1 text-xs rounded-md border border-[var(--color-border)]"
-                              style={{ color: eraAccents[i] }}
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
-                          Highlights
-                        </h4>
-                        <ul className="space-y-1.5">
-                          {era.highlights.map(h => (
-                            <li key={h} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
-                              <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: eraAccents[i] }} />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                    <p className="mt-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                      {era.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })()}
-          </AnimatePresence>
+          {/* Desktop expanded details: opens below the horizontal row on desktop */}
+          <div className="hidden md:block">
+            <AnimatePresence mode="wait">
+              {activeEra && (() => {
+                const era = journeyEras.find(e => e.id === activeEra);
+                const i = journeyEras.findIndex(e => e.id === activeEra);
+                if (!era) return null;
+                return (
+                  <motion.div
+                    key={era.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden mt-6"
+                  >
+                    {renderEraDetails(era, i)}
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
+          </div>
 
           {/* Progression arrow */}
           <div className="mt-8 flex justify-center">
