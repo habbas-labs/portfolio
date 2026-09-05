@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Monitor, Clock, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { profile, techNodes } from '../../data/content';
@@ -23,6 +23,7 @@ const categoryColors: Record<string, string> = {
 
 function EcosystemGraph() {
   const [hovered, setHovered] = useState<string | null>(null);
+  const activeNode = ecosystemNodes.find(n => n.id === hovered);
   const reduced = useReducedMotion();
 
   const getConnections = useCallback(() => {
@@ -138,6 +139,37 @@ function EcosystemGraph() {
           </circle>
         ))}
       </svg>
+
+      {/* HTML Tooltip Overlay (Prevents SVG foreignObject clipping) */}
+      <AnimatePresence>
+        {activeNode && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: activeNode.y > 50 ? 4 : -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute pointer-events-none z-30 px-3 py-2 rounded-xl bg-[var(--color-surface-2)]/95 border border-[var(--color-border-accent)] shadow-2xl backdrop-blur-md max-w-[220px] text-center"
+            style={{
+              left: `${activeNode.x}%`,
+              top: activeNode.y > 50 ? `${activeNode.y - 4}%` : `${activeNode.y + 6}%`,
+              transform: activeNode.y > 50 ? "translate(-50%, -100%)" : "translate(-50%, 0)",
+            }}
+          >
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <span
+                className="w-2 h-2 rounded-full shrink-0"
+                style={{ backgroundColor: categoryColors[activeNode.category] || "#3b82f6" }}
+              />
+              <span className="text-xs font-bold text-[var(--color-text-primary)]">
+                {activeNode.label}
+              </span>
+            </div>
+            <p className="text-[11px] text-[var(--color-text-secondary)] leading-snug">
+              {activeNode.description.split(".")[0]}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
