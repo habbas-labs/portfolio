@@ -36,7 +36,7 @@ export const profile: Profile = {
   yearsExperience: 14,
   email: 'haider.abbas.solutions@gmail.com',
   linkedin: 'https://linkedin.com/in/haider-abbas',
-  github: 'https://github.com/haiderabbas-labs',
+  github: 'https://github.com/habbas-labs',
   location: 'Pune, Maharashtra, India',
   resumeUrl: './resume.docx',
 };
@@ -1025,7 +1025,7 @@ export const projects: Project[] = [
       'Kafka retry topics prevent head-of-line blocking in healthcare SLAs'
     ],
     status: 'USER-PROVIDED',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'event-driven-spine',
@@ -1036,7 +1036,7 @@ export const projects: Project[] = [
     architecture: 'Publish-subscribe event backbone with Schema Registry, transactional outbox producers, and cooperative sticky consumer groups.',
     technologies: ['Apache Kafka', 'Java 21', 'Spring Cloud Stream', 'Avro / Schema Registry', 'Prometheus'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'rag-knowledge-assistant',
@@ -1048,7 +1048,7 @@ export const projects: Project[] = [
     technologies: ['Spring AI', 'PGVector', 'OpenAI / Claude', 'Java 21', 'PostgreSQL'],
     contribution: 'Designed vector ingestion pipeline and contextual prompt templates with source citations.',
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'enterprise-knowledge-assistant',
@@ -1058,7 +1058,7 @@ export const projects: Project[] = [
     businessProblem: 'Internal compliance teams require instant querying across regulatory healthcare mandates with strict source citations.',
     technologies: ['Spring AI', 'Ollama', 'PGVector', 'Docker', 'FastAPI'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'ai-log-analysis',
@@ -1068,7 +1068,7 @@ export const projects: Project[] = [
     businessProblem: 'Investigating high-cardinality distributed microservice exceptions during production incidents is time-prohibitive.',
     technologies: ['Spring AI', 'Kafka', 'Elasticsearch', 'LLM Agents'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'ai-claims-assistant',
@@ -1078,7 +1078,7 @@ export const projects: Project[] = [
     businessProblem: 'High rejection rates due to pharmacy code mismatches require automated explanation and correction recommendations.',
     technologies: ['Spring AI', 'Java 21', 'RAG', 'Structured Outputs'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'tool-using-agent',
@@ -1088,7 +1088,7 @@ export const projects: Project[] = [
     businessProblem: 'LLMs lack access to real-time production system states, database tables, and external APIs.',
     technologies: ['Model Context Protocol (MCP)', 'Spring AI', 'REST APIs', 'PostgreSQL'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'multi-agent-system-project',
@@ -1098,7 +1098,7 @@ export const projects: Project[] = [
     businessProblem: 'Complex enterprise tasks require multiple specialized AI agents collaborating with defined roles and supervisor review.',
     technologies: ['A2A Protocol', 'Multi-Agent Orchestration', 'Spring AI', 'LangGraph Patterns'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
   {
     id: 'ai-developer-assistant',
@@ -1108,7 +1108,7 @@ export const projects: Project[] = [
     businessProblem: 'Automating codebase scans for anti-patterns, missing Kafka idempotency checks, and circular microservice dependencies.',
     technologies: ['Spring AI', 'Java Parser', 'AST Analysis', 'Claude 3.5'],
     status: 'PROVISIONAL',
-    repoUrl: 'https://github.com/haiderabbas-labs',
+    repoUrl: 'https://github.com/habbas-labs',
   },
 ];
 
@@ -1402,7 +1402,7 @@ export const resumeData: ResumeData = {
     location: 'Pune, Maharashtra, India',
     email: 'haider.abbas.solutions@gmail.com',
     linkedin: 'https://linkedin.com/in/haider-abbas',
-    github: 'https://github.com/haiderabbas-labs',
+    github: 'https://github.com/habbas-labs',
   },
   summary: [
     'Senior Java Engineer / Technical Lead with 14+ years of experience designing and developing enterprise web applications, REST APIs, microservices and distributed systems using Java, Spring Boot and Kafka.',
