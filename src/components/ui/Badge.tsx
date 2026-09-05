@@ -1,11 +1,14 @@
+import React from 'react';
 import type { ContentStatus } from '../../types';
 
-type BadgeType = string; // Accept any proficiency or ContentStatus string
+type BadgeType = string;
 
-interface BadgeProps {
-  type: BadgeType;
+export interface BadgeProps {
+  type?: BadgeType;
   label?: string;
+  variant?: 'outline' | 'secondary' | 'default' | string;
   className?: string;
+  children?: React.ReactNode;
 }
 
 const colorMap: Record<string, string> = {
@@ -21,13 +24,22 @@ const colorMap: Record<string, string> = {
   PLACEHOLDER: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
 };
 
-export function Badge({ type, label, className = '' }: BadgeProps) {
-  const colors = colorMap[type] || 'bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border-[var(--color-border)]';
-  const displayLabel = label || type;
+const variantMap: Record<string, string> = {
+  outline: 'border border-[var(--color-border)] text-[var(--color-text-secondary)] bg-transparent',
+  secondary: 'bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
+  default: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+};
+
+export function Badge({ type, label, variant, className = '', children }: BadgeProps) {
+  const badgeKey = type || (typeof children === 'string' ? children : '');
+  const colors = variant && variantMap[variant] 
+    ? variantMap[variant] 
+    : (colorMap[badgeKey] || 'bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border-[var(--color-border)]');
+  const displayContent = children ?? label ?? type;
 
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${colors} ${className}`}>
-      {displayLabel}
+      {displayContent}
     </span>
   );
 }

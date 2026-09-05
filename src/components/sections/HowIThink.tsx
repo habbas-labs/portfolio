@@ -29,6 +29,7 @@ export const HowIThink: React.FC = () => {
         <div className="relative border-l border-[var(--color-border)] ml-6 md:ml-8 pl-8 md:pl-12 space-y-12">
           {thinkingStages.map((stage, index) => {
             const isActive = activeStage === stage.id;
+            const stageQuestion = stage.question || (stage as any).guidingQuestion;
 
             return (
               <motion.div
@@ -66,10 +67,10 @@ export const HowIThink: React.FC = () => {
                       <p className="text-[var(--color-text-secondary)] leading-relaxed">
                         {stage.description}
                       </p>
-                      {stage.guidingQuestion && (
+                      {stageQuestion && (
                         <div className="bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-md p-4 font-mono text-sm text-[var(--color-text-primary)]">
                           <span className="text-accent-hover mr-2">?</span>
-                          {stage.guidingQuestion}
+                          {stageQuestion}
                         </div>
                       )}
                     </div>

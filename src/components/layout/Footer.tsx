@@ -19,15 +19,15 @@ export const Footer: React.FC = () => {
           <div className="space-y-4">
             <h4 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">Connect</h4>
             <div className="flex gap-4">
-              <a href={profile.contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
+              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
                 <Linkedin size={20} />
                 <span className="sr-only">LinkedIn</span>
               </a>
-              <a href={profile.contact.github} target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
                 <Github size={20} />
                 <span className="sr-only">GitHub</span>
               </a>
-              <a href={`mailto:${profile.contact.email}`} className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
+              <a href={`mailto:${profile.email}`} className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors">
                 <Mail size={20} />
                 <span className="sr-only">Email</span>
               </a>

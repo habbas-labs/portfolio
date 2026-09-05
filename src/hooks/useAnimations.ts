@@ -19,7 +19,7 @@ export function useInView(options?: IntersectionObserverInit) {
     return () => observer.disconnect();
   }, []);
 
-  return { ref, isInView };
+  return { ref, isInView, inView: isInView };
 }
 
 export function useReducedMotion() {

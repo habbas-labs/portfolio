@@ -18,12 +18,12 @@ This document tracks the verification status of all portfolio content.
 
 | Item | Status | Source | Confidence | Action Required |
 |---|---|---|---|---|
-| **Profile — Name** | PLACEHOLDER | — | — | Replace [NAME] with actual name |
-| **Profile — Email** | PLACEHOLDER | — | — | Replace [EMAIL] with actual email |
-| **Profile — LinkedIn** | PLACEHOLDER | — | — | Replace [LINKEDIN_URL] |
-| **Profile — GitHub** | PLACEHOLDER | — | — | Replace [GITHUB_URL] |
-| **Profile — Location** | PLACEHOLDER | — | — | Replace [LOCATION] |
-| **Profile — Resume** | PLACEHOLDER | — | — | Replace [RESUME_URL] |
+| **Profile — Name** | USER-PROVIDED | Master Prompt | High | Haider Abbas |
+| **Profile — Email** | PROVISIONAL | Configured | Medium | Verify actual public contact email |
+| **Profile — LinkedIn** | PROVISIONAL | Configured | Medium | Verify vanity URL |
+| **Profile — GitHub** | PROVISIONAL | Configured | Medium | Verify github handle |
+| **Profile — Location** | USER-PROVIDED | Master Prompt | High | Remote / Hybrid |
+| **Profile — Resume** | PLACEHOLDER | — | — | Replace [RESUME_URL] when hosted |
 | **Profile — Years of Experience** | USER-PROVIDED | Master Prompt | High | 13+ years |
 | **Profile — Primary Skills** | USER-PROVIDED | Master Prompt | High | Java, Spring Boot, Kafka, Microservices, AI |
 | **Professional Philosophy** | USER-PROVIDED | Master Prompt | High | Architecture before implementation |
@@ -65,6 +65,7 @@ This document tracks the verification status of all portfolio content.
 | Date | Item | Change | By |
 |---|---|---|---|
 | 2026-09-05 | Initial creation | Created verification registry from master prompt data | System |
+| 2026-09-05 | Production Build & Deploy Validation | Resolved TypeScript build errors and validated production bundle | System |
 
 ---
 
