@@ -43,7 +43,7 @@ function EcosystemGraph() {
   return (
     <div className="flex flex-col">
       {/* Graph Visual Area */}
-      <div className="relative w-full h-[330px]">
+      <div className="relative w-full h-[420px] sm:h-[460px] lg:h-[490px]">
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full"
@@ -81,19 +81,19 @@ function EcosystemGraph() {
               >
                 {/* Glow */}
                 {isActive && (
-                  <circle cx={node.x} cy={node.y} r={5} fill={color} opacity={0.2}>
+                  <circle cx={node.x} cy={node.y} r={7} fill={color} opacity={0.22}>
                     {!reduced && (
-                      <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite" />
+                      <animate attributeName="r" values="6;8.5;6" dur="2s" repeatCount="indefinite" />
                     )}
                   </circle>
                 )}
                 {/* Node circle */}
                 <circle
                   cx={node.x} cy={node.y}
-                  r={isActive ? 3.8 : 2.8}
+                  r={isActive ? 4.2 : 3.2}
                   fill={isActive ? color : "var(--color-surface-3)"}
                   stroke={color}
-                  strokeWidth={isActive ? 0.6 : 0.3}
+                  strokeWidth={isActive ? 0.75 : 0.4}
                   style={{ transition: "all 0.3s ease" }}
                 />
                 {/* Label */}
@@ -102,7 +102,7 @@ function EcosystemGraph() {
                   y={node.y + (node.y > 80 ? -5 : 6)}
                   textAnchor="middle"
                   fill={isActive ? "#fafafa" : "var(--color-text-tertiary)"}
-                  fontSize={isActive ? 2.8 : 2.2}
+                  fontSize={isActive ? 3.2 : 2.5}
                   fontFamily="var(--font-sans)"
                   fontWeight={isActive ? 600 : 400}
                   style={{ transition: "all 0.3s ease" }}
@@ -115,7 +115,7 @@ function EcosystemGraph() {
 
           {/* Animated pulse dots on connections when not hovering */}
           {!hovered && !reduced && getConnections().slice(0, 4).map((line, i) => (
-            <circle key={`pulse-${i}`} r={0.5} fill="#3b82f6" opacity={0.6}>
+            <circle key={`pulse-${i}`} r={0.7} fill="#3b82f6" opacity={0.75}>
               <animateMotion
                 dur={`${3 + i}s`}
                 repeatCount="indefinite"
@@ -127,7 +127,7 @@ function EcosystemGraph() {
       </div>
 
       {/* Details Box placed at the bottom with clear distance from graph */}
-      <div className="mt-3 min-h-[72px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)]/90 backdrop-blur-md p-3.5 transition-all">
+      <div className="mt-4 min-h-[76px] rounded-xl border border-[var(--color-border-accent)] bg-[var(--color-surface-2)]/95 backdrop-blur-md p-4 transition-all shadow-lg">
         <AnimatePresence mode="wait">
           {activeNode ? (
             <motion.div
@@ -320,7 +320,7 @@ export function Hero() {
           >
             <div className="relative">
               <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-[var(--color-accent-glow)] to-transparent opacity-50" />
-              <div className="relative rounded-2xl glass-panel p-6 border border-[var(--color-border)]">
+              <div className="relative rounded-2xl glass-panel p-6 sm:p-7 border border-[var(--color-border-accent)] shadow-2xl">
                 <div className="text-xs font-mono text-[var(--color-text-tertiary)] mb-2 flex items-center justify-between">
                   <span>SYSTEM ECOSYSTEM GRAPH</span>
                   <span className="text-[var(--color-accent)] font-semibold">Hover to trace flows</span>
