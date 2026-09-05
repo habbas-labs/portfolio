@@ -18,6 +18,10 @@ interface ModalContextType {
   openCommandPalette: () => void;
   closeCommandPalette: () => void;
   toggleCommandPalette: () => void;
+
+  isResumeOpen: boolean;
+  openResume: () => void;
+  closeResume: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -28,6 +32,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [inquiryDefaultService, setInquiryDefaultService] = useState<string | undefined>(undefined);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const openRecruiter = () => setIsRecruiterOpen(true);
   const closeRecruiter = () => setIsRecruiterOpen(false);
@@ -47,6 +52,9 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const openCommandPalette = () => setIsCommandPaletteOpen(true);
   const closeCommandPalette = () => setIsCommandPaletteOpen(false);
   const toggleCommandPalette = () => setIsCommandPaletteOpen(prev => !prev);
+
+  const openResume = () => setIsResumeOpen(true);
+  const closeResume = () => setIsResumeOpen(false);
 
   // Global ⌘K / Ctrl+K listener
   useEffect(() => {
@@ -77,6 +85,9 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         openCommandPalette,
         closeCommandPalette,
         toggleCommandPalette,
+        isResumeOpen,
+        openResume,
+        closeResume,
       }}
     >
       {children}

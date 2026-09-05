@@ -17,6 +17,7 @@ export interface Profile {
   linkedin: string;
   github: string;
   location: string;
+  phone?: string;
   resumeUrl: string;
 }
 
@@ -249,4 +250,47 @@ export interface AISolutionPattern {
   technologies: string[];
   useCase: string;
   status: ContentStatus;
+}
+
+export interface ResumeExperience {
+  role: string;
+  company: string;
+  period: string;
+  location?: string;
+  project?: string;
+  client?: string;
+  team?: string;
+  highlights: string[];
+}
+
+export interface ResumeProject {
+  title: string;
+  subtitle: string;
+  description: string;
+  highlights: string[];
+}
+
+export interface ResumeData {
+  name: string;
+  title: string;
+  contact: {
+    location: string;
+    phone: string;
+    email: string;
+    linkedin?: string;
+    github?: string;
+  };
+  summary: string[];
+  skills: {
+    category: string;
+    items: string;
+  }[];
+  experience: ResumeExperience[];
+  projects: ResumeProject[];
+  education: {
+    degree: string;
+    institution: string;
+    year: string;
+  }[];
+  additionalInfo: string[];
 }

@@ -13,7 +13,8 @@ import {
   Layers, 
   Terminal, 
   HelpCircle,
-  FolderGit2
+  FolderGit2,
+  FileText
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { isRecruiterEnabled, isConsultantEnabled } from '../../config/portfolioConfig';
@@ -24,6 +25,7 @@ interface CommandPaletteProps {
   onOpenInquiry?: () => void;
   onOpenClientModal?: () => void;
   onOpenRecruiterModal?: () => void;
+  onOpenResume?: () => void;
 }
 
 interface CommandItem {
@@ -40,7 +42,8 @@ export function CommandPalette({
   onClose, 
   onOpenInquiry, 
   onOpenClientModal, 
-  onOpenRecruiterModal 
+  onOpenRecruiterModal,
+  onOpenResume 
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -86,6 +89,15 @@ export function CommandPalette({
       }
     );
   }
+
+  commands.push({
+    id: 'action-resume',
+    title: 'View Full Resume (Interactive In-App Preview)',
+    category: 'Actions',
+    description: 'Read complete 14+ years experience, stack, and project history in UI',
+    action: () => { onClose(); onOpenResume?.(); },
+    icon: FileText,
+  });
 
   if (showRecruiter) {
     commands.push({

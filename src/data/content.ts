@@ -20,7 +20,8 @@ import type {
   ProblemSolved,
   EngagementModel,
   ClientJourneyStep,
-  AISolutionPattern
+  AISolutionPattern,
+  ResumeData
 } from '../types';
 
 /* ═══════════════════════════════════════════
@@ -28,15 +29,16 @@ import type {
    ═══════════════════════════════════════════ */
 export const profile: Profile = {
   name: 'Haider Abbas',
-  tagline: 'Senior Backend Engineer · Distributed Systems · AI Systems · Technology Consultant',
+  tagline: 'Senior Java Engineer · Technical Lead · Spring AI & Agentic AI · Technology Consultant',
   headline: 'I Design Systems Before I Write Code.',
-  subheadline: '13+ years building mission-critical backend systems, high-throughput distributed architectures, and modern AI-powered enterprise applications.',
+  subheadline: '14+ years building mission-critical backend systems, high-throughput distributed architectures, and modern AI-powered enterprise applications.',
   philosophy: 'Think architecturally before implementing. Understand the purpose, impact and consequences of a feature instead of simply writing code that satisfies the apparent requirement.',
-  yearsExperience: 13,
-  email: 'haiderabbas@example.com',
+  yearsExperience: 14,
+  email: 'haider.abbas.solutions@gmail.com',
+  phone: '+91-9035604326',
   linkedin: 'https://linkedin.com/in/haider-abbas',
   github: 'https://github.com/haiderabbas-labs',
-  location: 'Remote / Hybrid',
+  location: 'Pune, Maharashtra, India',
   resumeUrl: './resume.docx',
 };
 
@@ -1390,3 +1392,133 @@ export const aiSolutionCatalog: AISolutionPattern[] = [
     status: 'PROVISIONAL',
   },
 ];
+
+/* ═══════════════════════════════════════════
+   RESUME DATA (Extracted from verified resume.docx)
+   ═══════════════════════════════════════════ */
+export const resumeData: ResumeData = {
+  name: 'HAIDER ABBAS',
+  title: 'SENIOR JAVA ENGINEER | TECHNICAL LEAD | SPRING AI & AGENTIC AI',
+  contact: {
+    location: 'Pune, Maharashtra, India',
+    phone: '+91-9035604326',
+    email: 'haider.abbas.solutions@gmail.com',
+    linkedin: 'https://linkedin.com/in/haider-abbas',
+    github: 'https://github.com/haiderabbas-labs',
+  },
+  summary: [
+    'Senior Java Engineer / Technical Lead with 14+ years of experience designing and developing enterprise web applications, REST APIs, microservices and distributed systems using Java, Spring Boot and Kafka.',
+    'Strong hands-on experience with Java 21, Spring Boot, Microservices, REST APIs, event-driven architecture, PostgreSQL, JPA/Hibernate, Docker, Kubernetes and AWS, with experience across healthcare, telecommunications, payment security, travel and e-commerce domains.',
+    'Experienced in modernizing complex COBOL-based healthcare claims adjudication logic into Java/Spring Boot services powering a platform that processes approximately 600 million claims annually, implementing CMS-driven Medicare/Medicaid, Part D, Non-Part D and IRA 2025/2026 requirements.',
+    'Progressed from Senior Software Developer to Technical Lead, with hands-on ownership of complex features, technical design, code reviews, developer mentoring and collaboration with architects.',
+    'Growing specialization in Spring AI, LLM applications and Agentic AI, demonstrated through independently designing a multi-agent system (Interactive Book Reading System) integrating OpenAI and Ollama LLMs, applying enterprise backend, API, event-driven and distributed-systems expertise to modern AI application development.',
+  ],
+  skills: [
+    { category: 'Languages', items: 'Java 21, Java, SQL, JavaScript, Python' },
+    { category: 'Backend', items: 'Spring Boot, Spring Security, Spring Data JPA, Hibernate, REST APIs, JAX-RS, SOAP, Jackson, MapStruct' },
+    { category: 'Architecture', items: 'Microservices, Event-Driven Architecture, Distributed Systems, Asynchronous Processing, CompletableFuture' },
+    { category: 'Messaging', items: 'Apache Kafka' },
+    { category: 'Databases', items: 'PostgreSQL, DB2, Oracle, MySQL, Cassandra' },
+    { category: 'Cloud & DevOps', items: 'AWS, Docker, Kubernetes, OpenShift, Jenkins, Maven, Git' },
+    { category: 'Testing & Quality', items: 'JUnit, Mockito, Integration Testing, JaCoCo, SonarQube' },
+    { category: 'Observability', items: 'Splunk, Grafana' },
+    { category: 'Search / Frontend', items: 'Elasticsearch, Apache Solr, ReactJS, JavaScript, HTML, CSS' },
+    { category: 'AI / Agentic AI', items: 'Spring AI, LLM Applications, OpenAI API, Ollama, AI Agents, Agentic AI, RAG, Tool Calling, MCP, Agent Orchestration' },
+  ],
+  experience: [
+    {
+      role: 'Technical Lead / Senior Software Developer',
+      company: 'SS&C Technologies',
+      period: 'May 2023 – Aug 2026',
+      project: 'DomaniRx Pharmacy Claims Adjudication Platform',
+      team: '~10',
+      highlights: [
+        'Designed and developed Java 21/Spring Boot microservices for a pharmacy claims adjudication platform processing approximately 600 million claims annually, supporting Medicare and Medicaid programs and CMS-defined processing requirements.',
+        'Modernized complex COBOL-based adjudication logic by understanding legacy business rules, implementing equivalent Java functionality, and then refactoring and extending it with new capabilities.',
+        'Developed and integrated services covering claim processing, member eligibility, benefit configuration, accumulators, pricing and adjudication using REST APIs, JPA/Hibernate and PostgreSQL.',
+        'Implemented complex pharmacy-benefit rules including deductible, coinsurance, prior authorization, formulary, quantity limits, accumulators, reversals and reprocessing; handled B1, B2 and B3 claim transactions.',
+        'Implemented Medicare Part D and IRA 2025/2026 enhancements based on CMS requirements, extending the modernized Java adjudication capabilities.',
+        'Independently designed and developed a Minimum/Maximum Dosage module using drug data, member age, prescribed/submitted quantity, days supply and historical claims, with rules for pediatric, adult and geriatric populations.',
+        'Independently developed a Drug Hoarding / Early Refill Detection module using historical and current claims, quantity and days-supply calculations to identify premature or excessive medication requests against configured utilization rules.',
+        'Implemented Kafka-based event publication for post-adjudication outcomes and downstream reporting/business workflows; used CompletableFuture-based asynchronous processing for distributed service operations.',
+        'Contributed to Docker/Kubernetes and AWS-based cloud deployment using S3, API Gateway, Lambda and Secrets Manager; supported CI/CD with Jenkins and quality controls with JUnit, Mockito, JaCoCo and SonarQube.',
+        'Promoted to Technical Lead; mentored 4 offshore developers, conducted code reviews, supported complex issue resolution, and participated in microservice, REST API and Kafka design discussions with architects.',
+      ],
+    },
+    {
+      role: 'Senior Software Engineer',
+      company: 'HCLTech',
+      period: 'Jun 2020 – Apr 2023',
+      client: 'T-Mobile | Project: OSR (Order Search & Reporting) | Team: ~12',
+      highlights: [
+        'Developed and enhanced Java/Spring Boot microservices for an order data repository supporting order search, lifecycle management and reporting.',
+        'Implemented REST APIs and service customizations using Java 11, Spring Boot, Kafka, PostgreSQL, Cassandra and Elasticsearch.',
+        'Analyzed requirements, performed impact analysis, implemented features and resolved complex defects across distributed services.',
+        'Client: Broadcom Inc. | Project: Payment Security (Paysec) (Jun 2020 – Jan 2022): Designed and developed product services for 3-D Secure payment authentication using Java, Spring Boot, REST/SOAP APIs, Docker, Kubernetes, Hibernate and Oracle.',
+        'Implemented customer-driven functionality, performed impact analysis, supported deployments and collaborated with release/change-management teams.',
+      ],
+    },
+    {
+      role: 'Senior Software Engineer',
+      company: 'NTT DATA',
+      period: 'May 2018 – May 2020',
+      client: 'Avis Budget Group | Project: Avis Digital Platform | Team: 8',
+      highlights: [
+        'Developed and enhanced web/mobile backend functionality for an online car-rental platform covering user registration, travel management and vehicle booking.',
+        'Implemented Java/Spring Boot services, REST integrations, business customizations and application fixes; worked across the development lifecycle in an Agile environment.',
+        'Contributed to Magnolia CMS development and supported team delivery and client-facing coordination.',
+      ],
+    },
+    {
+      role: 'Software Developer',
+      company: 'Unilog Content Solutions Pvt. Ltd.',
+      period: 'Oct 2015 – Apr 2018',
+      project: 'CIMM2 / E-commerce Web Store | Team: 5',
+      highlights: [
+        'Developed B2B/B2C e-commerce functionality using Java, Struts, Spring, Hibernate, JAX-RS, Oracle and Apache Solr.',
+        'Built ERP integration adapters for Epicor and Infor SX, integrated search and shipping/freight APIs, and implemented product, user, pricing and catalog business rules.',
+        'Developed Spring service/DAO layers and JPA mappings and supported application customization for multiple enterprise clients.',
+      ],
+    },
+    {
+      role: 'IT Consultant / Software Developer',
+      company: 'Aufait Technologies',
+      period: 'Dec 2014 – Aug 2015',
+      client: 'Qatar Airways, Doha, Qatar | Project: New Sales Platform (NSP) | Team: 15',
+      highlights: [
+        'Developed Java/Spring/Hibernate services and SOAP integrations with the Amadeus reservation system for an airline online sale and booking platform.',
+        'Implemented business rules, request/response validation, error handling, internationalization and JPA-based persistence.',
+      ],
+    },
+    {
+      role: 'Software Engineer',
+      company: 'Toqsoft Technologies Pvt. Ltd.',
+      period: 'Apr 2012 – Nov 2014',
+      highlights: [
+        'Developed Java/J2EE web applications and database-driven business functionality using Spring, Hibernate, JSP/Servlets, JDBC and related enterprise technologies.',
+      ],
+    },
+  ],
+  projects: [
+    {
+      title: 'Interactive Book Reading System (IBRS)',
+      subtitle: 'Independent Project — Multi-Agent AI Platform',
+      description: 'Built a multi-agent AI platform that lets an author/admin generate a book from a PDF, scanned pages, audio, video, or a YouTube-style source, and lets readers read or listen to it in any language and converse with it to ask questions from a single book, a group of similar books, or the entire collection.',
+      highlights: [
+        'Designed and directed multiple collaborating AI agents, integrating OpenAI LLM and locally-hosted Ollama models, architected to process books up to 500MB.',
+        'Applied multi-agent orchestration, cloud and local LLM integration, multilingual conversational retrieval, and tool-calling patterns directly transferable to enterprise Agentic AI development.',
+      ],
+    },
+  ],
+  education: [
+    {
+      degree: 'B.E. in Computer Science & Engineering',
+      institution: 'RGPV University, Bhopal, Madhya Pradesh',
+      year: '2011',
+    },
+  ],
+  additionalInfo: [
+    'Strong experience in Agile software development, requirements analysis, impact analysis, technical design, troubleshooting and integration problem solving.',
+    'Career focus: Senior Java / Technical Lead / Backend Architecture roles with increasing specialization in Spring AI and Agentic AI.',
+  ],
+};

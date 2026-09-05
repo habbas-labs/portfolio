@@ -6,6 +6,7 @@ import { RecruiterModal } from '../ui/RecruiterModal';
 import { ClientModal } from '../ui/ClientModal';
 import { ProjectInquiryModal } from '../ui/ProjectInquiryModal';
 import { CommandPalette } from '../ui/CommandPalette';
+import { ResumeModal } from '../ui/ResumeModal';
 
 function ModalContainer() {
   const {
@@ -21,11 +22,14 @@ function ModalContainer() {
     openRecruiter,
     isCommandPaletteOpen,
     closeCommandPalette,
+    isResumeOpen,
+    openResume,
+    closeResume,
   } = useModals();
 
   return (
     <>
-      <RecruiterModal isOpen={isRecruiterOpen} onClose={closeRecruiter} />
+      <RecruiterModal isOpen={isRecruiterOpen} onClose={closeRecruiter} onOpenResume={openResume} />
       <ClientModal 
         isOpen={isClientOpen} 
         onClose={closeClient} 
@@ -42,6 +46,11 @@ function ModalContainer() {
         onOpenInquiry={openInquiry}
         onOpenClientModal={openClient}
         onOpenRecruiterModal={openRecruiter}
+        onOpenResume={openResume}
+      />
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={closeResume}
       />
     </>
   );

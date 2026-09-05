@@ -1,7 +1,8 @@
-import { Mail, Linkedin, Github, MapPin, FileText, ExternalLink } from 'lucide-react';
+import { Mail, Linkedin, Github, MapPin, FileText, Download } from 'lucide-react';
 import { profile } from '../../data/content';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ScrollReveal } from '../ui/ScrollReveal';
+import { useModals } from '../../context/ModalContext';
 
 const contactLinks = [
   { icon: Mail, label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
@@ -11,6 +12,8 @@ const contactLinks = [
 ];
 
 export function Contact() {
+  const { openResume } = useModals();
+
   return (
     <section id="contact" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
@@ -28,53 +31,49 @@ export function Contact() {
                 I'm an experienced backend engineer looking for roles where I can apply architectural thinking,
                 distributed systems expertise, and growing AI engineering capability to build meaningful enterprise systems.
               </p>
-              <p className="mt-4 text-[var(--color-text-secondary)] leading-relaxed">
-                If you're building complex backend systems, modernizing enterprise architectures, or integrating
-                AI into production applications — I'd love to talk.
+              <p className="text-[var(--color-text-secondary)] leading-relaxed mt-4">
+                Whether you're hiring for a critical backend role, exploring high-throughput architecture consultation, or want to discuss modernizing legacy systems, let's connect.
               </p>
 
-              <div className="mt-8 text-sm text-[var(--color-text-muted)]">
-                <p className="font-medium text-[var(--color-text-tertiary)] mb-2">Target roles:</p>
-                <div className="flex flex-wrap gap-2">
-                  {['Senior Backend Engineer', 'Technical Lead', 'Software Architect', 'AI Engineer'].map(role => (
-                    <span
-                      key={role}
-                      className="px-2.5 py-1 rounded-md text-xs bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border border-[var(--color-border)]"
-                    >
-                      {role}
-                    </span>
-                  ))}
-                </div>
+              {/* What happens next */}
+              <div className="mt-8 p-4 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-tertiary)] mb-2">
+                  What Happens Next
+                </h4>
+                <ul className="text-sm text-[var(--color-text-secondary)] space-y-1">
+                  <li>• Initial response within 24 hours</li>
+                  <li>• Technical alignment conversation (30 min)</li>
+                  <li>• Deep dive into architecture & problem space</li>
+                </ul>
               </div>
             </div>
           </ScrollReveal>
 
-          {/* Contact links */}
+          {/* Contact Details & Resume */}
           <ScrollReveal delay={0.2}>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {contactLinks.map(item => (
-                <div key={item.label}>
+                <div
+                  key={item.label}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-accent)] shrink-0">
+                    <item.icon size={18} />
+                  </div>
                   {item.href ? (
                     <a
-                      href={item.href.startsWith('[') ? '#' : item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)] card-hover group"
+                      href={item.href}
+                      target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                      rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                      className="text-sm text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors"
                     >
-                      <item.icon size={18} className="text-[var(--color-text-tertiary)] group-hover:text-[var(--color-accent)] transition-colors" />
-                      <div className="flex-1">
-                        <span className="text-xs text-[var(--color-text-muted)]">{item.label}</span>
-                        <p className="text-sm text-[var(--color-text-primary)]">{item.value}</p>
-                      </div>
-                      <ExternalLink size={14} className="text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <span className="text-xs text-[var(--color-text-muted)] block">{item.label}</span>
+                      {item.value}
                     </a>
                   ) : (
-                    <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
-                      <item.icon size={18} className="text-[var(--color-text-tertiary)]" />
-                      <div>
-                        <span className="text-xs text-[var(--color-text-muted)]">{item.label}</span>
-                        <p className="text-sm text-[var(--color-text-primary)]">{item.value}</p>
-                      </div>
+                    <div>
+                      <span className="text-xs text-[var(--color-text-muted)] block">{item.label}</span>
+                      <p className="text-sm text-[var(--color-text-primary)]">{item.value}</p>
                     </div>
                   )}
                 </div>
@@ -82,23 +81,20 @@ export function Contact() {
 
               {/* Resume buttons */}
               <div className="flex gap-3 mt-6">
-                <a
-                  href={profile.resumeUrl.startsWith('[') ? '#' : profile.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download="Haider_Abbas_Resume.docx"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors"
+                <button
+                  onClick={openResume}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer shadow-sm"
                 >
-                  <FileText size={14} />
+                  <FileText size={15} />
                   View Resume
-                </a>
+                </button>
                 <a
-                  href={profile.resumeUrl.startsWith('[') ? '#' : profile.resumeUrl}
+                  href={profile.resumeUrl}
                   download="Haider_Abbas_Resume.docx"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
                 >
-                  <FileText size={14} />
-                  Download
+                  <Download size={15} />
+                  Download Resume
                 </a>
               </div>
             </div>

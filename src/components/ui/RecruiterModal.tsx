@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Briefcase, CheckCircle2, FileText, Mail, Linkedin, Github, ExternalLink } from 'lucide-react';
+import { X, Clock, Briefcase, CheckCircle2, FileText, Mail, Linkedin, Github, ExternalLink, Download } from 'lucide-react';
 import { profile } from '../../data/content';
 
 interface RecruiterModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenResume?: () => void;
 }
 
-export function RecruiterModal({ isOpen, onClose }: RecruiterModalProps) {
+export function RecruiterModal({ isOpen, onClose, onOpenResume }: RecruiterModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -136,15 +137,24 @@ export function RecruiterModal({ isOpen, onClose }: RecruiterModalProps) {
           {/* Footer CTAs */}
           <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <a
-                href={profile.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                download="Haider_Abbas_Resume.docx"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenResume?.();
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer shadow-sm"
               >
                 <FileText size={14} />
                 View Full Resume
+              </button>
+
+              <a
+                href={profile.resumeUrl}
+                download="Haider_Abbas_Resume.docx"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border-hover)] text-xs text-[var(--color-text-secondary)] hover:text-white hover:bg-[var(--color-surface-3)] transition-colors"
+              >
+                <Download size={14} />
+                Download
               </a>
 
               <a
