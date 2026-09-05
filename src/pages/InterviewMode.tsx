@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   ArrowLeft, 
+  ArrowRight,
+  ChevronDown,
   MonitorPlay, 
   Layers, 
   AlertOctagon, 
@@ -25,7 +27,8 @@ export function InterviewMode() {
   const [showQuestions, setShowQuestions] = useState(false);
   const reduced = useReducedMotion();
 
-  const selectedTopic = interviewTopicDetails.find(t => t.id === selectedTopicId) || interviewTopicDetails[0];
+  const currentTopicIndex = interviewTopicDetails.findIndex(t => t.id === selectedTopicId);
+  const selectedTopic = interviewTopicDetails[currentTopicIndex >= 0 ? currentTopicIndex : 0];
 
   const getTopicIcon = (iconName: string) => {
     switch (iconName) {
@@ -42,20 +45,22 @@ export function InterviewMode() {
   return (
     <div className="min-h-screen bg-[var(--color-surface-0)] text-[var(--color-text-primary)] flex flex-col pt-16 transition-colors duration-300">
       {/* Presentation Control Header — docked cleanly under global Nav */}
-      <header className="sticky top-16 z-30 bg-[var(--color-surface-1)]/95 backdrop-blur-md border-b border-[var(--color-border)] px-4 sm:px-6 py-3 shadow-sm transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
-          <div className="flex items-center gap-3 sm:gap-4">
+      <header className="sticky top-16 z-30 bg-[var(--color-surface-1)]/95 backdrop-blur-md border-b border-[var(--color-border)] px-3 sm:px-6 py-2.5 sm:py-3 shadow-sm transition-colors duration-300">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-4">
+          {/* Header Row 1: Back Button & Title */}
+          <div className="flex items-center justify-between md:justify-start gap-2.5 sm:gap-4 w-full md:w-auto">
             <Link
               to="/"
-              className="text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:bg-[var(--color-surface-3)] shrink-0"
+              className="text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:bg-[var(--color-surface-3)] shrink-0"
             >
               <ArrowLeft size={14} />
-              Back to Site
+              <span className="hidden xs:inline sm:inline">Back to Site</span>
+              <span className="xs:hidden sm:hidden">Back</span>
             </Link>
 
             <div className="h-4 w-px bg-[var(--color-border)] hidden sm:block" />
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 min-w-0">
               <div className="p-1.5 rounded-md bg-[var(--color-accent-subtle)] text-[var(--color-accent)] shrink-0">
                 <MonitorPlay size={16} />
               </div>
@@ -63,72 +68,116 @@ export function InterviewMode() {
                 <h1 className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[var(--color-text-primary)] truncate">
                   Interview Control Center
                 </h1>
-                <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono block truncate">
+                <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono block truncate hidden sm:block">
                   {profile.name} · {profile.yearsExperience}+ YOE Senior Backend / AI
                 </span>
               </div>
             </div>
+
+            <span className="sm:hidden text-[10px] font-mono text-[var(--color-accent)] px-2 py-0.5 rounded bg-[var(--color-accent-subtle)] border border-[var(--color-border-accent)] shrink-0">
+              {profile.yearsExperience}+ YOE
+            </span>
           </div>
 
-          {/* Depth Mode Switcher */}
-          <div className="flex items-center gap-1 bg-[var(--color-surface-2)] p-1 rounded-xl border border-[var(--color-border)] overflow-x-auto max-w-full">
-            <span className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] px-2 hidden lg:inline whitespace-nowrap">
-              Technical Depth:
-            </span>
-            <button
-              onClick={() => setDepth('30s')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                depth === '30s'
-                  ? 'bg-[var(--color-accent)] text-white shadow-sm'
-                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
-              }`}
-            >
-              <span className="sm:hidden">30s</span>
-              <span className="hidden sm:inline">30s Recruiter View</span>
-            </button>
-            <button
-              onClick={() => setDepth('2m')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                depth === '2m'
-                  ? 'bg-[var(--color-accent)] text-white shadow-sm'
-                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
-              }`}
-            >
-              <span className="sm:hidden">2m Tech</span>
-              <span className="hidden sm:inline">2m Tech Overview</span>
-            </button>
-            <button
-              onClick={() => setDepth('10m')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-                depth === '10m'
-                  ? 'bg-amber-500 text-white dark:text-zinc-950 shadow-sm'
-                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
-              }`}
-            >
-              <span className="sm:hidden">10m Deep</span>
-              <span className="hidden sm:inline">10m Deep Dive (Trade-offs)</span>
-            </button>
+          {/* Header Row 2 / Desktop Right: Depth Mode Segmented Switcher */}
+          <div className="w-full md:w-auto">
+            <div className="grid grid-cols-3 md:flex items-center gap-1 bg-[var(--color-surface-2)] p-1 rounded-xl border border-[var(--color-border)] w-full">
+              <button
+                onClick={() => setDepth('30s')}
+                className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-semibold text-center whitespace-nowrap transition-all ${
+                  depth === '30s'
+                    ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
+                }`}
+              >
+                <span className="sm:hidden">30s Fast</span>
+                <span className="hidden sm:inline">30s Recruiter View</span>
+              </button>
+              <button
+                onClick={() => setDepth('2m')}
+                className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-semibold text-center whitespace-nowrap transition-all ${
+                  depth === '2m'
+                    ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
+                }`}
+              >
+                <span className="sm:hidden">2m Tech</span>
+                <span className="hidden sm:inline">2m Tech Overview</span>
+              </button>
+              <button
+                onClick={() => setDepth('10m')}
+                className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold text-center whitespace-nowrap transition-all ${
+                  depth === '10m'
+                    ? 'bg-amber-500 text-white dark:text-zinc-950 shadow-sm'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)]'
+                }`}
+              >
+                <span className="sm:hidden">10m Deep</span>
+                <span className="hidden sm:inline">10m Deep Dive</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Control Center Body */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid lg:grid-cols-12 gap-6">
-        {/* Left Topic Sidebar (Control Deck) */}
-        <div className="lg:col-span-4 flex flex-col gap-2">
+      <div className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 grid lg:grid-cols-12 gap-4 sm:gap-6">
+        {/* Mobile Topic Navigation (Dropdown + Horizontal Quick-Pills) */}
+        <div className="lg:hidden flex flex-col gap-2">
+          <div className="relative">
+            <select
+              value={selectedTopicId}
+              onChange={(e) => setSelectedTopicId(e.target.value)}
+              aria-label="Select interview topic"
+              className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-[var(--color-surface-1)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-accent)] transition-colors shadow-sm cursor-pointer"
+            >
+              {interviewTopicDetails.map((topic, i) => (
+                <option key={topic.id} value={topic.id}>
+                  Topic {i + 1}: {topic.title}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[var(--color-text-muted)]">
+              <ChevronDown size={15} />
+            </div>
+          </div>
+
+          {/* Fast Tap Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {interviewTopicDetails.map((topic, i) => {
+              const isSelected = selectedTopicId === topic.id;
+              return (
+                <button
+                  key={topic.id}
+                  onClick={() => setSelectedTopicId(topic.id)}
+                  className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                    isSelected
+                      ? 'bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-sm'
+                      : 'bg-[var(--color-surface-1)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:bg-[var(--color-surface-2)]'
+                  }`}
+                >
+                  <span className="font-mono text-[10px] opacity-80">{i + 1}.</span>
+                  <span className="whitespace-nowrap">{topic.title.split(/(&|\()/)[0].trim()}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Desktop Left Topic Sidebar (Control Deck) */}
+        <div className="hidden lg:flex lg:col-span-4 flex-col gap-2">
           <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-text-muted)] px-2 mb-1">
             Interview Topics ({interviewTopicDetails.length})
           </span>
 
-          <div className="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-y-auto max-h-none lg:max-h-[calc(100vh-200px)] pb-2 lg:pb-0 pr-1">
+          <div className="space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)] pr-1">
             {interviewTopicDetails.map((topic) => {
               const isSelected = selectedTopicId === topic.id;
               return (
                 <button
                   key={topic.id}
                   onClick={() => setSelectedTopicId(topic.id)}
-                  className={`shrink-0 lg:shrink w-auto lg:w-full text-left p-2.5 sm:p-3.5 rounded-xl border transition-all flex items-center lg:items-start gap-2 sm:gap-3 group ${
-
+                  className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 group ${
                     isSelected
                       ? 'bg-[var(--color-surface-2)] border-[var(--color-accent)] shadow-md'
                       : 'bg-[var(--color-surface-1)] border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-2)]/60'
@@ -165,8 +214,8 @@ export function InterviewMode() {
           </div>
         </div>
 
-        {/* Right Dynamic Presentation Stage */}
-        <div className="lg:col-span-8 flex flex-col">
+        {/* Dynamic Presentation Stage */}
+        <div className="lg:col-span-8 flex flex-col min-w-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={`${selectedTopic.id}-${depth}`}
@@ -174,22 +223,34 @@ export function InterviewMode() {
               animate={{ opacity: 1, y: 0 }}
               exit={reduced ? {} : { opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 flex flex-col flex-1 shadow-lg transition-colors duration-300"
+              className="bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-4 sm:p-6 lg:p-8 flex flex-col flex-1 shadow-lg transition-colors duration-300"
             >
               {/* Header with Topic and Current Depth Tag */}
-              <div className="pb-6 border-b border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3">
-                <div>
+              <div className="pb-4 sm:pb-6 border-b border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[var(--color-accent)] uppercase tracking-wider mb-1">
                     {getTopicIcon(selectedTopic.icon)}
-                    <span>{selectedTopic.category.toUpperCase()} DOMAIN</span>
+                    <span className="truncate">{selectedTopic.category.toUpperCase()} DOMAIN</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] tracking-tight leading-snug">
                     {selectedTopic.title}
                   </h2>
+
+                  {/* Topic tags on mobile/tablet */}
+                  <div className="flex flex-wrap gap-1.5 mt-2 lg:hidden">
+                    {selectedTopic.tags.map(tag => (
+                      <span 
+                        key={tag} 
+                        className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border border-[var(--color-border)]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold ${
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-bold ${
                     depth === '30s'
                       ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
                       : depth === '2m'
@@ -204,28 +265,28 @@ export function InterviewMode() {
               </div>
 
               {/* Dynamic Content Presentation */}
-              <div className="py-6 flex-1 space-y-6">
+              <div className="py-4 sm:py-6 flex-1 space-y-4 sm:space-y-6">
                 {depth === '30s' && (
-                  <div className="p-6 rounded-xl bg-[var(--color-accent-subtle)] border border-[var(--color-border-accent)] text-[var(--color-text-primary)] leading-relaxed text-base">
+                  <div className="p-4 sm:p-6 rounded-xl bg-[var(--color-accent-subtle)] border border-[var(--color-border-accent)] text-[var(--color-text-primary)] leading-relaxed text-sm sm:text-base">
                     <p className="font-sans leading-relaxed">{selectedTopic.depth.thirtySecond}</p>
                   </div>
                 )}
 
                 {depth === '2m' && (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                       Key Architectural Foundations & Flow
                     </h4>
-                    <div className="grid gap-3">
+                    <div className="grid gap-2.5 sm:gap-3">
                       {selectedTopic.depth.twoMinute.map((point, idx) => (
                         <div
                           key={idx}
-                          className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-start gap-3"
+                          className="p-3.5 sm:p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-start gap-2.5 sm:gap-3"
                         >
                           <span className="w-5 h-5 rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent)] text-xs font-mono flex items-center justify-center shrink-0 mt-0.5">
                             {idx + 1}
                           </span>
-                          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                          <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed">
                             {point}
                           </p>
                         </div>
@@ -235,14 +296,14 @@ export function InterviewMode() {
                 )}
 
                 {depth === '10m' && (
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Deep Architecture */}
                     <div>
                       <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2 flex items-center gap-2">
                         <Layers size={14} className="text-amber-500" />
                         In-Depth System Topology & Execution
                       </h4>
-                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed bg-[var(--color-surface-2)] p-4 rounded-xl border border-[var(--color-border)]">
+                      <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed bg-[var(--color-surface-2)] p-3.5 sm:p-4 rounded-xl border border-[var(--color-border)]">
                         {selectedTopic.depth.tenMinute.architecture}
                       </p>
                     </div>
@@ -257,7 +318,7 @@ export function InterviewMode() {
                         {selectedTopic.depth.tenMinute.tradeoffs.map((t, idx) => (
                           <div
                             key={idx}
-                            className="p-3.5 rounded-lg bg-amber-500/10 border-l-4 border-amber-500 text-xs text-[var(--color-text-secondary)] leading-relaxed"
+                            className="p-3 sm:p-3.5 rounded-lg bg-amber-500/10 border-l-4 border-amber-500 text-xs text-[var(--color-text-secondary)] leading-relaxed"
                           >
                             {t}
                           </div>
@@ -266,8 +327,8 @@ export function InterviewMode() {
                     </div>
 
                     {/* Scaling & Failure Handling */}
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="p-3.5 sm:p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
                         <span className="text-[10px] font-mono uppercase text-emerald-600 dark:text-emerald-400 block mb-1 font-bold">
                           Scaling Strategy
                         </span>
@@ -276,7 +337,7 @@ export function InterviewMode() {
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                      <div className="p-3.5 sm:p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
                         <span className="text-[10px] font-mono uppercase text-rose-600 dark:text-rose-400 block mb-1 font-bold">
                           Failure Handling & Resiliency
                         </span>
@@ -293,13 +354,13 @@ export function InterviewMode() {
               <div className="pt-4 border-t border-[var(--color-border)]">
                 <button
                   onClick={() => setShowQuestions(!showQuestions)}
-                  className="flex items-center justify-between w-full p-3 rounded-xl bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] border border-[var(--color-border)] transition-colors text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                  className="flex items-center justify-between w-full p-3 rounded-xl bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] border border-[var(--color-border)] transition-colors text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] gap-2"
                 >
-                  <span className="flex items-center gap-2">
-                    <HelpCircle size={15} className="text-[var(--color-accent)]" />
-                    Likely Interviewer Probes & Discussion Prompts
+                  <span className="flex items-center gap-2 text-left min-w-0">
+                    <HelpCircle size={15} className="text-[var(--color-accent)] shrink-0" />
+                    <span className="truncate sm:whitespace-normal">Likely Interviewer Probes & Questions</span>
                   </span>
-                  <span className="font-mono text-[10px] text-[var(--color-text-tertiary)]">
+                  <span className="font-mono text-[10px] text-[var(--color-text-tertiary)] shrink-0 px-2 py-0.5 rounded bg-[var(--color-surface-1)] border border-[var(--color-border)]">
                     {showQuestions ? 'Hide' : `Show (${selectedTopic.depth.sampleQuestions.length})`}
                   </span>
                 </button>
@@ -316,11 +377,44 @@ export function InterviewMode() {
                         className="p-3 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] flex items-start gap-2"
                       >
                         <span className="text-[var(--color-accent)] font-mono font-bold shrink-0">Q{idx + 1}:</span>
-                        <span>{q}</span>
+                        <span className="leading-relaxed">{q}</span>
                       </div>
                     ))}
                   </motion.div>
                 )}
+              </div>
+
+              {/* Prev / Next Topic Navigation Footer */}
+              <div className="mt-6 pt-4 border-t border-[var(--color-border)] flex items-center justify-between gap-2">
+                <button
+                  disabled={currentTopicIndex === 0}
+                  onClick={() => setSelectedTopicId(interviewTopicDetails[currentTopicIndex - 1].id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all ${
+                    currentTopicIndex === 0
+                      ? 'opacity-40 cursor-not-allowed border-[var(--color-border)] text-[var(--color-text-muted)]'
+                      : 'border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)] active:scale-95'
+                  }`}
+                >
+                  <ArrowLeft size={13} />
+                  <span>Prev Topic</span>
+                </button>
+
+                <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
+                  {currentTopicIndex + 1} / {interviewTopicDetails.length}
+                </span>
+
+                <button
+                  disabled={currentTopicIndex === interviewTopicDetails.length - 1}
+                  onClick={() => setSelectedTopicId(interviewTopicDetails[currentTopicIndex + 1].id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all ${
+                    currentTopicIndex === interviewTopicDetails.length - 1
+                      ? 'opacity-40 cursor-not-allowed border-[var(--color-border)] text-[var(--color-text-muted)]'
+                      : 'border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-3)] active:scale-95'
+                  }`}
+                >
+                  <span>Next Topic</span>
+                  <ArrowRight size={13} />
+                </button>
               </div>
             </motion.div>
           </AnimatePresence>
