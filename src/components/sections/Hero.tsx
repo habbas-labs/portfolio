@@ -41,135 +41,140 @@ function EcosystemGraph() {
   }, [hovered]);
 
   return (
-    <div className="relative w-full h-full min-h-[400px]">
-      <svg
-        viewBox="0 0 100 100"
-        className="w-full h-full"
-        style={{ filter: 'drop-shadow(0 0 20px rgba(59,130,246,0.1))' }}
-      >
-        {/* Connection lines */}
-        {getConnections().map((line, i) => (
-          <line
-            key={i}
-            x1={line.x1} y1={line.y1}
-            x2={line.x2} y2={line.y2}
-            stroke={line.active ? '#3b82f6' : 'rgba(59,130,246,0.15)'}
-            strokeWidth={line.active ? 0.4 : 0.2}
-            strokeDasharray={line.active ? undefined : '1 1'}
-            style={{ transition: 'all 0.3s ease' }}
-          />
-        ))}
-
-        {/* Nodes */}
-        {ecosystemNodes.map((node) => {
-          const isActive = hovered === node.id;
-          const isConnected = hovered
-            ? ecosystemNodes.find(n => n.id === hovered)?.connections.includes(node.id)
-            : false;
-          const color = categoryColors[node.category] || '#3b82f6';
-          const opacity = hovered ? (isActive || isConnected ? 1 : 0.3) : 0.8;
-
-          return (
-            <g
-              key={node.id}
-              onMouseEnter={() => setHovered(node.id)}
-              onMouseLeave={() => setHovered(null)}
-              style={{ cursor: 'pointer', transition: 'opacity 0.3s ease' }}
-              opacity={opacity}
-            >
-              {/* Glow */}
-              {isActive && (
-                <circle cx={node.x} cy={node.y} r={5} fill={color} opacity={0.15}>
-                  {!reduced && (
-                    <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite" />
-                  )}
-                </circle>
-              )}
-              {/* Node circle */}
-              <circle
-                cx={node.x} cy={node.y}
-                r={isActive ? 3.5 : 2.8}
-                fill={isActive ? color : 'var(--color-surface-3)'}
-                stroke={color}
-                strokeWidth={isActive ? 0.5 : 0.3}
-                style={{ transition: 'all 0.3s ease' }}
-              />
-              {/* Label */}
-              <text
-                x={node.x}
-                y={node.y + (node.y > 80 ? -5 : 6)}
-                textAnchor="middle"
-                fill={isActive ? '#fafafa' : 'var(--color-text-tertiary)'}
-                fontSize={isActive ? 2.8 : 2.2}
-                fontFamily="var(--font-sans)"
-                fontWeight={isActive ? 600 : 400}
-                style={{ transition: 'all 0.3s ease' }}
-              >
-                {node.label}
-              </text>
-
-              {/* Tooltip on hover */}
-              {isActive && (
-                <foreignObject
-                  x={node.x - 18}
-                  y={node.y > 50 ? node.y - 18 : node.y + 8}
-                  width={36}
-                  height={12}
-                >
-                  <div
-                    className="text-center text-[6px] leading-tight text-[var(--color-text-secondary)] bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded px-1 py-0.5"
-                    style={{ fontSize: '5px' }}
-                  >
-                    {node.description.split('.')[0]}
-                  </div>
-                </foreignObject>
-              )}
-            </g>
-          );
-        })}
-
-        {/* Animated pulse dots on connections when not hovering */}
-        {!hovered && !reduced && getConnections().slice(0, 4).map((line, i) => (
-          <circle key={`pulse-${i}`} r={0.5} fill="#3b82f6" opacity={0.6}>
-            <animateMotion
-              dur={`${3 + i}s`}
-              repeatCount="indefinite"
-              path={`M${line.x1},${line.y1} L${line.x2},${line.y2}`}
+    <div className="flex flex-col">
+      {/* Graph Visual Area */}
+      <div className="relative w-full h-[330px]">
+        <svg
+          viewBox="0 0 100 100"
+          className="w-full h-full"
+          style={{ filter: "drop-shadow(0 0 20px rgba(59,130,246,0.1))" }}
+        >
+          {/* Connection lines */}
+          {getConnections().map((line, i) => (
+            <line
+              key={i}
+              x1={line.x1} y1={line.y1}
+              x2={line.x2} y2={line.y2}
+              stroke={line.active ? "#3b82f6" : "rgba(59,130,246,0.15)"}
+              strokeWidth={line.active ? 0.4 : 0.2}
+              strokeDasharray={line.active ? undefined : "1 1"}
+              style={{ transition: "all 0.3s ease" }}
             />
-          </circle>
-        ))}
-      </svg>
+          ))}
 
-      {/* HTML Tooltip Overlay (Prevents SVG foreignObject clipping) */}
-      <AnimatePresence>
-        {activeNode && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: activeNode.y > 50 ? 4 : -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className="absolute pointer-events-none z-30 px-3 py-2 rounded-xl bg-[var(--color-surface-2)]/95 border border-[var(--color-border-accent)] shadow-2xl backdrop-blur-md max-w-[220px] text-center"
-            style={{
-              left: `${activeNode.x}%`,
-              top: activeNode.y > 50 ? `${activeNode.y - 4}%` : `${activeNode.y + 6}%`,
-              transform: activeNode.y > 50 ? "translate(-50%, -100%)" : "translate(-50%, 0)",
-            }}
-          >
-            <div className="flex items-center justify-center gap-1.5 mb-1">
-              <span
-                className="w-2 h-2 rounded-full shrink-0"
-                style={{ backgroundColor: categoryColors[activeNode.category] || "#3b82f6" }}
+          {/* Nodes */}
+          {ecosystemNodes.map((node) => {
+            const isActive = hovered === node.id;
+            const isConnected = hovered
+              ? ecosystemNodes.find(n => n.id === hovered)?.connections.includes(node.id)
+              : false;
+            const color = categoryColors[node.category] || "#3b82f6";
+            const opacity = hovered ? (isActive || isConnected ? 1 : 0.25) : 0.8;
+
+            return (
+              <g
+                key={node.id}
+                onMouseEnter={() => setHovered(node.id)}
+                onMouseLeave={() => setHovered(null)}
+                style={{ cursor: "pointer", transition: "opacity 0.3s ease" }}
+                opacity={opacity}
+              >
+                {/* Glow */}
+                {isActive && (
+                  <circle cx={node.x} cy={node.y} r={5} fill={color} opacity={0.2}>
+                    {!reduced && (
+                      <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite" />
+                    )}
+                  </circle>
+                )}
+                {/* Node circle */}
+                <circle
+                  cx={node.x} cy={node.y}
+                  r={isActive ? 3.8 : 2.8}
+                  fill={isActive ? color : "var(--color-surface-3)"}
+                  stroke={color}
+                  strokeWidth={isActive ? 0.6 : 0.3}
+                  style={{ transition: "all 0.3s ease" }}
+                />
+                {/* Label */}
+                <text
+                  x={node.x}
+                  y={node.y + (node.y > 80 ? -5 : 6)}
+                  textAnchor="middle"
+                  fill={isActive ? "#fafafa" : "var(--color-text-tertiary)"}
+                  fontSize={isActive ? 2.8 : 2.2}
+                  fontFamily="var(--font-sans)"
+                  fontWeight={isActive ? 600 : 400}
+                  style={{ transition: "all 0.3s ease" }}
+                >
+                  {node.label}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Animated pulse dots on connections when not hovering */}
+          {!hovered && !reduced && getConnections().slice(0, 4).map((line, i) => (
+            <circle key={`pulse-${i}`} r={0.5} fill="#3b82f6" opacity={0.6}>
+              <animateMotion
+                dur={`${3 + i}s`}
+                repeatCount="indefinite"
+                path={`M${line.x1},${line.y1} L${line.x2},${line.y2}`}
               />
-              <span className="text-xs font-bold text-[var(--color-text-primary)]">
-                {activeNode.label}
+            </circle>
+          ))}
+        </svg>
+      </div>
+
+      {/* Details Box placed at the bottom with clear distance from graph */}
+      <div className="mt-3 min-h-[72px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)]/90 backdrop-blur-md p-3.5 transition-all">
+        <AnimatePresence mode="wait">
+          {activeNode ? (
+            <motion.div
+              key={activeNode.id}
+              initial={{ opacity: 0, y: 3 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -3 }}
+              transition={{ duration: 0.15 }}
+              className="space-y-1"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
+                    style={{ backgroundColor: categoryColors[activeNode.category] || "#3b82f6" }}
+                  />
+                  <span className="text-xs font-bold text-[var(--color-text-primary)]">
+                    {activeNode.label}
+                  </span>
+                  <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[var(--color-surface-3)] text-[var(--color-text-tertiary)] border border-[var(--color-border)]">
+                    {activeNode.category}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-[var(--color-accent)] shrink-0">
+                  {activeNode.connections.length} Connected Links
+                </span>
+              </div>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+                {activeNode.description}
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="idle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full flex items-center justify-center py-2 text-xs text-[var(--color-text-tertiary)] font-mono"
+            >
+              <span className="inline-flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+                Hover over any node (Java, Kafka, Microservices...) to inspect architecture details
               </span>
-            </div>
-            <p className="text-[11px] text-[var(--color-text-secondary)] leading-snug">
-              {activeNode.description.split(".")[0]}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
