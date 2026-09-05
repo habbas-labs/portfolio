@@ -37,7 +37,7 @@ export const profile: Profile = {
   linkedin: 'https://linkedin.com/in/haider-abbas',
   github: 'https://github.com/haiderabbas-labs',
   location: 'Remote / Hybrid',
-  resumeUrl: '#',
+  resumeUrl: './resume.docx',
 };
 
 /* ═══════════════════════════════════════════

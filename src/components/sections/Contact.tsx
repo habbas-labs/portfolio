@@ -86,6 +86,7 @@ export function Contact() {
                   href={profile.resumeUrl.startsWith('[') ? '#' : profile.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  download="Haider_Abbas_Resume.docx"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors"
                 >
                   <FileText size={14} />
@@ -93,7 +94,7 @@ export function Contact() {
                 </a>
                 <a
                   href={profile.resumeUrl.startsWith('[') ? '#' : profile.resumeUrl}
-                  download
+                  download="Haider_Abbas_Resume.docx"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
                 >
                   <FileText size={14} />

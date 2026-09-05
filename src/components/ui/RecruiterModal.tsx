@@ -140,6 +140,7 @@ export function RecruiterModal({ isOpen, onClose }: RecruiterModalProps) {
                 href={profile.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Haider_Abbas_Resume.docx"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
               >
                 <FileText size={14} />
