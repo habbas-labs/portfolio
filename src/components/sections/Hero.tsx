@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Monitor, Clock } from 'lucide-react';
+import { ArrowRight, Monitor, Clock, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { profile, techNodes } from '../../data/content';
 import { useReducedMotion } from '../../hooks/useAnimations';
-import { RecruiterModal } from '../ui/RecruiterModal';
+import { useModals } from '../../context/ModalContext';
 
-const heroTechBadges = ['Java', 'Spring Boot', 'Kafka', 'Microservices', 'AI'];
+const heroTechBadges = ['Java 21', 'Spring Boot 3', 'Kafka', 'Microservices', 'Distributed Systems', 'Spring AI'];
 
 const ecosystemNodes = techNodes.slice(0, 10);
 
@@ -142,143 +142,129 @@ function EcosystemGraph() {
 }
 
 export function Hero() {
-  const [recruiterOpen, setRecruiterOpen] = useState(false);
+  const { openRecruiter, openClient } = useModals();
   const reduced = useReducedMotion();
   const anim = reduced ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
 
   return (
-    <>
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background grid */}
-        <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-surface-0)] to-[var(--color-surface-0)] opacity-60" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--color-accent)] opacity-[0.03] blur-[100px]" />
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Background grid */}
+      <div className="absolute inset-0 bg-grid opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-surface-0)] to-[var(--color-surface-0)] opacity-60" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--color-accent)] opacity-[0.03] blur-[100px]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left — Text */}
-            <div>
-              {/* Eyebrow */}
-              <motion.div {...anim} transition={{ delay: 0.1 }}>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-                  Senior Backend Engineer · Distributed Systems · AI Systems
-                </span>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.h1
-                {...anim}
-                transition={{ delay: 0.2 }}
-                className="mt-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.1] text-[var(--color-text-primary)]"
-              >
-                I Design Systems{' '}
-                <br className="hidden sm:block" />
-                <span className="gradient-text">Before I Write Code.</span>
-              </motion.h1>
-
-              {/* Subheadline */}
-              <motion.p
-                {...anim}
-                transition={{ delay: 0.3 }}
-                className="mt-6 text-lg text-[var(--color-text-secondary)] max-w-xl leading-relaxed"
-              >
-                {profile.subheadline}
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div {...anim} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#experience"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--color-accent)] text-white font-medium text-sm hover:bg-[var(--color-accent-hover)] transition-colors shadow-lg shadow-blue-500/20"
-                >
-                  Explore My Work
-                  <ArrowRight size={16} />
-                </a>
-
-                <Link
-                  to="/interview"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] font-medium text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
-                >
-                  <Monitor size={16} />
-                  Interview Control Center
-                </Link>
-
-                <button
-                  onClick={() => setRecruiterOpen(true)}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 font-medium text-sm hover:bg-blue-500 hover:text-white transition-all"
-                >
-                  <Clock size={16} />
-                  Recruiter 30s View
-                </button>
-              </motion.div>
-
-              {/* Tech badges */}
-              <motion.div {...anim} transition={{ delay: 0.5 }} className="mt-8 flex flex-wrap gap-2">
-                {heroTechBadges.map(tech => (
-                  <span
-                    key={tech}
-                    className="px-2.5 py-1 text-xs font-medium rounded-md bg-[var(--color-surface-2)] text-[var(--color-text-tertiary)] border border-[var(--color-border)]"
-                  >
-                    {tech}
-                  </span>
-                ))}
-                <span className="px-2.5 py-1 text-xs text-[var(--color-text-muted)]">
-                  {profile.yearsExperience}+ years enterprise experience
-                </span>
-              </motion.div>
-            </div>
-
-            {/* Right — Interactive Ecosystem */}
-            <motion.div
-              initial={reduced ? {} : { opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="hidden lg:block"
-            >
-              <div className="relative">
-                <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-[var(--color-accent-glow)] to-transparent opacity-50" />
-                <div className="relative bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-2xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-error)] opacity-60" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-warning)] opacity-60" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-success)] opacity-60" />
-                    <span className="ml-2 text-xs text-[var(--color-text-muted)] font-mono">
-                      engineering-ecosystem.svg
-                    </span>
-                  </div>
-                  <EcosystemGraph />
-                </div>
-              </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left — Text */}
+          <div>
+            {/* Eyebrow */}
+            <motion.div {...anim} transition={{ delay: 0.1 }}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+                Senior Backend Engineer · Technology Consultant · Distributed & AI Systems
+              </span>
             </motion.div>
 
-            {/* Mobile simplified tech display */}
-            <motion.div
+            {/* Headline */}
+            <motion.h1
               {...anim}
-              transition={{ delay: 0.5 }}
-              className="lg:hidden bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl p-4"
+              transition={{ delay: 0.2 }}
+              className="mt-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.1] text-[var(--color-text-primary)]"
             >
-              <p className="text-xs text-[var(--color-text-muted)] font-mono mb-3">Technology Ecosystem</p>
-              <div className="grid grid-cols-2 gap-2">
-                {ecosystemNodes.map(node => (
-                  <div
-                    key={node.id}
-                    className="flex items-center gap-2 px-3 py-2 rounded-md bg-[var(--color-surface-2)] border border-[var(--color-border)]"
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: categoryColors[node.category] }}
-                    />
-                    <span className="text-xs text-[var(--color-text-secondary)]">{node.label}</span>
-                  </div>
-                ))}
-              </div>
+              I Design Systems{' '}
+              <br className="hidden sm:block" />
+              <span className="gradient-text">Before I Write Code.</span>
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              {...anim}
+              transition={{ delay: 0.3 }}
+              className="mt-6 text-lg text-[var(--color-text-secondary)] max-w-xl leading-relaxed"
+            >
+              {profile.subheadline}
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div {...anim} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#consulting"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-blue-500/20 hover:scale-105"
+              >
+                Work With Me
+                <ArrowRight size={16} />
+              </a>
+
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-3)] transition-colors"
+              >
+                Explore Projects
+              </a>
+
+              <Link
+                to="/interview"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border-hover)] text-[var(--color-text-secondary)] font-medium text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+              >
+                <Monitor size={16} />
+                Interview Mode
+              </Link>
+
+              <button
+                onClick={openClient}
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-medium text-sm hover:bg-emerald-500 hover:text-white transition-all"
+                title="Client & Founder Fast-Path"
+              >
+                <Briefcase size={16} />
+                Client 60s
+              </button>
+
+              <button
+                onClick={openRecruiter}
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 font-medium text-sm hover:bg-blue-500 hover:text-white transition-all"
+                title="Recruiter Fast-Path"
+              >
+                <Clock size={16} />
+                Recruiter 30s
+              </button>
+            </motion.div>
+
+            {/* Tech badges */}
+            <motion.div {...anim} transition={{ delay: 0.5 }} className="mt-8 flex flex-wrap gap-2">
+              {heroTechBadges.map(tech => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-1 text-xs font-medium rounded-md bg-[var(--color-surface-2)] text-[var(--color-text-tertiary)] border border-[var(--color-border)]"
+                >
+                  {tech}
+                </span>
+              ))}
+              <span className="px-2.5 py-1 text-xs text-[var(--color-text-muted)]">
+                {profile.yearsExperience}+ years enterprise experience
+              </span>
             </motion.div>
           </div>
-        </div>
-      </section>
 
-      <RecruiterModal isOpen={recruiterOpen} onClose={() => setRecruiterOpen(false)} />
-    </>
+          {/* Right — Interactive Ecosystem */}
+          <motion.div
+            initial={reduced ? {} : { opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="hidden lg:block"
+          >
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-[var(--color-accent-glow)] to-transparent opacity-50" />
+              <div className="relative rounded-2xl glass-panel p-6 border border-[var(--color-border)]">
+                <div className="text-xs font-mono text-[var(--color-text-tertiary)] mb-2 flex items-center justify-between">
+                  <span>SYSTEM ECOSYSTEM GRAPH</span>
+                  <span className="text-[var(--color-accent)] font-semibold">Hover to trace flows</span>
+                </div>
+                <EcosystemGraph />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
   );
 }

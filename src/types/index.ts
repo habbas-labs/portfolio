@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════
    TYPES — Content Data Architecture
+   Master Prompt V4 Compliant
    All content separated from presentation
    ═══════════════════════════════════════════ */
 
@@ -69,16 +70,22 @@ export interface Project {
   category: 'enterprise' | 'ai' | 'system-design' | 'open-source';
   description: string;
   businessProblem?: string;
+  context?: string;
   architecture?: string;
   technologies: string[];
   contribution?: string;
   challenges?: string[];
   decisions?: string[];
   dataFlow?: string;
+  scalability?: string;
+  reliability?: string;
+  testing?: string;
+  observability?: string;
   lessonsLearned?: string[];
   status: ContentStatus;
   repoUrl?: string;
   demoUrl?: string;
+  interviewDiscussion?: string;
 }
 
 export interface ArchitectureDecision {
@@ -125,9 +132,11 @@ export interface SystemDesign {
   problem: string;
   requirements: string[];
   architectureDescription: string;
+  dataFlow?: string;
   scalingStrategy: string;
   failureHandling: string;
   tradeoffs: string[];
+  finalDesign?: string;
   status: ContentStatus;
 }
 
@@ -189,4 +198,55 @@ export interface AIConceptNode {
   whenToUse: string;
   limitations: string;
   example: string;
+}
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — CONSULTING & CLIENT TYPES
+   ═══════════════════════════════════════════ */
+
+export interface ConsultingService {
+  id: string;
+  title: string;
+  tagline: string;
+  description: string;
+  deliverables: string[];
+  technologies: string[];
+  icon: string;
+}
+
+export interface ProblemSolved {
+  id: string;
+  title: string;
+  tag: string;
+  problem: string;
+  approach: string[];
+  result: string;
+  technologies: string[];
+}
+
+export interface EngagementModel {
+  id: string;
+  title: string;
+  duration: string;
+  description: string;
+  idealFor: string;
+  deliverables: string[];
+}
+
+export interface ClientJourneyStep {
+  step: string;
+  title: string;
+  description: string;
+  deliverable: string;
+}
+
+export interface AISolutionPattern {
+  id: string;
+  title: string;
+  category: string;
+  summary: string;
+  flow: string[];
+  technologies: string[];
+  useCase: string;
+  status: ContentStatus;
 }

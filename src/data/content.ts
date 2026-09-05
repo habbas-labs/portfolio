@@ -14,7 +14,13 @@ import type {
   ArchitectureLabStep,
   KafkaLabTopic,
   AIConceptNode,
-  InterviewTopicDetail
+  InterviewTopicDetail,
+  Project,
+  ConsultingService,
+  ProblemSolved,
+  EngagementModel,
+  ClientJourneyStep,
+  AISolutionPattern
 } from '../types';
 
 /* ═══════════════════════════════════════════
@@ -22,7 +28,7 @@ import type {
    ═══════════════════════════════════════════ */
 export const profile: Profile = {
   name: 'Haider Abbas',
-  tagline: 'Senior Backend Engineer · Distributed Systems · AI Systems',
+  tagline: 'Senior Backend Engineer · Distributed Systems · AI Systems · Technology Consultant',
   headline: 'I Design Systems Before I Write Code.',
   subheadline: '13+ years building mission-critical backend systems, high-throughput distributed architectures, and modern AI-powered enterprise applications.',
   philosophy: 'Think architecturally before implementing. Understand the purpose, impact and consequences of a feature instead of simply writing code that satisfies the apparent requirement.',
@@ -181,15 +187,7 @@ export const javaTopics: JavaTopic[] = [
     description: 'Java 21 Virtual Threads decouple thread creation from OS threads, enabling millions of concurrent lightweight tasks without reactive complexity.',
     deepDive: 'Traditional platform threads map 1:1 to OS threads, consuming ~1MB stack memory and limited by OS context switching. Virtual threads run on carrier threads (ForkJoinPool). When blocking on I/O (e.g. JDBC, HTTP, socket read), the runtime unmounts the virtual thread, freeing the carrier thread for other work. Eliminates callback hell and reactive complexity while maintaining thread-per-request programming model.',
     codeSnippet: `// Lightweight concurrency with Java 21 StructuredTaskScope
-try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-    Supplier<Eligibility> eligibility = scope.fork(() -> memberClient.checkEligibility(req));
-    Supplier<PricingRules> pricing = scope.fork(() -> pricingEngine.getPlanRules(req));
-    
-    scope.join();           // Wait for both concurrent tasks
-    scope.throwIfFailed();  // Propagate first failure immediately
-    
-    return adjudicator.process(eligibility.get(), pricing.get());
-}`,
+try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n    Supplier<Eligibility> eligibility = scope.fork(() -> memberClient.checkEligibility(req));\n    Supplier<PricingRules> pricing = scope.fork(() -> pricingEngine.getPlanRules(req));\n    \n    scope.join();           // Wait for both concurrent tasks\n    scope.throwIfFailed();  // Propagate first failure immediately\n    \n    return adjudicator.process(eligibility.get(), pricing.get());\n}`,
     keyTakeaway: 'Adopt virtual threads for high-throughput I/O bound enterprise services; avoid pinning carrier threads by replacing synchronized blocks with ReentrantLock where needed.',
   },
   {
@@ -198,11 +196,7 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
     category: 'Performance & Internals',
     description: 'Understanding generational garbage collection (G1, ZGC) and memory regions (Eden, Survivor, Tenured, Metaspace) under heavy enterprise loads.',
     deepDive: 'The Weak Generational Hypothesis states most objects die young. Eden space handles allocations; survivors undergo aging tenures. G1GC dynamically manages regions to meet target pause times (-XX:MaxGCPauseMillis=200). ZGC provides sub-millisecond pauses by using colored pointers and load barriers to perform compaction concurrently with application threads. In high-volume claims engines, object pooling or zero-allocation pattern in hot loops prevents GC pressure.',
-    codeSnippet: `// Production JVM tuning flags for low-latency Spring Boot services
-// -XX:+UseZGC -XX:+ZGenerational
-// -Xms8g -Xmx8g -XX:+AlwaysPreTouch
-// -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
-// -XX:+ExitOnOutOfMemoryError`,
+    codeSnippet: `// Production JVM tuning flags for low-latency Spring Boot services\n// -XX:+UseZGC -XX:+ZGenerational\n// -Xms8g -Xmx8g -XX:+AlwaysPreTouch\n// -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m\n// -XX:+ExitOnOutOfMemoryError`,
     keyTakeaway: 'Always benchmark GC behavior under realistic claim arrival distributions; ZGC Generational in Java 21 eliminates pause spikes for real-time SLAs.',
   },
   {
@@ -211,19 +205,7 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
     category: 'Core Language',
     description: 'Internals of HashMap binning (treeification), ConcurrentHashMap striped locks, and lazy evaluation pipelines in Streams.',
     deepDive: 'HashMap uses table doubling with power-of-two sizes. If hash collisions in a single bucket exceed TREEIFY_THRESHOLD (8) and table capacity >= 64, the linked list converts to a Red-Black Tree (O(log n) worst case). ConcurrentHashMap avoids global locking by employing CAS (Compare-And-Swap) on bucket heads and synchronized only on individual node heads during treeification. Streams are lazy: intermediate operations build a pipeline of Sink chains; execution happens only on terminal operation.',
-    codeSnippet: `// Parallel streams must never share mutable state
-// Use custom ForkJoinPool to prevent saturating commonPool
-ForkJoinPool customPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-try {
-    customPool.submit(() ->
-        claims.parallelStream()
-              .filter(Claim::isEligibleForIRA2025)
-              .map(accumulatorService::calculateImpact)
-              .toList()
-    ).get();
-} finally {
-    customPool.shutdown();
-}`,
+    codeSnippet: `// Parallel streams must never share mutable state\n// Use custom ForkJoinPool to prevent saturating commonPool\nForkJoinPool customPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());\ntry {\n    customPool.submit(() ->\n        claims.parallelStream()\n              .filter(Claim::isEligibleForIRA2025)\n              .map(accumulatorService::calculateImpact)\n              .toList()\n    ).get();\n} finally {\n    customPool.shutdown();\n}`,
     keyTakeaway: 'Never use parallelStream() with blocking I/O calls without an isolated executor pool; choose ConcurrentHashMap or specialized concurrent structures for thread-safe state sharing.',
   },
   {
@@ -232,19 +214,7 @@ try {
     category: 'Architecture Patterns',
     description: 'Decoupling domain business rules from Spring Framework annotations, databases, and external messaging brokers.',
     deepDive: 'The domain model and business rules must be free of Spring or JPA annotations. Ports define incoming (Use Cases) and outgoing (Repositories, Message Publishers) interfaces. Adapters implement these interfaces using Spring Web controllers, JPA repositories, or Kafka producers. This makes testing pure domain rules instant and deterministic without booting Spring contexts.',
-    codeSnippet: `// Pure Domain Use Case (no Spring dependency)
-public class AdjudicateClaimUseCase {
-    private final ClaimRepositoryPort claimRepository;
-    private final AccumulatorPort accumulatorPort;
-
-    public AdjudicationResult execute(Claim claim) {
-        claim.validateBusinessRules();
-        var accumulators = accumulatorPort.load(claim.memberId());
-        var result = claim.adjudicate(accumulators);
-        claimRepository.save(claim);
-        return result;
-    }
-}`,
+    codeSnippet: `// Pure Domain Use Case (no Spring dependency)\npublic class AdjudicateClaimUseCase {\n    private final ClaimRepositoryPort claimRepository;\n    private final AccumulatorPort accumulatorPort;\n\n    public AdjudicationResult execute(Claim claim) {\n        claim.validateBusinessRules();\n        var accumulators = accumulatorPort.load(claim.memberId());\n        var result = claim.adjudicate(accumulators);\n        claimRepository.save(claim);\n        return result;\n    }\n}`,
     keyTakeaway: 'Frameworks and ORMs are implementation details. Your core business rules should run independently in plain Java unit tests in milliseconds.',
   },
 ];
@@ -312,13 +282,7 @@ export const kafkaLabTopics: KafkaLabTopic[] = [
     title: 'Partitions & Strict Ordering Guarantees',
     summary: 'Kafka guarantees message ordering ONLY within a single partition, not across the entire topic.',
     deepDive: 'When producing a claim event, the record key (e.g., ClaimID or MemberID) is hashed via Murmur2 to determine the partition. By using MemberID or ClaimID as the key, all lifecycle transitions (B1 New Claim -> Adjudication -> B2 Reversal) are guaranteed to arrive at the consumer in the exact chronological sequence produced. Without a key, messages round-robin, risking out-of-order execution (e.g. processing a reversal before the original claim).',
-    codeSnippet: `// Producer with explicit partition key for ordering
-ProducerRecord<String, ClaimEvent> record = new ProducerRecord<>(
-    "claims.adjudication.v1",
-    claimEvent.getMemberId(), // Key ensures strict FIFO per member
-    claimEvent
-);
-kafkaTemplate.send(record);`,
+    codeSnippet: `// Producer with explicit partition key for ordering\nProducerRecord<String, ClaimEvent> record = new ProducerRecord<>(\n    \"claims.adjudication.v1\",\n    claimEvent.getMemberId(), // Key ensures strict FIFO per member\n    claimEvent\n);\nkafkaTemplate.send(record);`,
     keyTradeoff: 'Hot partitions can emerge if one member or provider generates abnormal traffic volume. Mitigated by composite keys (MemberId + Date).',
   },
   {
@@ -326,11 +290,7 @@ kafkaTemplate.send(record);`,
     title: 'Consumer Groups & Cooperative Sticky Rebalancing',
     summary: 'Consumer groups enable horizontal scaling by dividing partitions among instances.',
     deepDive: 'Each partition is consumed by exactly one consumer within a consumer group. In Kafka 3.x+, CooperativeStickyAssignor avoids "stop-the-world" eager rebalancing when pods scale up or down. Consumers continue processing unassigned partitions while only the migrating partition is reassigned, reducing latency spikes from seconds to milliseconds.',
-    codeSnippet: `// Spring Kafka consumer configuration for zero-downtime rebalancing
-properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
-    List.of(CooperativeStickyAssignor.class.getName()));
-properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
-properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000);`,
+    codeSnippet: `// Spring Kafka consumer configuration for zero-downtime rebalancing\nproperties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,\n    List.of(CooperativeStickyAssignor.class.getName()));\nproperties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);\nproperties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000);`,
     keyTradeoff: 'Scaling consumers beyond the partition count yields idle instances. Topic partition count sets the upper concurrency ceiling.',
   },
   {
@@ -338,16 +298,7 @@ properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000);`,
     title: 'Non-Blocking Retries & Dead-Letter Topics (DLT)',
     summary: 'Handle transient network glitches without blocking the main partition pipeline.',
     deepDive: 'Blocking retries stop consumption on that partition, causing severe lag for subsequent healthy claims. Spring Kafka @RetryableTopic creates a chain of retry topics with increasing backoffs (e.g. claims-retry-10s, claims-retry-1m) and routes unrecoverable exceptions directly to a Dead Letter Topic (claims.dlt). Operations teams can inspect, re-inject, or alert on DLT records.',
-    codeSnippet: `@RetryableTopic(
-    attempts = "4",
-    backoff = @Backoff(delay = 1000, multiplier = 2.0),
-    exclude = { ValidationException.class, SchemaViolationException.class },
-    dltTopicSuffix = ".dlt"
-)
-@KafkaListener(topics = "claims.inbound", groupId = "claims-processor")
-public void consume(ClaimEvent event) {
-    adjudicationService.process(event);
-}`,
+    codeSnippet: `@RetryableTopic(\n    attempts = \"4\",\n    backoff = @Backoff(delay = 1000, multiplier = 2.0),\n    exclude = { ValidationException.class, SchemaViolationException.class },\n    dltTopicSuffix = \".dlt\"\n)\n@KafkaListener(topics = \"claims.inbound\", groupId = \"claims-processor\")\npublic void consume(ClaimEvent event) {\n    adjudicationService.process(event);\n}`,
     keyTradeoff: 'Retry topics create additional Kafka topics and lose strict cross-claim ordering for retried records, making idempotency non-negotiable.',
   },
   {
@@ -355,16 +306,7 @@ public void consume(ClaimEvent event) {
     title: 'Idempotency & Exactly-Once Semantics (EOS)',
     summary: 'Prevent double-billing or duplicate adjudication during network reconnects.',
     deepDive: 'At the producer level, enable.idempotence=true assigns each producer a PID and sequence numbers to deduplicate network retries at the broker. At the consumer level, network re-deliveries still occur during rebalances. Idempotency is enforced by recording processed event IDs in PostgreSQL within the same database transaction, or checking a distributed deduplication store before state alteration.',
-    codeSnippet: `// Consumer-side deduplication pattern
-@Transactional
-public void handleClaimAdjudicated(ClaimAdjudicatedEvent event) {
-    if (dedupRepository.existsByEventId(event.getEventId())) {
-        log.warn("Duplicate event {} ignored", event.getEventId());
-        return;
-    }
-    accountBalance.applyDeductible(event.getAmount());
-    dedupRepository.save(new ProcessedEvent(event.getEventId(), Instant.now()));
-}`,
+    codeSnippet: `// Consumer-side deduplication pattern\n@Transactional\npublic void handleClaimAdjudicated(ClaimAdjudicatedEvent event) {\n    if (dedupRepository.existsByEventId(event.getEventId())) {\n        log.warn(\"Duplicate event {} ignored\", event.getEventId());\n        return;\n    }\n    accountBalance.applyDeductible(event.getAmount());\n    dedupRepository.save(new ProcessedEvent(event.getEventId(), Instant.now()));\n}`,
     keyTradeoff: 'EOS transactions introduce slight broker latency due to two-phase commit on transaction markers; standard at-least-once + consumer deduplication is frequently preferred.',
   },
 ];
@@ -457,7 +399,6 @@ export const aiConceptNodes: AIConceptNode[] = [
 
 /* ═══════════════════════════════════════════
    INTERVIEW TOPIC DETAILS — 3 Levels of Depth
-   (30-Second, 2-Minute, 10-Minute Deep Dive)
    ═══════════════════════════════════════════ */
 export const interviewTopicDetails: InterviewTopicDetail[] = [
   {
@@ -646,6 +587,65 @@ export const interviewTopicDetails: InterviewTopicDetail[] = [
       ],
     },
   },
+  {
+    id: 'system-design-depth',
+    title: 'Distributed System Design & Resilience',
+    category: 'distributed',
+    icon: 'Network',
+    tags: ['System Design', 'Saga', 'Idempotency', 'Partitioning', 'CAP Theorem'],
+    depth: {
+      thirtySecond: 'System designer prioritizing architecture before implementation. Designing fault-tolerant distributed systems with bounded contexts, choreography sagas, and clear consistency models.',
+      twoMinute: [
+        'Failure Isolation: Designing every service to anticipate network failure, partitioning, and downstream degradation.',
+        'Data Flow Rigor: Mapping message lifecycles through ingress, validation, event streaming, and persistent storage.',
+        'Consistency Choices: Deliberate trade-offs between ACID local databases and eventual consistency across distributed domains.',
+        'Operational Observability: Designing telemetry and dead-letter reconciliation into the core architecture rather than bolting it on later.',
+      ],
+      tenMinute: {
+        architecture: 'Every distributed design begins with requirement scoping: read vs write ratios, latency SLAs, availability targets, and consistency guarantees. We partition systems along domain boundaries, leverage Kafka event streams with deterministic hashing for ordering, and isolate failure blast radiuses with circuit breakers, token bucket rate limiters, and bulkhead thread isolation.',
+        tradeoffs: [
+          'Synchronous RPC vs Event Choreography: RPC offers instant feedback at the cost of coupling; Choreography maximizes availability while requiring eventual consistency handling.',
+          'Single Monolith DB vs Database-per-Service: Monolith DB simplifies joins; Service DB isolates schema risk and enables independent scaling.',
+        ],
+        scaling: 'Horizontal scaling of stateless worker pods paired with partitioned data backbones (Kafka topics, PostgreSQL read replicas, Redis clusters).',
+        failureHandling: 'Automated retry topics, dead-letter queues, idempotent consumer filters, and compensating reversal transactions.',
+      },
+      sampleQuestions: [
+        'How do you design a distributed transaction across three microservices without two-phase commit?',
+        'What is your approach to handling database read replicas during write replication lag?',
+        'How do you prevent cascading failure when an downstream authorization service becomes slow?',
+      ],
+    },
+  },
+  {
+    id: 'decisions-depth',
+    title: 'Architecture Decision Records (ADRs)',
+    category: 'core',
+    icon: 'Scale',
+    tags: ['ADR', 'Trade-offs', 'Architecture Governance', 'Decision Making'],
+    depth: {
+      thirtySecond: 'Architecture is about trade-offs. I document architectural decisions using formal ADRs, making assumptions, evaluated options, and consequences transparent to engineering teams.',
+      twoMinute: [
+        'Explicit Evaluation: Comparing synchronous REST vs Kafka, Monolith vs Microservices, and Direct LLM vs RAG.',
+        'Impact Assessment: Evaluating latency, operational complexity, financial cost, and developer ergonomics before committing.',
+        'Living Documentation: Version-controlling decisions alongside code in Git repositories.',
+        'Team Alignment: Ensuring technical consensus and preventing recurring debates on established patterns.',
+      ],
+      tenMinute: {
+        architecture: 'An effective ADR structure records: Context & Problem Statement, Options Considered (with concrete Pros and Cons), Decision Outcome, and Positive/Negative Consequences. We enforce ADRs for all cross-service boundaries, data storage models, and external protocol choices.',
+        tradeoffs: [
+          'Documentation Rigor vs Velocity: Lightweight ADR templates keep governance fast without burdening teams with bureaucratic paperwork.',
+          'Reversing Decisions: Documenting assumptions allows teams to revisit decisions objectively when traffic patterns or constraints shift.',
+        ],
+        scaling: 'Scales engineering alignment across distributed teams and provides seamless onboarding context for new engineers.',
+        failureHandling: 'Clear escalation protocols when architectural assumptions prove invalid in production benchmarks.',
+      },
+      sampleQuestions: [
+        'When would you reverse an established Architecture Decision in production?',
+        'How do you handle disagreement between senior architects on fundamental technology choices?',
+      ],
+    },
+  },
 ];
 
 /* ═══════════════════════════════════════════
@@ -779,7 +779,8 @@ export const aiLevels: AILevel[] = [
 ];
 
 /* ═══════════════════════════════════════════
-   SYSTEM DESIGN EXAMPLES
+   SYSTEM DESIGN EXAMPLES — Complete 6 Architectures
+   (Master Prompt V3 & V4 Compliant)
    ═══════════════════════════════════════════ */
 export const systemDesigns: SystemDesign[] = [
   {
@@ -788,10 +789,12 @@ export const systemDesigns: SystemDesign[] = [
     problem: 'Process healthcare claims from providers at high throughput with regulatory compliance, auditability, and real-time adjudication.',
     requirements: ['High throughput claim ingestion', 'Real-time adjudication', 'Regulatory compliance (CMS)', 'Audit trail', 'Idempotent processing', 'B1/B2/B3 transaction support'],
     architectureDescription: 'Event-driven microservices with Kafka for inter-service communication. Claims ingested via REST API, processed through adjudication pipeline, results persisted with full audit trail.',
-    scalingStrategy: 'Horizontal scaling of stateless services. Kafka partitioning by claim ID for ordered processing. Read replicas for query-heavy operations.',
+    dataFlow: 'REST Gateway / NCPDP Intake -> Kafka claims.inbound -> Adjudication Service (Virtual Threads) -> DB2 Accumulator Lock -> Audit Log -> Kafka claims.adjudicated',
+    scalingStrategy: 'Horizontal scaling of stateless services. Kafka partitioning by member/claim ID for ordered processing. Read replicas for query-heavy operations.',
     failureHandling: 'Dead-letter topics for failed claims. Retry with exponential backoff. Circuit breakers for external dependencies. Compensating transactions for B2 reversals.',
     tradeoffs: ['Eventual consistency accepted for throughput', 'Kafka complexity traded for resilience', 'More infrastructure for better fault isolation'],
-    status: 'PROVISIONAL',
+    finalDesign: 'Decoupled Hexagonal Domain Engine in pure Java 21 with non-blocking Kafka retry topics, optimistic accumulator locks, and zero-loss outbox persistence.',
+    status: 'USER-PROVIDED',
   },
   {
     id: 'event-driven-orders',
@@ -799,9 +802,24 @@ export const systemDesigns: SystemDesign[] = [
     problem: 'Process orders asynchronously across inventory, payment, and shipping services with consistency guarantees.',
     requirements: ['Asynchronous processing', 'At-least-once delivery', 'Saga pattern for distributed transactions', 'Order status tracking'],
     architectureDescription: 'Choreography-based saga with Kafka events. Each service publishes domain events. Compensating actions for failure rollback.',
+    dataFlow: 'Order Placed -> Kafka orders.created -> Inventory Service (Reserve Stock) -> Payment Service (Debit Card) -> Shipping Service (Generate Label) -> orders.fulfilled',
     scalingStrategy: 'Independent service scaling. Kafka consumer groups for parallel processing.',
     failureHandling: 'Compensating transactions, dead-letter queues, manual review for unrecoverable failures.',
     tradeoffs: ['Complexity of saga pattern', 'Eventual consistency', 'Better resilience and scalability'],
+    finalDesign: 'Choreography-based Saga with Kafka transactional outbox, idempotent event consumers, and compensating reversal topics on downstream rejection.',
+    status: 'PROVISIONAL',
+  },
+  {
+    id: 'notification-system',
+    title: 'High-Throughput Notification Engine',
+    problem: 'Fan-out millions of personalized multi-channel notifications (SMS, Email, Push) under strict delivery SLAs without overwhelming external gateways.',
+    requirements: ['Sub-second delivery SLA', 'Priority queueing (Critical vs Marketing)', 'Rate limiting per gateway', 'Delivery receipt tracking', 'Template hydration'],
+    architectureDescription: 'Multi-tier queue topology with Kafka for ingestion and Redis Token Bucket for external provider rate limiting. Partitioned by recipient ID for per-user throttling.',
+    dataFlow: 'Event Trigger -> Notification Gateway -> Kafka priority-topics -> Dispatch Workers -> Redis Rate Limiter -> Provider Gateways (Twilio/SendGrid) -> Status Webhook',
+    scalingStrategy: 'Dynamic consumer scaling based on consumer lag metrics. Redis cluster for distributed token buckets. Priority topic routing prevents marketing blasts from starving OTPs.',
+    failureHandling: 'Tiered retry queues with exponential jitter. Circuit breakers trip if provider gateway 5xx rate exceeds 5%. Dead-letter queue with alerting.',
+    tradeoffs: ['Prioritizing delivery reliability over immediate consistency', 'Redis rate-limiter operational overhead vs third-party gateway rate penalty costs'],
+    finalDesign: 'Priority-partitioned Kafka pipeline paired with Redis token buckets and asynchronous webhook receipt reconcilers.',
     status: 'PROVISIONAL',
   },
   {
@@ -810,20 +828,37 @@ export const systemDesigns: SystemDesign[] = [
     problem: 'Enterprise employees need accurate answers from internal documentation without hallucination.',
     requirements: ['Document ingestion pipeline', 'Semantic search', 'Grounded responses', 'Access control', 'Source attribution'],
     architectureDescription: 'Spring AI application with document ingestion → chunking → embedding → vector storage. User queries embedded and matched against stored documents. Top-k results provided as context to LLM.',
+    dataFlow: 'PDF/Wiki Docs -> Ingestion Service -> Chunking/Tika -> Text Embeddings (text-embedding-3-small) -> PGVector Indexing -> User Query -> Similarity Search -> Augmented Context Prompt -> LLM Generation',
     scalingStrategy: 'Horizontal scaling of query service. Vector DB partitioning. Cached embeddings for frequent queries.',
     failureHandling: 'Fallback to keyword search if vector DB unavailable. Confidence thresholds to avoid low-quality responses.',
     tradeoffs: ['Vector DB infrastructure cost', 'Embedding quality affects retrieval', 'Better accuracy than direct LLM'],
+    finalDesign: 'Spring AI RAG architecture with PGVector similarity indexing, metadata security filtering, and deterministic fallback guards on low cosine confidence.',
+    status: 'PROVISIONAL',
+  },
+  {
+    id: 'ai-agent-system',
+    title: 'Standalone Tool-Calling AI Agent',
+    problem: 'Autonomous execution of multi-step enterprise workflows requiring external API execution, database lookups, and stateful error recovery.',
+    requirements: ['ReAct (Reasoning + Acting) loop', 'Secure Model Context Protocol (MCP) tool bindings', 'Stateful memory checkpointing', 'Human-in-the-loop approval thresholds'],
+    architectureDescription: 'Stateful execution graph where LLM iteratively chooses tools based on schema definitions, receives tool outputs, updates scratchpad memory, and proceeds until task termination.',
+    dataFlow: 'User Intent -> Agent Executor -> LLM Tool Call Generation -> MCP Protocol Dispatcher -> Database / REST Tool Execution -> Output Validation -> LLM Synthesis',
+    scalingStrategy: 'Stateless agent workers with PostgreSQL checkpoint storage. Sandboxed tool execution runners to isolate external system side effects.',
+    failureHandling: 'Tool retry loops with self-correction prompts. Hard iteration caps (max 10 steps) to prevent infinite loops. Human escalation on write operations.',
+    tradeoffs: ['Step latency from multi-turn LLM calls', 'Nondeterministic reasoning loops requiring strict guardrails'],
+    finalDesign: 'Spring AI with Model Context Protocol (MCP) tool servers, strict JSON Schema validations, and transaction rollback hooks.',
     status: 'PROVISIONAL',
   },
   {
     id: 'multi-agent-system',
-    title: 'Multi-Agent AI System',
+    title: 'Multi-Agent Collaborative System',
     problem: 'Complex enterprise tasks require different AI capabilities — research, analysis, code generation, and communication.',
     requirements: ['Specialized agents', 'Inter-agent communication', 'Task orchestration', 'Tool access', 'Result aggregation'],
     architectureDescription: 'Orchestrator agent delegates to specialized agents via A2A protocol. Each agent has focused tools and context. MCP servers provide tool access.',
+    dataFlow: 'User Complex Goal -> Supervisor / Orchestrator Agent -> Task Decomposition -> Research Agent -> Analysis Agent -> Validator Agent -> Final Synthesis',
     scalingStrategy: 'Independent agent scaling. Parallel task execution. Shared context store for collaboration.',
     failureHandling: 'Agent health monitoring. Task reassignment on failure. Timeout-based fallback. Human-in-the-loop for critical decisions.',
     tradeoffs: ['Orchestration complexity', 'Inter-agent latency', 'Better task specialization and quality'],
+    finalDesign: 'Hierarchical supervisor architecture utilizing Agent-to-Agent (A2A) protocol with shared context memory and deterministic validation gates.',
     status: 'PROVISIONAL',
   },
 ];
@@ -955,4 +990,403 @@ export const interviewTopics: InterviewTopic[] = [
   { id: 'agentic', title: 'Agentic AI', icon: 'Bot', subtopics: ['AI agents', 'MCP', 'A2A', 'Multi-agent'], route: '/#ai-lab' },
   { id: 'decisions', title: 'Engineering Decisions', icon: 'Scale', subtopics: ['REST vs Kafka', 'Sync vs Async', 'RAG vs Direct LLM'], route: '/#decisions' },
   { id: 'code', title: 'Code Showcase', icon: 'Terminal', subtopics: ['Kafka consumer', 'REST API', 'Spring AI RAG'], route: '/#code' },
+];
+
+/* ═══════════════════════════════════════════
+   PROJECTS WORKBENCH (Master Prompt V3 & V4)
+   Enterprise Systems + 7 AI Project Concept Templates
+   ═══════════════════════════════════════════ */
+export const projects: Project[] = [
+  {
+    id: 'claims-adjudication-modernization',
+    title: 'Enterprise Claims Adjudication Modernization',
+    category: 'enterprise',
+    description: 'Modernization of core pharmacy adjudication engine from legacy COBOL to Java 21 microservices and resilient Kafka event streaming.',
+    businessProblem: 'CMS IRA 2025 regulatory mandates required dynamic real-time benefit accumulators and sub-50ms adjudication at the pharmacy counter, unachievable in legacy batch COBOL routines.',
+    architecture: 'Hexagonal clean domain engine in Java 21, decoupled Spring Boot microservices, Kafka event streaming with partition keys hashed by member ID for strict FIFO sequence.',
+    technologies: ['Java 21', 'Spring Boot 3', 'Apache Kafka', 'PostgreSQL', 'DB2', 'Docker', 'Kubernetes'],
+    contribution: 'Technical Lead: Led rule extraction, designed domain models using Java 21 records & sealed interfaces, built Kafka consumer idempotency pipelines.',
+    challenges: [
+      'Zero-downtime cutover without dropping live pharmacy counter transactions',
+      'Golden-master parity validation against 40+ years of implicit COBOL edge-case rules'
+    ],
+    decisions: [
+      'Decoupled pure Java domain engine from Spring framework',
+      'Non-blocking retry topics over blocking consumer sleep'
+    ],
+    dataFlow: 'NCPDP D.0 claim payload -> Ingestion Gateway -> Kafka claims.inbound -> Adjudication Engine (Virtual Threads) -> DB2 Accumulators -> Kafka claims.adjudicated',
+    scalability: 'Horizontal autoscaling of stateless intake and adjudication pods with 32 Kafka partitions per topic.',
+    reliability: 'Dead-letter topic parking, transaction outbox pattern, and sub-second circuit breakers.',
+    testing: 'Dual-run golden master replay test harness matching production claim responses byte-for-byte.',
+    observability: 'OpenTelemetry tracing, Prometheus metrics for P95/P99 latency, Grafana consumer lag dashboards.',
+    lessonsLearned: [
+      'Domain isolation from framework dependencies is critical for long-term maintainability',
+      'Kafka retry topics prevent head-of-line blocking in healthcare SLAs'
+    ],
+    status: 'USER-PROVIDED',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'event-driven-spine',
+    title: 'High-Throughput Kafka Event Spine',
+    category: 'system-design',
+    description: 'Resilient event-driven streaming infrastructure processing millions of real-time transactions with strict ordering and zero data loss.',
+    businessProblem: 'Point-to-point synchronous REST calls between microservices caused cascading timeouts and coupled deployments during traffic surges.',
+    architecture: 'Publish-subscribe event backbone with Schema Registry, transactional outbox producers, and cooperative sticky consumer groups.',
+    technologies: ['Apache Kafka', 'Java 21', 'Spring Cloud Stream', 'Avro / Schema Registry', 'Prometheus'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'rag-knowledge-assistant',
+    title: 'RAG Knowledge Assistant',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'Engineers and operations teams spend hours navigating disparate confluence wikis, CMS policy PDFs, and legacy code documentation.',
+    architecture: 'Spring AI + PGVector document indexing pipeline with semantic chunking and contextual prompt enrichment.',
+    technologies: ['Spring AI', 'PGVector', 'OpenAI / Claude', 'Java 21', 'PostgreSQL'],
+    contribution: 'Designed vector ingestion pipeline and contextual prompt templates with source citations.',
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'enterprise-knowledge-assistant',
+    title: 'Enterprise Knowledge Assistant',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'Internal compliance teams require instant querying across regulatory healthcare mandates with strict source citations.',
+    technologies: ['Spring AI', 'Ollama', 'PGVector', 'Docker', 'FastAPI'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'ai-log-analysis',
+    title: 'AI Log Analysis & Anomaly Detection',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'Investigating high-cardinality distributed microservice exceptions during production incidents is time-prohibitive.',
+    technologies: ['Spring AI', 'Kafka', 'Elasticsearch', 'LLM Agents'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'ai-claims-assistant',
+    title: 'AI Claims Adjudication Assistant',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'High rejection rates due to pharmacy code mismatches require automated explanation and correction recommendations.',
+    technologies: ['Spring AI', 'Java 21', 'RAG', 'Structured Outputs'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'tool-using-agent',
+    title: 'Tool-Using AI Agent with MCP Integration',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'LLMs lack access to real-time production system states, database tables, and external APIs.',
+    technologies: ['Model Context Protocol (MCP)', 'Spring AI', 'REST APIs', 'PostgreSQL'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'multi-agent-system-project',
+    title: 'Multi-Agent Collaborative System',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'Complex enterprise tasks require multiple specialized AI agents collaborating with defined roles and supervisor review.',
+    technologies: ['A2A Protocol', 'Multi-Agent Orchestration', 'Spring AI', 'LangGraph Patterns'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+  {
+    id: 'ai-developer-assistant',
+    title: 'AI Developer & Architecture Assistant',
+    category: 'ai',
+    description: 'Portfolio Concept / Template — Replace with actual implementation details before publishing.',
+    businessProblem: 'Automating codebase scans for anti-patterns, missing Kafka idempotency checks, and circular microservice dependencies.',
+    technologies: ['Spring AI', 'Java Parser', 'AST Analysis', 'Claude 3.5'],
+    status: 'PROVISIONAL',
+    repoUrl: 'https://github.com/haiderabbas-labs',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — CONSULTING SERVICES
+   (Section 12: Architecture Review to Advisory)
+   ═══════════════════════════════════════════ */
+export const consultingServices: ConsultingService[] = [
+  {
+    id: 'architecture-review',
+    title: 'Architecture Review & Assessment',
+    tagline: 'Identify bottlenecks, single points of failure, and scalability risks before they impact users.',
+    description: 'A comprehensive evaluation of your backend architecture, microservice boundaries, database design, and event topologies with actionable remediation roadmaps.',
+    deliverables: [
+      'Current-state architecture diagram & component catalog',
+      'Bottleneck & single-point-of-failure risk matrix',
+      'Architecture Decision Records (ADRs)',
+      'Target-state architecture & prioritized migration roadmap'
+    ],
+    technologies: ['Distributed Systems', 'Microservices', 'ADRs', 'C4 Model', 'Cloud / On-Prem'],
+    icon: 'ShieldCheck',
+  },
+  {
+    id: 'backend-engineering',
+    title: 'High-Throughput Backend Engineering',
+    tagline: 'Design and build resilient, low-latency Java & Spring Boot microservices at scale.',
+    description: 'Hands-on design and implementation of mission-critical backend systems using modern Java 21, Spring Boot 3, and clean architecture principles.',
+    deliverables: [
+      'Modular microservices with clean domain boundaries',
+      'Production-ready REST & gRPC APIs with OpenAPI specs',
+      'Comprehensive automated test suites (unit, integration, contract)',
+      'Observability instrumentation (metrics, traces, health checks)'
+    ],
+    technologies: ['Java 21', 'Spring Boot 3', 'PostgreSQL', 'Docker', 'Kubernetes'],
+    icon: 'Server',
+  },
+  {
+    id: 'kafka-event-driven',
+    title: 'Kafka & Event-Driven Architecture',
+    tagline: 'Eliminate message loss, handle consumer lag, and build resilient event streams.',
+    description: 'Architecting high-throughput Kafka streaming pipelines with guaranteed ordering, exactly-once semantics, non-blocking retries, and dead-letter parking.',
+    deliverables: [
+      'Topic topology & partitioning design',
+      'Idempotent consumer & transactional outbox patterns',
+      'Non-blocking retry & dead-letter queue architectures',
+      'Consumer lag & backpressure tuning guidance'
+    ],
+    technologies: ['Apache Kafka', 'Schema Registry', 'Spring Cloud Stream', 'Redis', 'Prometheus'],
+    icon: 'Radio',
+  },
+  {
+    id: 'legacy-modernization',
+    title: 'Legacy Modernization (Monolith / COBOL → Java)',
+    tagline: 'Safely decompose monolithic applications and legacy routines into modern microservices.',
+    description: 'Extracting implicit business rules, designing dual-run validation test harnesses, and executing phased zero-downtime strangler migrations.',
+    deliverables: [
+      'Business rule extraction & specification documents',
+      'Dual-run golden master automated parity test harness',
+      'Strangler Fig migration strategy & API facades',
+      'Zero-downtime cutover plan'
+    ],
+    technologies: ['Java 21', 'Spring Boot', 'Strangler Fig', 'COBOL Extraction', 'Golden Master Testing'],
+    icon: 'Cpu',
+  },
+  {
+    id: 'ai-integration',
+    title: 'AI Integration for Existing Software',
+    tagline: 'Add intelligence to working enterprise software without risky full-system rewrites.',
+    description: 'Integrating LLMs, RAG pipelines, and vector search directly into existing Spring Boot and Java backend workflows with safety guardrails.',
+    deliverables: [
+      'AI opportunity assessment for existing systems',
+      'Spring AI integration & vector store setup (PGVector)',
+      'Contextual RAG pipeline with source attribution',
+      'Cost, token, and latency optimization guards'
+    ],
+    technologies: ['Spring AI', 'PGVector', 'RAG', 'OpenAI / Claude / Ollama', 'Embeddings'],
+    icon: 'Brain',
+  },
+  {
+    id: 'agentic-ai',
+    title: 'Agentic AI & Multi-Agent Systems',
+    tagline: 'Autonomous tool-calling agents and collaborative multi-agent architectures.',
+    description: 'Designing enterprise AI agents that interact with databases, internal APIs, and MCP tools with deterministic supervisor checkpoints.',
+    deliverables: [
+      'Tool-calling agent architecture with Model Context Protocol (MCP)',
+      'Multi-agent coordination workflows (A2A Protocol)',
+      'Human-in-the-loop escalation rules',
+      'Comprehensive agent evaluation test suites'
+    ],
+    technologies: ['Model Context Protocol (MCP)', 'Agent-to-Agent (A2A)', 'Spring AI', 'Multi-Agent', 'Tools'],
+    icon: 'Bot',
+  },
+  {
+    id: 'technical-advisory',
+    title: 'Technical Advisory & Engineering Leadership',
+    tagline: 'Strategic architecture guidance and technical mentorship for growing engineering teams.',
+    description: 'Partnering with technical leaders and founders to make sound technology choices, establish engineering standards, and navigate complex migrations.',
+    deliverables: [
+      'Architecture governance & review sessions',
+      'Technical hiring assessments & interview rubric design',
+      'Engineering standards & pattern templates',
+      'Quarterly roadmap & risk audits'
+    ],
+    technologies: ['System Design', 'Tech Strategy', 'Mentorship', 'Code Reviews', 'Hiring'],
+    icon: 'Compass',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — PROBLEMS I SOLVE
+   (Section 11: Problem → Approach → Result)
+   ═══════════════════════════════════════════ */
+export const problemsSolved: ProblemSolved[] = [
+  {
+    id: 'backend-maintainability',
+    title: 'Java Backend Maintainability & Coupling',
+    tag: 'Architecture & Modernization',
+    problem: 'Our Java backend has become difficult to maintain. Changes in one service unexpectedly break others, releases are high-stress, and test coverage is fragile.',
+    approach: [
+      'Perform domain boundary analysis to decouple entangled modules',
+      'Re-architect into Clean Hexagonal Architecture separating domain rules from frameworks',
+      'Introduce contract testing and isolated unit suites running in milliseconds',
+      'Establish API versioning and backward compatibility patterns'
+    ],
+    result: 'A maintainable, modular service where features ship independently with predictable release cycles.',
+    technologies: ['Java 21', 'Spring Boot 3', 'Clean Architecture', 'DDD'],
+  },
+  {
+    id: 'kafka-scaling',
+    title: 'Kafka Scalability, Consumer Lag & Message Loss',
+    tag: 'Event Streaming & Kafka',
+    problem: 'Our Kafka pipeline experiences severe consumer lag during peak bursts, intermittent message loss, and head-of-line blocking on downstream service failures.',
+    approach: [
+      'Audit topic partition count and consumer group concurrency',
+      'Implement non-blocking retry topics with exponential backoff',
+      'Deploy transactional outbox pattern to eliminate dual-write inconsistency',
+      'Enforce idempotent consumer deduplication via database keys'
+    ],
+    result: 'Zero message loss, sub-second P99 processing latency, and decoupled failure handling preventing pipeline stalls.',
+    technologies: ['Apache Kafka', 'Spring Cloud Stream', 'Redis', 'Prometheus'],
+  },
+  {
+    id: 'legacy-monolith',
+    title: 'Legacy Monolith / Mainframe Modernization',
+    tag: 'Enterprise Modernization',
+    problem: 'Core business logic is locked in decades-old legacy code (COBOL or monolithic Java) with no documentation and high risk of disruption if rewritten blindly.',
+    approach: [
+      'Extract implicit business rules and build automated golden-master test harnesses',
+      'Re-architect business logic in pure, framework-independent Java domain entities',
+      'Deploy Strangler Fig proxy facade to gradually shift live traffic',
+      'Validate parity on 100% of historical production transactions'
+    ],
+    result: 'Risk-free zero-downtime cutover with validated byte-for-byte correctness and full modernization to modern Java.',
+    technologies: ['Java 21', 'Spring Boot', 'Golden Master Harness', 'Strangler Fig'],
+  },
+  {
+    id: 'ai-existing-software',
+    title: 'Adding AI Without Rebuilding Working Systems',
+    tag: 'AI Systems & RAG',
+    problem: 'We want to add generative AI and knowledge search to our product, but cannot afford to rewrite reliable legacy systems or expose private data to external models.',
+    approach: [
+      'Identify specific high-value integration points (search, validation, summarization)',
+      'Embed internal documents into private PGVector stores with role-based access',
+      'Implement Spring AI RAG pipelines with deterministic guardrails',
+      'Deploy local open-source models (Ollama) or private cloud endpoints'
+    ],
+    result: 'Grounded enterprise AI capability integrated cleanly into existing services with zero hallucination risk.',
+    technologies: ['Spring AI', 'PGVector', 'RAG', 'Ollama', 'Security Guardrails'],
+  },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — ENGAGEMENT MODELS
+   (Section 13: Ways to Work Together)
+   ═══════════════════════════════════════════ */
+export const engagementModels: EngagementModel[] = [
+  {
+    id: 'architecture-assessment',
+    title: 'Architecture Assessment & Review',
+    duration: '1 – 2 Weeks',
+    description: 'A focused, high-impact review of your existing backend or event architecture to identify bottlenecks, scalability limits, and technical risks.',
+    idealFor: 'Teams preparing for high-traffic events, funding milestones, or starting a major refactoring.',
+    deliverables: ['Architecture Assessment Report', 'Risk & Bottleneck Matrix', 'Prioritized Action Plan & ADRs'],
+  },
+  {
+    id: 'project-capability',
+    title: 'Targeted Project Implementation',
+    duration: '4 – 12 Weeks',
+    description: 'End-to-end design and implementation of a critical backend service, Kafka event pipeline, or AI integration.',
+    idealFor: 'Companies needing a senior specialist to own and deliver a high-complexity technical component.',
+    deliverables: ['Production-ready codebase & tests', 'Architecture documentation & deployment manifests', 'Knowledge transfer & runbooks'],
+  },
+  {
+    id: 'technical-advisory',
+    title: 'Part-Time Technical Advisory',
+    duration: 'Ongoing / Monthly Retainer',
+    description: 'Regular advisory sessions providing architectural guidance, code reviews, design critiques, and engineering strategy.',
+    idealFor: 'Startups, engineering managers, and technical leads seeking seasoned architecture oversight.',
+    deliverables: ['Weekly / bi-weekly architecture sessions', 'PR reviews & system design reviews', 'On-demand technical guidance'],
+  },
+  {
+    id: 'hands-on-engineering',
+    title: 'Hands-on Senior Backend / AI Engineering',
+    duration: 'Flexible Project Scope',
+    description: 'Direct senior-level engineering contribution to write critical paths, establish foundational patterns, and elevate code quality.',
+    idealFor: 'Teams needing high-caliber engineering firepower on complex Java 21, Spring, Kafka, or AI initiatives.',
+    deliverables: ['High-throughput backend code', 'Performance tuning & benchmarking', 'Automated testing suites'],
+  },
+  {
+    id: 'prototype-spike',
+    title: 'Rapid Prototype to Production Spike',
+    duration: '1 – 3 Weeks',
+    description: 'Building a functional proof-of-concept for an AI workflow, RAG assistant, or event pipeline to validate viability before investing.',
+    idealFor: 'Founders and product teams needing quick validation of technical feasibility and architecture.',
+    deliverables: ['Working interactive prototype', 'Architecture feasibility report', 'Production roadmap'],
+  },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — CLIENT JOURNEY
+   (Section 14: 8-Step Workflow)
+   ═══════════════════════════════════════════ */
+export const clientJourneySteps: ClientJourneyStep[] = [
+  { step: '01', title: 'Tell Me the Problem', description: 'Reach out with your technical challenge, system bottleneck, or architectural goal.', deliverable: 'Initial problem brief' },
+  { step: '02', title: 'Initial Technical Discussion', description: 'A 30-minute discovery call to discuss constraints, business objectives, and success criteria.', deliverable: 'Alignment on scope and feasibility' },
+  { step: '03', title: 'Understand Existing System', description: 'Review current architecture diagrams, codebase structure, event topologies, and data flows.', deliverable: 'System baseline understanding' },
+  { step: '04', title: 'Define Scope & Deliverables', description: 'Establish clear technical milestones, deliverables, timelines, and engagement model.', deliverable: 'Statement of work & technical objectives' },
+  { step: '05', title: 'Architecture & Solution Proposal', description: 'Design target architecture, evaluate trade-offs, and produce concrete ADRs before writing code.', deliverable: 'Architecture proposal & ADRs' },
+  { step: '06', title: 'Build / Advise / Modernize', description: 'Execute phased engineering implementation with continuous communication and testing.', deliverable: 'Clean, tested, documented code' },
+  { step: '07', title: 'Benchmark, Review & Deliver', description: 'Validate performance against latency/throughput targets and verify zero-regression criteria.', deliverable: 'Benchmark results & deployment package' },
+  { step: '08', title: 'Iterate & Knowledge Transfer', description: 'Walk your team through design decisions, runbooks, and handover documentation for long-term ownership.', deliverable: 'Team workshop & documentation' },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — AI FOR EXISTING SOFTWARE
+   (Section 33: Methodology Flow)
+   ═══════════════════════════════════════════ */
+export const aiExistingSoftwareFlow = [
+  { step: '1', title: 'Existing Application', description: 'Identify the working production service, data stores, and business workflows without disrupting live users.' },
+  { step: '2', title: 'Identify AI Opportunity', description: 'Pinpoint high-value operations: semantic search, document ingestion, error classification, automated assistance.' },
+  { step: '3', title: 'Select Pattern', description: 'Choose the simplest sufficient abstraction level: Direct LLM, RAG, Tool-Calling Agent, or Multi-Agent.' },
+  { step: '4', title: 'Architecture Design', description: 'Decouple AI orchestration from core domain using Spring AI, Vector DBs, and secure boundary adapters.' },
+  { step: '5', title: 'Prototype & Benchmark', description: 'Validate retrieval accuracy, latency, and cost per query against real data with automated evaluation tests.' },
+  { step: '6', title: 'Production Integration', description: 'Deploy with safety guardrails, monitoring, fallbacks, and audit logging for enterprise reliability.' },
+];
+
+/* ═══════════════════════════════════════════
+   MASTER PROMPT V4 — AI SOLUTION CATALOG
+   (Section 34: Visual Solution Patterns)
+   ═══════════════════════════════════════════ */
+export const aiSolutionCatalog: AISolutionPattern[] = [
+  {
+    id: 'knowledge-assistant',
+    title: 'Enterprise Knowledge Assistant (RAG)',
+    category: 'RAG & Semantic Retrieval',
+    summary: 'Connect internal documentation, confluence wikis, and policy manuals to conversational AI with zero hallucination.',
+    flow: ['Internal Documents', 'Embeddings Generator', 'PGVector Store', 'Similarity Retrieval', 'Spring AI Context Prompt', 'Grounded Response'],
+    technologies: ['Spring AI', 'PGVector', 'OpenAI / Claude', 'PostgreSQL'],
+    useCase: 'Compliance queries, internal engineering wikis, and customer support deflection.',
+    status: 'PROVISIONAL',
+  },
+  {
+    id: 'enterprise-ai-agent',
+    title: 'Enterprise Tool-Calling AI Agent',
+    category: 'Autonomous Agents & Tools',
+    summary: 'Equip AI models with the ability to execute database queries, invoke REST APIs, and trigger asynchronous workflows safely.',
+    flow: ['User Intent', 'Agent Reasoning Loop', 'Tool Registry (MCP)', 'External API / Database', 'Result Validation', 'Synthesized Action'],
+    technologies: ['Model Context Protocol (MCP)', 'Spring AI', 'Java 21', 'REST APIs'],
+    useCase: 'Automated claim investigations, incident triage, and automated reporting.',
+    status: 'PROVISIONAL',
+  },
+  {
+    id: 'multi-agent-system',
+    title: 'Collaborative Multi-Agent Architecture',
+    category: 'Multi-Agent Orchestration',
+    summary: 'Deconstruct complex enterprise goals across specialized worker agents governed by an orchestrator with validation checkpoints.',
+    flow: ['Complex Goal', 'Supervisor Agent', 'Worker Agent A (Research)', 'Worker Agent B (Execution)', 'A2A Inter-Agent Protocol', 'Supervisor Verification'],
+    technologies: ['A2A Protocol', 'Multi-Agent Orchestration', 'Spring AI', 'LangGraph Patterns'],
+    useCase: 'Complex regulatory audits, multi-source data reconciliation, and automated codebase modernization.',
+    status: 'PROVISIONAL',
+  },
 ];
