@@ -4,6 +4,9 @@ import { Journey } from '../components/sections/Journey';
 import { Capabilities } from '../components/sections/Capabilities';
 import { KnowledgeMap } from '../components/sections/KnowledgeMap';
 import { TechExpertise } from '../components/sections/TechExpertise';
+import { JavaDeepDive } from '../components/sections/JavaDeepDive';
+import { SpringMicroservicesLab } from '../components/sections/SpringMicroservicesLab';
+import { KafkaLab } from '../components/sections/KafkaLab';
 import { ExperienceSection } from '../components/sections/ExperienceSection';
 import { SystemDesignLab } from '../components/sections/SystemDesignLab';
 import { AILab } from '../components/sections/AILab';
@@ -34,6 +37,15 @@ export function HomePage() {
       <SectionDivider />
 
       <TechExpertise />
+      <SectionDivider />
+
+      <JavaDeepDive />
+      <SectionDivider />
+
+      <SpringMicroservicesLab />
+      <SectionDivider />
+
+      <KafkaLab />
       <SectionDivider />
 
       <ExperienceSection />

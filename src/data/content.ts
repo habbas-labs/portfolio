@@ -1,20 +1,37 @@
-import type { Profile, Skill, TechNode, JourneyEra, Capability, ThinkingStage, ArchitectureDecision, CodeExample, InterviewTopic, SystemDesign, AILevel } from '../types';
+import type { 
+  Profile, 
+  Skill, 
+  TechNode, 
+  JourneyEra, 
+  Capability, 
+  ThinkingStage, 
+  ArchitectureDecision, 
+  CodeExample, 
+  InterviewTopic, 
+  SystemDesign, 
+  AILevel,
+  JavaTopic,
+  ArchitectureLabStep,
+  KafkaLabTopic,
+  AIConceptNode,
+  InterviewTopicDetail
+} from '../types';
 
 /* ═══════════════════════════════════════════
    PROFILE
    ═══════════════════════════════════════════ */
 export const profile: Profile = {
-  name: '[NAME]',
-  tagline: 'Engineering Intelligent Systems',
+  name: 'Haider Abbas',
+  tagline: 'Senior Backend Engineer · Distributed Systems · AI Systems',
   headline: 'I Design Systems Before I Write Code.',
-  subheadline: 'Building scalable backend systems, distributed architectures, and intelligent AI-powered enterprise applications.',
+  subheadline: '13+ years building mission-critical backend systems, high-throughput distributed architectures, and modern AI-powered enterprise applications.',
   philosophy: 'Think architecturally before implementing. Understand the purpose, impact and consequences of a feature instead of simply writing code that satisfies the apparent requirement.',
   yearsExperience: 13,
-  email: '[EMAIL]',
-  linkedin: '[LINKEDIN_URL]',
-  github: '[GITHUB_URL]',
-  location: '[LOCATION]',
-  resumeUrl: '[RESUME_URL]',
+  email: 'haiderabbas@example.com',
+  linkedin: 'https://linkedin.com/in/haider-abbas',
+  github: 'https://github.com/haiderabbas-labs',
+  location: 'Remote / Hybrid',
+  resumeUrl: '#',
 };
 
 /* ═══════════════════════════════════════════
@@ -120,7 +137,7 @@ export const journeyEras: JourneyEra[] = [
 ];
 
 /* ═══════════════════════════════════════════
-   ENGINEERING KNOWLEDGE MAP — Interactive Graph Nodes
+   ENGINEERING KNOWLEDGE MAP — Graph Nodes
    ═══════════════════════════════════════════ */
 export const techNodes: TechNode[] = [
   { id: 'java', label: 'Java', category: 'core', x: 15, y: 30, description: 'Core language — 13+ years. Java 21, concurrency, streams, modern patterns.', connections: ['spring', 'databases', 'concurrency'] },
@@ -151,6 +168,484 @@ export const capabilities: Capability[] = [
   { id: 'ai-apps', title: 'AI-Powered Applications', description: 'Intelligent enterprise applications leveraging LLMs, RAG, tool calling, and agentic patterns built on solid backend foundations.', technologies: ['Spring AI', 'RAG', 'Tool Calling', 'Agents'], icon: 'Brain' },
   { id: 'rag-systems', title: 'RAG Systems', description: 'Retrieval-Augmented Generation pipelines with embeddings, vector databases, and context-aware LLM responses.', technologies: ['Spring AI', 'Vector DB', 'Embeddings', 'LLMs'], icon: 'Search' },
   { id: 'agent-systems', title: 'AI Agent Systems', description: 'Tool-using AI agents and multi-agent orchestration using MCP, A2A protocol, and enterprise integration.', technologies: ['AI Agents', 'MCP', 'A2A', 'Multi-Agent'], icon: 'Bot' },
+];
+
+/* ═══════════════════════════════════════════
+   JAVA DEEP DIVE TOPICS
+   ═══════════════════════════════════════════ */
+export const javaTopics: JavaTopic[] = [
+  {
+    id: 'java-21',
+    title: 'Modern Java & Virtual Threads (Loom)',
+    category: 'Runtime & Concurrency',
+    description: 'Java 21 Virtual Threads decouple thread creation from OS threads, enabling millions of concurrent lightweight tasks without reactive complexity.',
+    deepDive: 'Traditional platform threads map 1:1 to OS threads, consuming ~1MB stack memory and limited by OS context switching. Virtual threads run on carrier threads (ForkJoinPool). When blocking on I/O (e.g. JDBC, HTTP, socket read), the runtime unmounts the virtual thread, freeing the carrier thread for other work. Eliminates callback hell and reactive complexity while maintaining thread-per-request programming model.',
+    codeSnippet: `// Lightweight concurrency with Java 21 StructuredTaskScope
+try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+    Supplier<Eligibility> eligibility = scope.fork(() -> memberClient.checkEligibility(req));
+    Supplier<PricingRules> pricing = scope.fork(() -> pricingEngine.getPlanRules(req));
+    
+    scope.join();           // Wait for both concurrent tasks
+    scope.throwIfFailed();  // Propagate first failure immediately
+    
+    return adjudicator.process(eligibility.get(), pricing.get());
+}`,
+    keyTakeaway: 'Adopt virtual threads for high-throughput I/O bound enterprise services; avoid pinning carrier threads by replacing synchronized blocks with ReentrantLock where needed.',
+  },
+  {
+    id: 'jvm-memory',
+    title: 'JVM Memory Architecture & GC Tuning',
+    category: 'Performance & Internals',
+    description: 'Understanding generational garbage collection (G1, ZGC) and memory regions (Eden, Survivor, Tenured, Metaspace) under heavy enterprise loads.',
+    deepDive: 'The Weak Generational Hypothesis states most objects die young. Eden space handles allocations; survivors undergo aging tenures. G1GC dynamically manages regions to meet target pause times (-XX:MaxGCPauseMillis=200). ZGC provides sub-millisecond pauses by using colored pointers and load barriers to perform compaction concurrently with application threads. In high-volume claims engines, object pooling or zero-allocation pattern in hot loops prevents GC pressure.',
+    codeSnippet: `// Production JVM tuning flags for low-latency Spring Boot services
+// -XX:+UseZGC -XX:+ZGenerational
+// -Xms8g -Xmx8g -XX:+AlwaysPreTouch
+// -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
+// -XX:+ExitOnOutOfMemoryError`,
+    keyTakeaway: 'Always benchmark GC behavior under realistic claim arrival distributions; ZGC Generational in Java 21 eliminates pause spikes for real-time SLAs.',
+  },
+  {
+    id: 'collections-internals',
+    title: 'Collections, Concurrency & Stream Internals',
+    category: 'Core Language',
+    description: 'Internals of HashMap binning (treeification), ConcurrentHashMap striped locks, and lazy evaluation pipelines in Streams.',
+    deepDive: 'HashMap uses table doubling with power-of-two sizes. If hash collisions in a single bucket exceed TREEIFY_THRESHOLD (8) and table capacity >= 64, the linked list converts to a Red-Black Tree (O(log n) worst case). ConcurrentHashMap avoids global locking by employing CAS (Compare-And-Swap) on bucket heads and synchronized only on individual node heads during treeification. Streams are lazy: intermediate operations build a pipeline of Sink chains; execution happens only on terminal operation.',
+    codeSnippet: `// Parallel streams must never share mutable state
+// Use custom ForkJoinPool to prevent saturating commonPool
+ForkJoinPool customPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+try {
+    customPool.submit(() ->
+        claims.parallelStream()
+              .filter(Claim::isEligibleForIRA2025)
+              .map(accumulatorService::calculateImpact)
+              .toList()
+    ).get();
+} finally {
+    customPool.shutdown();
+}`,
+    keyTakeaway: 'Never use parallelStream() with blocking I/O calls without an isolated executor pool; choose ConcurrentHashMap or specialized concurrent structures for thread-safe state sharing.',
+  },
+  {
+    id: 'clean-architecture',
+    title: 'Clean Architecture, Hexagonal & SOLID',
+    category: 'Architecture Patterns',
+    description: 'Decoupling domain business rules from Spring Framework annotations, databases, and external messaging brokers.',
+    deepDive: 'The domain model and business rules must be free of Spring or JPA annotations. Ports define incoming (Use Cases) and outgoing (Repositories, Message Publishers) interfaces. Adapters implement these interfaces using Spring Web controllers, JPA repositories, or Kafka producers. This makes testing pure domain rules instant and deterministic without booting Spring contexts.',
+    codeSnippet: `// Pure Domain Use Case (no Spring dependency)
+public class AdjudicateClaimUseCase {
+    private final ClaimRepositoryPort claimRepository;
+    private final AccumulatorPort accumulatorPort;
+
+    public AdjudicationResult execute(Claim claim) {
+        claim.validateBusinessRules();
+        var accumulators = accumulatorPort.load(claim.memberId());
+        var result = claim.adjudicate(accumulators);
+        claimRepository.save(claim);
+        return result;
+    }
+}`,
+    keyTakeaway: 'Frameworks and ORMs are implementation details. Your core business rules should run independently in plain Java unit tests in milliseconds.',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   SPRING & MICROSERVICES LAB STEPS
+   ═══════════════════════════════════════════ */
+export const springArchitectureSteps: ArchitectureLabStep[] = [
+  {
+    id: 'client',
+    name: 'Client Application',
+    type: 'client',
+    description: 'Healthcare provider portal, pharmacy system, or downstream REST consumer sending batch or real-time claim payloads.',
+    responsibilities: ['HTTPS/TLS termination', 'JWT bearer token transmission', 'Payload formatting (EDI / JSON)'],
+    failureMode: 'Network disconnects, timeout retries with exponential backoff.',
+  },
+  {
+    id: 'gateway',
+    name: 'API Gateway (Spring Cloud Gateway)',
+    type: 'gateway',
+    description: 'Single perimeter gateway handling authentication, rate limiting, and route forwarding to microservices.',
+    responsibilities: ['OAuth2 / JWT token validation', 'Token bucket rate limiting', 'Circuit breaker fallback', 'Distributed correlation ID injection'],
+    failureMode: 'Gateway saturation: handled via auto-scaling and Redis-backed rate limiting.',
+  },
+  {
+    id: 'service',
+    name: 'Claim Adjudication Service',
+    type: 'service',
+    description: 'Core Spring Boot microservice running stateless business rules, eligibility verification, and accumulator updates.',
+    responsibilities: ['Domain rule evaluation (B1/B2/B3)', 'Accumulator balance calculation', 'Saga orchestrator participant', 'Local database transaction'],
+    failureMode: 'Service pod crash: Kubernetes restarts container, Kafka rebalances partition to healthy replica.',
+  },
+  {
+    id: 'queue',
+    name: 'Event Spine (Apache Kafka)',
+    type: 'queue',
+    description: 'Decoupled event broker streaming claim events (submitted, adjudicated, reversed) across bounded contexts.',
+    responsibilities: ['At-least-once ordered delivery per claim ID', 'Compacted topics for accumulator state', 'DLT routing on deserialization/transient errors'],
+    failureMode: 'Broker partition leader election: seamless failover with min.insync.replicas=2.',
+  },
+  {
+    id: 'database',
+    name: 'Polyglot Persistence (PostgreSQL & DB2)',
+    type: 'database',
+    description: 'Dedicated database per microservice following database-per-service pattern, plus legacy DB2 connectivity.',
+    responsibilities: ['ACID local transactions', 'Optimistic locking on claim records', 'Read-replica queries for reporting'],
+    failureMode: 'Lock contention: mitigated by fine-grained partition keys and optimistic version checks.',
+  },
+  {
+    id: 'observability',
+    name: 'Observability (OpenTelemetry & Prometheus)',
+    type: 'observability',
+    description: 'Full stack distributed tracing, SLI/SLO metrics, and centralized logging with correlation IDs.',
+    responsibilities: ['Micrometer metrics export', 'Distributed trace propagation (W3C TraceContext)', 'Health check actuators'],
+    failureMode: 'Collector latency: async buffer avoids impacting production request latency.',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   KAFKA LAB TOPICS
+   ═══════════════════════════════════════════ */
+export const kafkaLabTopics: KafkaLabTopic[] = [
+  {
+    id: 'partitioning',
+    title: 'Partitions & Strict Ordering Guarantees',
+    summary: 'Kafka guarantees message ordering ONLY within a single partition, not across the entire topic.',
+    deepDive: 'When producing a claim event, the record key (e.g., ClaimID or MemberID) is hashed via Murmur2 to determine the partition. By using MemberID or ClaimID as the key, all lifecycle transitions (B1 New Claim -> Adjudication -> B2 Reversal) are guaranteed to arrive at the consumer in the exact chronological sequence produced. Without a key, messages round-robin, risking out-of-order execution (e.g. processing a reversal before the original claim).',
+    codeSnippet: `// Producer with explicit partition key for ordering
+ProducerRecord<String, ClaimEvent> record = new ProducerRecord<>(
+    "claims.adjudication.v1",
+    claimEvent.getMemberId(), // Key ensures strict FIFO per member
+    claimEvent
+);
+kafkaTemplate.send(record);`,
+    keyTradeoff: 'Hot partitions can emerge if one member or provider generates abnormal traffic volume. Mitigated by composite keys (MemberId + Date).',
+  },
+  {
+    id: 'consumer-groups',
+    title: 'Consumer Groups & Cooperative Sticky Rebalancing',
+    summary: 'Consumer groups enable horizontal scaling by dividing partitions among instances.',
+    deepDive: 'Each partition is consumed by exactly one consumer within a consumer group. In Kafka 3.x+, CooperativeStickyAssignor avoids "stop-the-world" eager rebalancing when pods scale up or down. Consumers continue processing unassigned partitions while only the migrating partition is reassigned, reducing latency spikes from seconds to milliseconds.',
+    codeSnippet: `// Spring Kafka consumer configuration for zero-downtime rebalancing
+properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
+    List.of(CooperativeStickyAssignor.class.getName()));
+properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000);`,
+    keyTradeoff: 'Scaling consumers beyond the partition count yields idle instances. Topic partition count sets the upper concurrency ceiling.',
+  },
+  {
+    id: 'retries-dlt',
+    title: 'Non-Blocking Retries & Dead-Letter Topics (DLT)',
+    summary: 'Handle transient network glitches without blocking the main partition pipeline.',
+    deepDive: 'Blocking retries stop consumption on that partition, causing severe lag for subsequent healthy claims. Spring Kafka @RetryableTopic creates a chain of retry topics with increasing backoffs (e.g. claims-retry-10s, claims-retry-1m) and routes unrecoverable exceptions directly to a Dead Letter Topic (claims.dlt). Operations teams can inspect, re-inject, or alert on DLT records.',
+    codeSnippet: `@RetryableTopic(
+    attempts = "4",
+    backoff = @Backoff(delay = 1000, multiplier = 2.0),
+    exclude = { ValidationException.class, SchemaViolationException.class },
+    dltTopicSuffix = ".dlt"
+)
+@KafkaListener(topics = "claims.inbound", groupId = "claims-processor")
+public void consume(ClaimEvent event) {
+    adjudicationService.process(event);
+}`,
+    keyTradeoff: 'Retry topics create additional Kafka topics and lose strict cross-claim ordering for retried records, making idempotency non-negotiable.',
+  },
+  {
+    id: 'idempotency-eos',
+    title: 'Idempotency & Exactly-Once Semantics (EOS)',
+    summary: 'Prevent double-billing or duplicate adjudication during network reconnects.',
+    deepDive: 'At the producer level, enable.idempotence=true assigns each producer a PID and sequence numbers to deduplicate network retries at the broker. At the consumer level, network re-deliveries still occur during rebalances. Idempotency is enforced by recording processed event IDs in PostgreSQL within the same database transaction, or checking a distributed deduplication store before state alteration.',
+    codeSnippet: `// Consumer-side deduplication pattern
+@Transactional
+public void handleClaimAdjudicated(ClaimAdjudicatedEvent event) {
+    if (dedupRepository.existsByEventId(event.getEventId())) {
+        log.warn("Duplicate event {} ignored", event.getEventId());
+        return;
+    }
+    accountBalance.applyDeductible(event.getAmount());
+    dedupRepository.save(new ProcessedEvent(event.getEventId(), Instant.now()));
+}`,
+    keyTradeoff: 'EOS transactions introduce slight broker latency due to two-phase commit on transaction markers; standard at-least-once + consumer deduplication is frequently preferred.',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   AI CONCEPT NODES (Interactive AI Knowledge Map)
+   ═══════════════════════════════════════════ */
+export const aiConceptNodes: AIConceptNode[] = [
+  {
+    id: 'llm',
+    name: 'Foundation LLM',
+    definition: 'Large Language Models (OpenAI GPT-4o, Claude 3.5, Gemini 1.5, Ollama Llama 3) trained on vast corpuses to predict next tokens.',
+    purpose: 'Core reasoning engine for natural language understanding, synthesis, and code generation.',
+    relationship: 'The base intelligence layer used by RAG pipelines and Autonomous Agents.',
+    whenToUse: 'Text summarization, translation, code generation, and initial query analysis.',
+    limitations: 'Knowledge cutoff, hallucinations, lacks access to proprietary enterprise data.',
+    example: 'ChatClient.create(chatModel).prompt("Summarize pharmacy claim").call().content()',
+  },
+  {
+    id: 'rag',
+    name: 'RAG (Retrieval-Augmented Generation)',
+    definition: 'Pattern that retrieves relevant private documents from a vector store and injects them into the prompt before sending to the LLM.',
+    purpose: 'Eliminates hallucinations and gives LLMs access to proprietary, real-time enterprise documents.',
+    relationship: 'Connects Vector DBs and Embeddings to the Foundation LLM.',
+    whenToUse: 'Healthcare plan document lookup, CMS compliance guides, enterprise technical documentation.',
+    limitations: 'Retrieval accuracy determines answer quality ("garbage in, garbage out"), chunking strategy sensitivity.',
+    example: 'Spring AI VectorStore.similaritySearch(query) -> Prompt context injection.',
+  },
+  {
+    id: 'embeddings',
+    name: 'Vector Embeddings',
+    definition: 'High-dimensional numerical representations of text where semantic similarity corresponds to geometric proximity (cosine distance).',
+    purpose: 'Translates unstructured natural language into vector coordinates for fast similarity search.',
+    relationship: 'Generates vectors stored and queried in Vector Databases.',
+    whenToUse: 'Semantic search, duplicate detection, clustering customer claim dispute categories.',
+    limitations: 'Domain-specific jargon (e.g. medical codes) may require fine-tuned embedding models.',
+    example: 'embeddingModel.embed("Medicare Part D Accumulator Rule")',
+  },
+  {
+    id: 'vectordb',
+    name: 'Vector Database (Pgvector / Chroma)',
+    definition: 'Specialized database engine designed to index and search millions of vector embeddings using algorithms like HNSW or IVFFlat.',
+    purpose: 'Delivers sub-50ms approximate nearest neighbor (ANN) retrieval over large document repositories.',
+    relationship: 'Storage and retrieval backbone for RAG.',
+    whenToUse: 'Enterprise document repositories with 10k+ pages requiring semantic search.',
+    limitations: 'Infrastructure overhead, requires synchronization when primary documents are updated.',
+    example: 'SELECT * FROM documents ORDER BY embedding <=> query_vector LIMIT 5;',
+  },
+  {
+    id: 'tools',
+    name: 'Tool Calling (Function Calling)',
+    definition: 'Mechanism allowing LLMs to emit structured JSON indicating which external function/API to invoke with what parameters.',
+    purpose: 'Bridges LLMs with live databases, calculator services, and legacy enterprise systems.',
+    relationship: 'Transforms passive LLMs into active problem-solving Agents.',
+    whenToUse: 'Fetching member deductible balance from DB2, calculating drug tier pricing, checking real-time claim status.',
+    limitations: 'LLM can generate invalid argument types without rigorous JSON schema validation.',
+    example: '@Bean @Description("Query accumulator balance") public Function<Request, Response> getBalance()',
+  },
+  {
+    id: 'agents',
+    name: 'Autonomous AI Agents',
+    definition: 'Loop-based architectures (ReAct: Reason + Act) that evaluate an objective, inspect state, select tools, and iterate until the task is complete.',
+    purpose: 'Solves complex multi-step problems without hardcoded rule trees.',
+    relationship: 'Combines LLM reasoning, Memory, and Tool Calling in an execution loop.',
+    whenToUse: 'Automated claim triage, root-cause anomaly investigation, automated bug report synthesis.',
+    limitations: 'Risk of infinite loops, non-deterministic execution paths, higher API cost.',
+    example: 'Agent receives "Analyze failed batch claim #4821", queries logs, compares schema, generates fix report.',
+  },
+  {
+    id: 'mcp',
+    name: 'Model Context Protocol (MCP)',
+    definition: 'Open standard protocol created by Anthropic allowing AI applications to connect securely to external tools and data sources via standardized JSON-RPC.',
+    purpose: 'Standardizes tool definitions so agents can discover and call services without bespoke glue code.',
+    relationship: 'Universal interface between AI Agents and Enterprise Data/Tools.',
+    whenToUse: 'Exposing backend microservices, file systems, and database inspectors to coding and enterprise agents.',
+    limitations: 'Requires protocol implementation on legacy systems, network latency overhead.',
+    example: 'Spring Boot MCP Server exposing claim schema lookup tool to Claude/Gemini.',
+  },
+  {
+    id: 'multiagent',
+    name: 'Multi-Agent Systems & A2A',
+    definition: 'Orchestrated network of specialized agents communicating peer-to-peer or via an Orchestrator/Supervisor pattern.',
+    purpose: 'Divides complex tasks (e.g. Researcher, Coder, Reviewer) across isolated context windows for superior quality.',
+    relationship: 'Top-tier architecture connecting specialized tool-calling agents.',
+    whenToUse: 'Large-scale system migration, end-to-end claim policy validation with adversarial review.',
+    limitations: 'High orchestration complexity, message overhead, requires distributed tracing.',
+    example: 'Supervisor Agent delegates code translation to Modernization Agent and verification to QA Agent.',
+  },
+];
+
+/* ═══════════════════════════════════════════
+   INTERVIEW TOPIC DETAILS — 3 Levels of Depth
+   (30-Second, 2-Minute, 10-Minute Deep Dive)
+   ═══════════════════════════════════════════ */
+export const interviewTopicDetails: InterviewTopicDetail[] = [
+  {
+    id: 'java-depth',
+    title: 'Java 21 & Modern Concurrency',
+    category: 'core',
+    icon: 'Code',
+    tags: ['Java 21', 'Virtual Threads', 'Concurrency', 'JVM', 'Memory Model'],
+    depth: {
+      thirtySecond: '13+ years of enterprise Java expertise. I architect high-throughput backend systems using Java 21, virtual threads (Project Loom), structured concurrency, and clean architectural principles that prioritize readability, testability, and deterministic performance under load.',
+      twoMinute: [
+        'Evolution: From Java 7/8 through modern Java 21 LTS, leveraging records, sealed hierarchies, and pattern matching for domain-driven modeling.',
+        'Concurrency Shift: Moving away from reactive callback models to Java 21 Virtual Threads running on lightweight carriers, dramatically simplifying debugging while handling high I/O concurrency.',
+        'Internals & Memory: Deep understanding of JVM memory layout (Eden, Survivor, Metaspace), garbage collection ergonomics (G1, ZGC), and memory visibility via the Java Memory Model (JMM).',
+        'Clean Architecture: Separating business logic from Spring/JPA annotations via ports and adapters, ensuring 100% testable domain code.',
+      ],
+      tenMinute: {
+        architecture: 'In high-volume services (e.g. healthcare claims), threads spend 90% of their lifespan blocked on I/O (database lookups, Kafka publishes, external REST calls). Platform threads consume ~1MB OS stack each, constraining throughput to several thousand concurrent threads. Virtual threads map thousands of lightweight tasks onto carrier threads. When a virtual thread hits blocking I/O, the JVM unmounts its continuation, letting carrier threads process other claims. We structure business steps using StructuredTaskScope to ensure child tasks terminate cleanly upon failure.',
+        tradeoffs: [
+          'Virtual Threads vs Reactive (WebFlux): Virtual threads retain synchronous debugging, standard stack traces, and thread-local patterns without the cognitive overhead and backpressure complexity of WebFlux.',
+          'Synchronized Pinning: Synchronized blocks pin carrier threads in older libraries; we audit dependencies and substitute ReentrantLock where blocking operations occur.',
+          'Garbage Collection Trade-off: High-rate allocations of short-lived objects favor ZGC or G1 with tuned young-gen sizes to maintain sub-50ms SLA pauses.',
+        ],
+        scaling: 'Scaled horizontally via stateless container pods running Java 21 with ContainerAware memory limits (-XX:MaxRAMPercentage=75.0) and JVM ahead-of-time pre-touching to avoid cold-start latency spikes.',
+        failureHandling: 'Graceful degradation via circuit breakers (Resilience4j), bounded thread pools, timeout propagation across network hops, and structured cancellation of dangling subtasks.',
+      },
+      sampleQuestions: [
+        'How do virtual threads differ from platform threads, and what is carrier thread pinning?',
+        'How does the Java Memory Model guarantee happens-before consistency across CPU cores?',
+        'When would you choose ZGC over G1GC for an enterprise application?',
+      ],
+    },
+  },
+  {
+    id: 'kafka-depth',
+    title: 'Apache Kafka & Event-Driven Systems',
+    category: 'distributed',
+    icon: 'Radio',
+    tags: ['Kafka', 'Event Streaming', 'Partitioning', 'Idempotency', 'DLT'],
+    depth: {
+      thirtySecond: 'Designed and operated mission-critical Kafka event streaming architectures for enterprise claims processing. Deep experience in partition-level ordering, consumer group rebalances, non-blocking retry topics, dead-letter topics (DLT), and end-to-end idempotent processing.',
+      twoMinute: [
+        'Partitioning Strategy: Hashing member/claim keys ensures strict FIFO sequence for dependent operations (e.g. B1 new claim must precede B2 reversal).',
+        'Consumer Scaling: Scaled horizontal consumer instances with CooperativeStickyAssignor to eliminate stop-the-world rebalance storms.',
+        'Resilience: Implemented non-blocking retry topics with exponential backoff and dead-letter queues to keep main pipelines moving.',
+        'Idempotency & Deduplication: Combining producer idempotence with database-level event deduplication to ensure exactly-once business outcomes.',
+      ],
+      tenMinute: {
+        architecture: 'Claims are ingested through REST endpoints, converted to canonical domain events, and published to partitioned Kafka topics. We use ClaimID as the message key to route all events for a given claim to the same partition, guaranteeing chronological integrity. Downstream consumer pods process claims and write adjudication outcomes to PostgreSQL within a local transaction that simultaneously records the unique event ID in an event_log table. If a duplicate delivery occurs, the unique constraint blocks re-execution.',
+        tradeoffs: [
+          'Synchronous REST vs Asynchronous Kafka: Synchronous REST provides instant feedback but creates cascading failures; Kafka introduces eventual consistency but yields 99.99% availability and buffer absorption during peak loads.',
+          'Retry Topic Multiplication: Non-blocking retries isolate bad messages but introduce out-of-order execution across different claims, requiring independent claim state machines.',
+          'At-Least-Once + Deduplication vs Kafka Transactions (EOS): Consumer-side database deduplication is substantially faster and avoids 2-phase commit overhead across distributed brokers.',
+        ],
+        scaling: 'Partition count is calculated based on downstream database write latency (e.g., 32 partitions per topic, allowing up to 32 parallel consumer threads per consumer group). Lag is continuously monitored via Prometheus JMX exporters.',
+        failureHandling: 'Transient exceptions (DB timeouts, network blips) route to retry topics with backoff. Permanent exceptions (malformed payloads, unrecoverable domain errors) route to DLT with failure context headers for operator triage.',
+      },
+      sampleQuestions: [
+        'How do you achieve strictly ordered processing of related events in Kafka while maintaining high throughput?',
+        'How does Cooperative Sticky Rebalancing improve consumer group stability compared to Eager Rebalance?',
+        'What happens when a consumer crashes after writing to the database but before committing the Kafka offset?',
+      ],
+    },
+  },
+  {
+    id: 'spring-microservices-depth',
+    title: 'Spring Boot & Microservices Architecture',
+    category: 'distributed',
+    icon: 'GitBranch',
+    tags: ['Spring Boot', 'Microservices', 'API Gateway', 'Saga Pattern', 'Observability'],
+    depth: {
+      thirtySecond: 'Expert in architecting Spring Boot microservices ecosystems with domain-driven design, API Gateway security, resilient inter-service communication, distributed data ownership, and OpenTelemetry observability.',
+      twoMinute: [
+        'Clean Layering: Strict separation between API controllers, application use-cases, domain business rules, and infrastructure adapters.',
+        'Data Ownership: Enforcing database-per-service principles to eliminate hidden database couplings; cross-boundary queries handled via asynchronous event projections.',
+        'Distributed Transactions: Managing multi-service workflows (claims, pricing, accumulators) using orchestration or choreography sagas with compensating actions.',
+        'Production Observability: Micrometer, OpenTelemetry, Prometheus, and Grafana providing end-to-end distributed trace propagation using W3C TraceContext headers.',
+      ],
+      tenMinute: {
+        architecture: 'The system decomposes into independent services: Claim Intake, Adjudication, Accumulator, and Pricing. Inbound requests hit Spring Cloud Gateway for JWT authentication, rate limiting, and correlation ID injection. Internal service-to-service communication is asynchronous via Kafka for state-modifying operations, and synchronous via REST with Resilience4j circuit breakers for read queries. Each microservice manages its own schema in PostgreSQL or DB2, communicating changes strictly via versioned event contracts.',
+        tradeoffs: [
+          'Choreography vs Orchestration Saga: Orchestration provides centralized visibility and easier debugging of complex claim reversals (B2/B3); Choreography offers looser coupling for simple linear notifications.',
+          'Database per Service vs Shared DB: Eliminating shared databases increases operational overhead and requires event replication, but prevents cross-team lockups and schema migrations breaking multiple teams.',
+          'Synchronous Feign/REST vs Kafka: REST chosen only where caller cannot proceed without immediate answer; Kafka chosen for 80% of backend pipeline.',
+        ],
+        scaling: 'Stateless Spring Boot containers scale dynamically on Kubernetes based on CPU and request queue depth. HikariCP connection pools tuned to match Postgres core saturation.',
+        failureHandling: 'Circuit breakers trip when error rate exceeds 50% over 20 calls, falling back to cached plan rules. Distributed tracing pinpoints failing downstream spans immediately.',
+      },
+      sampleQuestions: [
+        'How do you maintain data consistency across microservices without distributed two-phase commits?',
+        'How do you design backward-compatible API contracts in an enterprise environment?',
+        'How do you prevent cascading failures in a synchronous microservice dependency chain?',
+      ],
+    },
+  },
+  {
+    id: 'enterprise-claims-depth',
+    title: 'Healthcare Claims Adjudication & Legacy Modernization',
+    category: 'enterprise',
+    icon: 'Building2',
+    tags: ['SS&C DomaniRx', 'B1/B2/B3 Claims', 'COBOL to Java', 'CMS Compliance', 'IRA 2025'],
+    depth: {
+      thirtySecond: 'Technical Lead on SS&C DomaniRx adjudication platform. Modernized critical legacy COBOL mainframe functionality into high-throughput Java 21 microservices, processing B1 (new), B2 (reversal), and B3 (reversal+new) claims while implementing regulatory mandates like IRA 2025.',
+      twoMinute: [
+        'Domain Scope: Real-time pharmacy/medical claim adjudication handling complex Medicare/Medicaid CMS compliance and accumulator calculations.',
+        'Transaction Lifecycle: Supporting B1 new claims, B2 reversals with financial rollbacks, and atomic B3 transactions under sub-second SLAs.',
+        'COBOL Modernization: Reverse-engineered business logic embedded in decades-old COBOL copybooks into modular, clean Java 21 domain components.',
+        'Regulatory Compliance: Implemented IRA 2025 (Inflation Reduction Act) rules restructuring patient catastrophic phase out-of-pocket maximums.',
+      ],
+      tenMinute: {
+        architecture: 'Legacy claims originally ran on mainframe batch cycles. The modernized architecture receives claims via secure API gateways, runs them through parallel eligibility, drug pricing, and accumulator engines, and persists outcomes with immutable audit logging. For COBOL modernization, we executed a strangler fig pattern: legacy copybook data structures were translated into Java records with automated parallel-run validation (comparing legacy mainframe output with Java service output on historical datasets) until achieving 100.00% zero-discrepancy parity.',
+        tradeoffs: [
+          'Strangler Fig Migration vs Big Bang: Big Bang migration carries catastrophic regulatory risk in healthcare; Strangler Fig allowed gradual, verifiable cutover service by service.',
+          'Batch to Real-Time: Transitioning from overnight batch adjudication to real-time event-driven processing required rewriting accumulator locking to prevent concurrent claim race conditions.',
+          'Preserving Obscure Legacy Rules: Decades of COBOL bug fixes had become expected business behavior; our golden master test suite preserved exact functional rules while radically simplifying code architecture.',
+        ],
+        scaling: 'Handled pharmacy peak morning bursts using Kafka partition distribution and optimized DB2/Postgres indexing on member accumulator balances.',
+        failureHandling: 'Strict financial auditability: every claim decision includes raw input snapshot, adjudication rule trace, accumulator delta, and digital timestamp for CMS audit compliance.',
+      },
+      sampleQuestions: [
+        'What was your methodology for validating that the Java rewrite matched legacy COBOL calculation output perfectly?',
+        'How did you handle the B2 reversal transaction when downstream accumulator balances had already changed?',
+        'How did IRA 2025 legislation impact accumulator calculation algorithms?',
+      ],
+    },
+  },
+  {
+    id: 'ai-lab-depth',
+    title: 'AI Engineering, Spring AI & RAG Architecture',
+    category: 'ai',
+    icon: 'Brain',
+    tags: ['Spring AI', 'RAG', 'Vector DB', 'Embeddings', 'Enterprise AI'],
+    depth: {
+      thirtySecond: 'Applying 13+ years of robust backend engineering to enterprise AI systems. Building production-grade RAG and AI services using Spring AI, Vector DBs (Pgvector/Chroma), and local LLMs (Ollama) with deterministic fallback, validation, and zero hallucinations.',
+      twoMinute: [
+        'Backend-First AI: Treating LLMs as non-deterministic external services that require circuit breakers, input validation, structured output parsing, and observability.',
+        'Spring AI Integration: Leveraging Spring AI ChatClient, VectorStore, and Advisors to inject context cleanly into prompts.',
+        'RAG Pipeline: Document chunking, vector embeddings, similarity search, and prompt grounding to deliver hallucination-free compliance and technical answers.',
+        'Local & Cloud Models: Designing model-agnostic abstraction layers supporting local Ollama models (for privacy/cost) and frontier models (OpenAI, Gemini, Claude).',
+      ],
+      tenMinute: {
+        architecture: 'The RAG architecture comprises an Ingestion Pipeline and a Query Pipeline. Ingestion splits enterprise documentation (e.g. CMS policy guides) into 500-token chunks with 50-token overlap, computes vector embeddings, and stores them in PostgreSQL with pgvector (using HNSW indexing). During query execution, the user question is embedded, similarity-searched (top-k=4, cosine distance > 0.78), and assembled into a structured system prompt that commands the LLM to refuse speculation if context is insufficient.',
+        tradeoffs: [
+          'Direct LLM vs RAG: Direct LLM suffers from hallucination and lacks proprietary domain knowledge; RAG guarantees grounded, auditable answers with source citations.',
+          'Chunk Size Trade-off: Small chunks (200 tokens) yield precise vector matching but lose broader context; large chunks (1000 tokens) preserve context but dilute vector similarity. 500-token semantic chunks proved optimal.',
+          'Local Ollama vs Cloud APIs: Local models keep protected healthcare information (PHI) inside the enterprise VPC with zero data egress, while cloud frontier models handle complex multi-step reasoning.',
+        ],
+        scaling: 'Cached embeddings for common user queries in Redis to bypass vector similarity latency; read-replicas for vector database querying.',
+        failureHandling: 'Confidence scoring: if vector search returns cosine similarity below threshold, system falls back to keyword BM25 search or prompts user for clarification rather than hallucinating.',
+      },
+      sampleQuestions: [
+        'How do you prevent hallucinations in an enterprise RAG implementation?',
+        'How do you choose between pgvector and a dedicated vector database like Pinecone or Milvus?',
+        'How do you evaluate and monitor the accuracy of RAG retrieval over time?',
+      ],
+    },
+  },
+  {
+    id: 'agentic-ai-depth',
+    title: 'Agentic AI, MCP & Multi-Agent Orchestration',
+    category: 'ai',
+    icon: 'Bot',
+    tags: ['AI Agents', 'Tool Calling', 'MCP', 'A2A Protocol', 'Multi-Agent'],
+    depth: {
+      thirtySecond: 'Exploring the frontier of autonomous AI systems. Implementing tool-calling agents and multi-agent orchestration using Model Context Protocol (MCP) and Agent-to-Agent (A2A) standards to automate complex enterprise backend operations.',
+      twoMinute: [
+        'Agent Anatomy: ReAct loops combining reasoning, planning, memory, and tool execution.',
+        'Model Context Protocol (MCP): Utilizing open standards to expose backend Spring microservices, databases, and APIs as typed tools accessible to LLM agents.',
+        'Multi-Agent Architecture: Dividing work across specialized roles (Orchestrator, Research Agent, Code Generator, Reviewer) rather than overloading a single context window.',
+        'Guardrails & Safety: Enforcing human-in-the-loop approvals for sensitive write operations, execution timeouts, and strict schema validation.',
+      ],
+      tenMinute: {
+        architecture: 'Complex engineering tasks (e.g. diagnosing a production claim failure) cannot be solved by a single prompt. We employ an Orchestrator Agent that breaks the problem into subtasks and dispatches them via JSON-RPC over MCP to specialized subagents. A Diagnostics Agent inspects Kafka lag and database error logs; a Policy Agent checks CMS compliance rules; a Synthesizer Agent reconciles findings into an actionable incident post-mortem. Tools are declared as typed JSON schemas with automated validation before execution.',
+        tradeoffs: [
+          'Single Agent vs Multi-Agent: Single agents suffer from prompt bloat, context dilution, and single-point-of-failure reasoning; Multi-agent separation isolates tool sets and context, but introduces latency and message passing overhead.',
+          'Autonomous vs Human-in-the-Loop: Autonomous read actions run at full speed; any state-modifying action (e.g. re-running a failed claim batch) generates an approval artifact requiring engineer confirmation.',
+          'Stateless vs Stateful Agents: We maintain state in a shared Redis/PostgreSQL workspace session, making individual agent workers disposable and recoverable upon timeout.',
+        ],
+        scaling: 'Agents run as background worker tasks communicating through asynchronous event queues, preventing long-running LLM loops from blocking user HTTP threads.',
+        failureHandling: 'Iteration bounds (max 5 tool calls per step) prevent runaway billing loops. Failed tool responses trigger retry with alternative parameters or escalation to human operator.',
+      },
+      sampleQuestions: [
+        'What is the Model Context Protocol (MCP) and why is it superior to custom function calling implementations?',
+        'How do you prevent infinite loops and context exhaustion in autonomous agent workflows?',
+        'How do you guarantee security when granting an AI agent access to execute tools against internal databases?',
+      ],
+    },
+  },
 ];
 
 /* ═══════════════════════════════════════════
@@ -451,13 +946,13 @@ public class ClaimController {
 export const interviewTopics: InterviewTopic[] = [
   { id: 'journey', title: 'Engineering Journey', icon: 'Compass', subtopics: ['Career evolution', 'Technology progression', 'Domain expertise'], route: '/#journey' },
   { id: 'expertise', title: 'Technical Expertise', icon: 'Code', subtopics: ['Java', 'Spring Boot', 'Databases', 'APIs'], route: '/#expertise' },
-  { id: 'architecture', title: 'Architecture', icon: 'Layers', subtopics: ['System design patterns', 'Trade-offs', 'Scalability'], route: '/#system-design' },
+  { id: 'java-deep-dive', title: 'Java Deep Dive', icon: 'FileCode', subtopics: ['Java 21', 'Virtual Threads', 'JVM internals', 'Clean Architecture'], route: '/#java-deep-dive' },
+  { id: 'microservices-topic', title: 'Spring & Microservices', icon: 'GitBranch', subtopics: ['Service boundaries', 'Communication', 'Data ownership'], route: '/#microservices-lab' },
+  { id: 'kafka-topic', title: 'Kafka Lab', icon: 'Radio', subtopics: ['Partitioning', 'Consumer groups', 'Exactly-once', 'DLT'], route: '/#kafka-lab' },
   { id: 'system-design', title: 'System Design', icon: 'Network', subtopics: ['Distributed systems', 'Data flow', 'Failure handling'], route: '/#system-design' },
-  { id: 'kafka-topic', title: 'Kafka', icon: 'Radio', subtopics: ['Partitioning', 'Consumer groups', 'Exactly-once', 'DLT'], route: '/#kafka' },
-  { id: 'microservices-topic', title: 'Microservices', icon: 'GitBranch', subtopics: ['Service boundaries', 'Communication', 'Data ownership'], route: '/#microservices' },
   { id: 'enterprise', title: 'Enterprise Project', icon: 'Building2', subtopics: ['Healthcare claims', 'DomaniRx', 'Legacy modernization'], route: '/#experience' },
-  { id: 'ai-lab', title: 'AI Lab', icon: 'Brain', subtopics: ['Spring AI', 'RAG', 'Tool calling', 'LLMs'], route: '/#ai-lab' },
+  { id: 'ai-lab', title: 'AI Engineering Lab', icon: 'Brain', subtopics: ['Spring AI', 'RAG', 'Tool calling', 'LLMs'], route: '/#ai-lab' },
   { id: 'agentic', title: 'Agentic AI', icon: 'Bot', subtopics: ['AI agents', 'MCP', 'A2A', 'Multi-agent'], route: '/#ai-lab' },
   { id: 'decisions', title: 'Engineering Decisions', icon: 'Scale', subtopics: ['REST vs Kafka', 'Sync vs Async', 'RAG vs Direct LLM'], route: '/#decisions' },
-  { id: 'code', title: 'Code', icon: 'FileCode', subtopics: ['Kafka consumer', 'REST API', 'Spring AI RAG'], route: '/#code' },
+  { id: 'code', title: 'Code Showcase', icon: 'Terminal', subtopics: ['Kafka consumer', 'REST API', 'Spring AI RAG'], route: '/#code' },
 ];

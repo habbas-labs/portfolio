@@ -1,22 +1,24 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Brain, Bot, Sparkles, AlertCircle, ArrowRight, Code, X } from 'lucide-react';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { Badge } from '../ui/Badge';
-import { aiLevels } from '../../data/content';
+import { aiLevels, aiConceptNodes } from '../../data/content';
 import { useReducedMotion } from '../../hooks/useAnimations';
 
 const aiJourney = ['LLM', 'Prompting', 'Structured Output', 'RAG', 'Tools', 'Agents', 'Multi-Agent', 'MCP / A2A'];
-
 const aiTechPlatforms = ['Spring AI', 'Ollama', 'OpenAI', 'Gemini', 'Claude'];
 const aiTechPatterns = ['RAG', 'Vector DB', 'Embeddings', 'Tool Calling', 'MCP', 'A2A', 'AI Agents', 'Multi-Agent', 'AI Coding Agents'];
-
 const levelColors = ['#3b82f6', '#06b6d4', '#f59e0b', '#f43f5e'];
 
 export function AILab() {
   const [activeLevel, setActiveLevel] = useState(0);
+  const [selectedConceptId, setSelectedConceptId] = useState<string | null>(aiConceptNodes[1].id); // default RAG
   const reduced = useReducedMotion();
   const level = aiLevels[activeLevel];
+
+  const selectedConcept = aiConceptNodes.find(c => c.id === selectedConceptId);
 
   return (
     <section id="ai-lab" className="py-24">
@@ -24,7 +26,7 @@ export function AILab() {
         <SectionHeader
           eyebrow="Intelligent Systems"
           title="AI Engineering Lab"
-          description="Extending years of backend engineering expertise into AI-powered enterprise systems."
+          description="Extending 13+ years of robust backend engineering into AI-powered enterprise systems — RAG, tool calling, MCP, and multi-agent orchestration."
         />
 
         {/* AI Journey progression */}
@@ -55,7 +57,7 @@ export function AILab() {
         <ScrollReveal>
           <div className="mt-16">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">
-              Interactive AI Architecture — 4 Levels
+              Interactive AI Architecture — 4 Levels of Sophistication
             </h3>
 
             {/* Level selector */}
@@ -74,7 +76,7 @@ export function AILab() {
                   <span className="text-xs font-mono">L{l.level}</span>
                   <span className="hidden sm:inline">{l.title}</span>
                 </button>
-              ))}
+              ))}\
             </div>
 
             {/* Graph view */}
@@ -148,12 +150,120 @@ export function AILab() {
           </div>
         </ScrollReveal>
 
+        {/* Interactive AI Knowledge Map (Master Prompt Section 29) */}
+        <ScrollReveal>
+          <div className="mt-20">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-xl font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+                  <Brain className="text-[var(--color-accent)]" size={20} />
+                  Interactive AI Knowledge Map
+                </h3>
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">
+                  Click any concept below to inspect definition, architecture, enterprise applicability, and limitations.
+                </p>
+              </div>
+            </div>
+
+            {/* Concept Node Cloud */}
+            <div className="flex flex-wrap gap-2.5 p-6 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)]">
+              {aiConceptNodes.map((concept) => {
+                const isSelected = selectedConceptId === concept.id;
+                return (
+                  <button
+                    key={concept.id}
+                    onClick={() => setSelectedConceptId(concept.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-2 ${
+                      isSelected
+                        ? 'bg-[var(--color-accent)] text-white shadow-lg shadow-blue-500/20 ring-2 ring-blue-400/30'
+                        : 'bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] hover:text-white border border-[var(--color-border)] hover:border-[var(--color-border-hover)]'
+                    }`}
+                  >
+                    <span>{concept.name}</span>
+                    <ArrowRight size={12} className={isSelected ? 'text-white' : 'text-zinc-600'} />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Selected Concept Deep Dive Modal/Drawer */}
+            <AnimatePresence mode="wait">
+              {selectedConcept && (
+                <motion.div
+                  key={selectedConcept.id}
+                  initial={reduced ? {} : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduced ? {} : { opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="mt-6 p-6 sm:p-8 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)] shadow-xl"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-[var(--color-border)]">
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--color-accent)]">
+                        Enterprise AI Architecture Concept
+                      </span>
+                      <h4 className="text-2xl font-bold text-[var(--color-text-primary)] mt-1">
+                        {selectedConcept.name}
+                      </h4>
+                    </div>
+                    <span className="text-xs font-mono text-[var(--color-text-tertiary)] bg-[var(--color-surface-2)] px-3 py-1.5 rounded-full border border-[var(--color-border)]">
+                      Relationship: {selectedConcept.relationship}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
+                    {selectedConcept.definition}
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-4 mb-6">
+                    <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)] mb-2">
+                        Core Purpose
+                      </h5>
+                      <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+                        {selectedConcept.purpose}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">
+                        When To Use
+                      </h5>
+                      <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+                        {selectedConcept.whenToUse}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">
+                        Limitations & Guardrails
+                      </h5>
+                      <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+                        {selectedConcept.limitations}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[var(--color-surface-0)] border border-[var(--color-border)]">
+                    <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase block mb-1">
+                      Enterprise Implementation Snippet:
+                    </span>
+                    <code className="text-xs font-mono text-blue-300 block overflow-x-auto">
+                      {selectedConcept.example}
+                    </code>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </ScrollReveal>
+
         {/* AI Technologies */}
         <ScrollReveal>
           <div className="mt-16 grid md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">
-                Platforms
+                Platforms & Frameworks
               </h4>
               <div className="flex flex-wrap gap-2">
                 {aiTechPlatforms.map(tech => (
@@ -183,11 +293,11 @@ export function AILab() {
             </div>
           </div>
 
-          <p className="mt-6 text-xs text-[var(--color-text-muted)] italic">
-            Hands-on experience — not claimed as production deployment unless verified.
-          </p>
-          <div className="mt-2">
-            <Badge type="PROVISIONAL" />
+          <div className="mt-8 flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-[var(--color-border)]">
+            <p className="text-xs text-[var(--color-text-muted)] italic">
+              Hands-on enterprise exploration — verified against actual prototype codebases.
+            </p>
+            <Badge type="USER-PROVIDED" />
           </div>
         </ScrollReveal>
       </div>

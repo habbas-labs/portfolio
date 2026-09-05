@@ -130,3 +130,63 @@ export interface SystemDesign {
   tradeoffs: string[];
   status: ContentStatus;
 }
+
+export interface InterviewDepthContent {
+  thirtySecond: string;
+  twoMinute: string[];
+  tenMinute: {
+    architecture: string;
+    tradeoffs: string[];
+    scaling: string;
+    failureHandling: string;
+  };
+  sampleQuestions: string[];
+}
+
+export interface InterviewTopicDetail {
+  id: string;
+  title: string;
+  category: 'core' | 'distributed' | 'enterprise' | 'ai';
+  icon: string;
+  depth: InterviewDepthContent;
+  tags: string[];
+}
+
+export interface JavaTopic {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  deepDive: string;
+  codeSnippet?: string;
+  keyTakeaway: string;
+}
+
+export interface ArchitectureLabStep {
+  id: string;
+  name: string;
+  type: 'client' | 'gateway' | 'service' | 'queue' | 'database' | 'observability';
+  description: string;
+  responsibilities: string[];
+  failureMode: string;
+}
+
+export interface KafkaLabTopic {
+  id: string;
+  title: string;
+  summary: string;
+  deepDive: string;
+  codeSnippet?: string;
+  keyTradeoff: string;
+}
+
+export interface AIConceptNode {
+  id: string;
+  name: string;
+  definition: string;
+  purpose: string;
+  relationship: string;
+  whenToUse: string;
+  limitations: string;
+  example: string;
+}
