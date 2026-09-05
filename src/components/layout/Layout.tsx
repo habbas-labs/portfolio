@@ -59,9 +59,9 @@ function ModalContainer() {
 export function Layout() {
   return (
     <ModalProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col w-full max-w-full overflow-x-hidden">
         <Nav />
-        <main className="flex-1">
+        <main className="flex-1 w-full max-w-full min-w-0 overflow-x-hidden">
           <Outlet />
         </main>
         <Footer />
