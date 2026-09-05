@@ -135,12 +135,14 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                     <MapPin size={13} className="text-[var(--color-text-muted)]" />
                     <span>{resumeData.contact.location}</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Phone size={13} className="text-[var(--color-text-muted)]" />
-                    <a href={`tel:${resumeData.contact.phone}`} className="hover:text-[var(--color-accent)]">
-                      {resumeData.contact.phone}
-                    </a>
-                  </div>
+                  {resumeData.contact.phone && (
+                    <div className="flex items-center gap-1.5">
+                      <Phone size={13} className="text-[var(--color-text-muted)]" />
+                      <a href={`tel:${resumeData.contact.phone}`} className="hover:text-[var(--color-accent)]">
+                        {resumeData.contact.phone}
+                      </a>
+                    </div>
+                  )}
                   <div className="flex items-center gap-1.5">
                     <Mail size={13} className="text-[var(--color-text-muted)]" />
                     <a href={`mailto:${resumeData.contact.email}`} className="hover:text-[var(--color-accent)] underline underline-offset-2">

@@ -35,7 +35,6 @@ export const profile: Profile = {
   philosophy: 'Think architecturally before implementing. Understand the purpose, impact and consequences of a feature instead of simply writing code that satisfies the apparent requirement.',
   yearsExperience: 14,
   email: 'haider.abbas.solutions@gmail.com',
-  phone: '+91-9035604326',
   linkedin: 'https://linkedin.com/in/haider-abbas',
   github: 'https://github.com/haiderabbas-labs',
   location: 'Pune, Maharashtra, India',
@@ -1401,7 +1400,6 @@ export const resumeData: ResumeData = {
   title: 'SENIOR JAVA ENGINEER | TECHNICAL LEAD | SPRING AI & AGENTIC AI',
   contact: {
     location: 'Pune, Maharashtra, India',
-    phone: '+91-9035604326',
     email: 'haider.abbas.solutions@gmail.com',
     linkedin: 'https://linkedin.com/in/haider-abbas',
     github: 'https://github.com/haiderabbas-labs',

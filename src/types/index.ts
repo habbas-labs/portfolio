@@ -275,7 +275,7 @@ export interface ResumeData {
   title: string;
   contact: {
     location: string;
-    phone: string;
+    phone?: string;
     email: string;
     linkedin?: string;
     github?: string;
