@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FolderGit2, 
@@ -353,21 +354,33 @@ export function Projects() {
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] flex items-center justify-between">
+                <div className="p-6 border-t border-[var(--color-border)] bg-[var(--color-surface-2)] flex flex-col sm:flex-row items-center justify-between gap-3">
                   <span className="text-xs text-[var(--color-text-tertiary)] font-mono">
                     ID: {activeProject.id}
                   </span>
 
-                  {activeProject.repoUrl && (
-                    <a
-                      href={activeProject.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-surface-3)] hover:bg-[var(--color-surface-1)] border border-[var(--color-border)] text-xs font-semibold text-[var(--color-text-primary)] transition-colors"
-                    >
-                      <Github size={14} /> View Repository <ExternalLink size={12} />
-                    </a>
-                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {activeProject.caseStudyUrl && (
+                      <Link
+                        to={activeProject.caseStudyUrl}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-semibold transition-colors shadow-sm"
+                      >
+                        <span>Open Interactive Case Study</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    )}
+
+                    {activeProject.repoUrl && (
+                      <a
+                        href={activeProject.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-surface-3)] hover:bg-[var(--color-surface-1)] border border-[var(--color-border)] text-xs font-semibold text-[var(--color-text-primary)] transition-colors"
+                      >
+                        <Github size={14} /> View Repository <ExternalLink size={12} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </div>

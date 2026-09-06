@@ -14,7 +14,8 @@ import {
   Terminal, 
   HelpCircle,
   FolderGit2,
-  FileText
+  FileText,
+  ShoppingCart
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { isRecruiterEnabled, isConsultantEnabled } from '../../config/portfolioConfig';
@@ -132,6 +133,14 @@ export function CommandPalette({
   }
 
   commands.push(
+    {
+      id: 'nav-cimm2',
+      title: 'Unilog CIMM2 Enterprise E-Commerce Case Study',
+      category: 'Navigation',
+      description: 'Interactive B2B/B2C architecture, Apache Solr search, and Epicor / Infor SX ERP XML adapters',
+      action: () => handleNavigate('/cimm2'),
+      icon: ShoppingCart,
+    },
     {
       id: 'nav-experience',
       title: 'Enterprise Experience (SS&C DomaniRx)',

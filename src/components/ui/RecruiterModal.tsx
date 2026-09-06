@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Briefcase, CheckCircle2, FileText, Mail, Linkedin, Github, ExternalLink, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { X, Clock, ArrowRight, Briefcase, CheckCircle2, FileText, Mail, Linkedin, Github, ExternalLink, Download } from 'lucide-react';
 import { profile } from '../../data/content';
 
 interface RecruiterModalProps {
@@ -121,6 +122,32 @@ export function RecruiterModal({ isOpen, onClose, onOpenResume }: RecruiterModal
                   Designed high-throughput Kafka pipelines with non-blocking retries and zero data loss.
                 </li>
               </ul>
+            </div>
+
+            {/* Enterprise E-Commerce Experience */}
+            <div className="p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Briefcase size={16} className="text-cyan-400" />
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-primary)]">
+                    Enterprise E-Commerce & ERP Integration
+                  </h5>
+                </div>
+                <Link
+                  to="/cimm2"
+                  onClick={onClose}
+                  className="text-[11px] font-semibold text-[var(--color-accent)] hover:underline inline-flex items-center gap-1"
+                >
+                  <span>View Case Study</span>
+                  <ArrowRight size={11} />
+                </Link>
+              </div>
+              <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                Unilog CIMM2 — Software Developer (Oct 2015 – Apr 2018)
+              </p>
+              <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                Developed XML-based integration adapters for Epicor and Infor SX ERPs, integrated Apache Solr search across large distributor SKU catalogs, and engineered B2B contract pricing engines.
+              </p>
             </div>
 
             {/* 4. AI Trajectory */}

@@ -122,24 +122,25 @@ export const journeyEras: JourneyEra[] = [
   },
   {
     id: 'spring-evolution',
-    title: 'Spring Ecosystem Evolution & Modular Backend Architecture',
+    title: 'Enterprise E-Commerce & ERP Integration (Unilog CIMM2)',
     period: '2015 — 2018',
-    description: 'Adopted the modern Spring ecosystem, transitioning enterprise systems from monolithic multi-tier architectures to modular, loosely-coupled micro-components. Deepened mastery of dependency injection, aspect-oriented programming (AOP), database connection pooling, and RESTful API contract design with comprehensive automated test suites.',
-    technologies: ['Spring Framework', 'Spring Boot', 'REST APIs', 'Maven', 'JUnit', 'Mockito', 'Git', 'Tomcat'],
+    description: 'Engineered B2B and B2C enterprise e-commerce capabilities on the CIMM2 platform at Unilog Content Solutions for major industrial distributors (PSC Distribution, Bearings & Drives, Turner Supply Company). Developed an XML-based integration adapter layer connecting web storefronts to Epicor and Infor SX ERP systems, while isolating core commerce logic from proprietary ERP protocols. Integrated Apache Solr for faceted product discovery across massive technical catalogs, implemented customer-specific contract pricing and branch inventory rules, and integrated UPS and FedEx shipping APIs.',
+    technologies: ['Java', 'Spring', 'Struts', 'Hibernate / JPA', 'Apache Solr', 'Oracle', 'JAX-RS', 'XML', 'JavaScript', 'AJAX', 'JBoss', 'Maven'],
     highlights: [
-      'Monolithic to Modular Spring Architecture Transition',
-      'Standardized RESTful API Contracts & Response Serialization',
-      'Automated Testing Discipline with JUnit & Mockito Suites',
-      'Continuous Integration & Deployment (CI/CD) Pipeline Integration',
+      'CIMM2 Enterprise B2B/B2C E-Commerce Platform for Industrial Distributors',
+      'XML ERP Integration Adapter Layer for Epicor & Infor SX Backends',
+      'Apache Solr Faceted Search & Discovery Engine for Large SKU Catalogs',
+      'UPS & FedEx Multi-Carrier Rating & Freight Calculation Integrations',
     ],
     keyResponsibilities: [
-      'Designed and developed modular backend components utilizing Spring Framework and Spring Boot.',
-      'Implemented RESTful Web Services adhering to HTTP standards, status codes, and JSON serialization.',
-      'Configured Spring Security, dependency injection (IoC), and aspect-oriented programming (AOP) cross-cutting concerns.',
-      'Authored unit and integration test suites using JUnit and Mockito to establish testing benchmarks.',
-      'Collaborated within Agile/Scrum ceremonies, participating in sprint planning, defect triage, and peer code reviews.',
+      'Architected and developed integration adapters for Epicor ERP and Infor SX ERP using structured XML request/response communication.',
+      'Integrated Apache Solr search engine, configuring tokenizers, facet categories, and indexing pipelines for fast product discovery across large catalogs.',
+      'Implemented core B2B and B2C commerce business logic including customer-specific contract pricing, branch warehouse availability, and role-based access.',
+      'Integrated external carrier logistics APIs (UPS Developer Kit & FedEx Web Services) for live package and freight shipping rate calculations.',
+      'Developed service, DAO, and JPA mapping layers in Spring and Hibernate against Oracle transactional database schemas.',
+      'Delivered tailored client customizations and production deployments for enterprise distributors including PSC Distribution, Bearings & Drives, and Turner Supply Company.',
     ],
-    status: 'PROVISIONAL',
+    status: 'VERIFIED',
   },
   {
     id: 'microservices',
@@ -1061,6 +1062,36 @@ export const interviewTopics: InterviewTopic[] = [
    Enterprise Systems + 7 AI Project Concept Templates
    ═══════════════════════════════════════════ */
 export const projects: Project[] = [
+  {
+    id: 'unilog-cimm2-ecommerce',
+    title: 'Unilog CIMM2 — Enterprise B2B/B2C E-Commerce Platform',
+    category: 'enterprise',
+    description: 'Enterprise digital commerce platform connecting distributor storefronts to on-premise ERP backends, high-speed Apache Solr catalog search, and multi-carrier logistics APIs.',
+    businessProblem: 'Industrial distributors relied on manual sales reps and disconnected phone/fax ordering while operating complex customer contract pricing matrices locked inside legacy ERP backbones.',
+    architecture: 'Multi-tier enterprise Java architecture on JBoss featuring an XML ERP integration adapter layer (Epicor / Infor SX), Apache Solr search core, and carrier APIs (UPS / FedEx).',
+    technologies: ['Java', 'Spring', 'Struts', 'Hibernate / JPA', 'Apache Solr', 'Oracle', 'JAX-RS', 'XML', 'JBoss'],
+    contribution: 'Software Developer: Built ERP integration adapters for Epicor and Infor SX, integrated Apache Solr search & indexing pipelines, implemented B2B/B2C customer pricing rules, and integrated UPS/FedEx shipping APIs.',
+    challenges: [
+      'Isolating core e-commerce storefront logic from disparate proprietary ERP communication protocols',
+      'Enabling fast faceted search across large product catalogs with complex technical part numbers and attributes'
+    ],
+    decisions: [
+      'Introduced an ERP integration adapter abstraction to insulate the web application from ERP-specific XML schemas',
+      'Decoupled catalog discovery from Oracle transactional database by integrating Apache Solr as a dedicated search engine',
+      'Engineered configurable customer-specific business rules to support multi-tenant distributor requirements'
+    ],
+    dataFlow: 'Customer -> CIMM2 Web Store -> Solr Search / Oracle DB -> ERP XML Adapter -> Epicor / Infor SX ERP & UPS / FedEx APIs',
+    scalability: 'Decoupled Solr search clusters and connection-pooled database access layers on JBoss enterprise container.',
+    reliability: 'Adapter fail-safe retry handling, schema validation, and defensive exception management for external service calls.',
+    testing: 'JUnit unit testing for service layers, XML payload validation, and client integration test suites.',
+    observability: 'Application logging, transaction error auditing, and ERP adapter communication diagnostics.',
+    lessonsLearned: [
+      'Adapter abstraction patterns are essential to keep enterprise business logic insulated from vendor ERP specifics',
+      'Dedicated search engines (Solr) are vital for distributor discovery across deep technical SKU catalogs'
+    ],
+    status: 'VERIFIED',
+    caseStudyUrl: '/cimm2',
+  },
   {
     id: 'claims-adjudication-modernization',
     title: 'Enterprise Claims Adjudication Modernization',

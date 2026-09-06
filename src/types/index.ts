@@ -87,6 +87,7 @@ export interface Project {
   status: ContentStatus;
   repoUrl?: string;
   demoUrl?: string;
+  caseStudyUrl?: string;
   interviewDiscussion?: string;
 }
 

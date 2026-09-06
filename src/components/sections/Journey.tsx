@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ArrowRight } from 'lucide-react';
 import { journeyEras } from '../../data/content';
 import { useInView, useReducedMotion } from '../../hooks/useAnimations';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -80,6 +81,19 @@ export function Journey() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Case Study Deep Link for Era 2 */}
+      {era.id === 'spring-evolution' && (
+        <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex justify-end">
+          <Link
+            to="/cimm2"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[var(--color-accent-subtle)] hover:bg-[var(--color-accent)] text-[var(--color-accent)] hover:text-white border border-[var(--color-border-accent)] text-xs font-semibold transition-all shadow-sm group"
+          >
+            <span>Explore Unilog CIMM2 Architecture Case Study</span>
+            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
       )}
     </div>

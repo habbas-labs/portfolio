@@ -20,6 +20,7 @@ export function Nav() {
   // Mode-aware navigation links
   const navLinks = [
     { label: 'Home', href: '/' },
+    { label: 'CIMM2', href: '/cimm2' },
     ...(showConsultant ? [{ label: 'Consulting', href: '/#consulting' }] : []),
     ...(showConsultant ? [{ label: 'Projects', href: '/#projects' }] : []),
     { label: 'Java Deep Dive', href: '/#java-deep-dive' },
@@ -92,7 +93,8 @@ export function Nav() {
               onClick={() => handleNavClick(link.href)}
               className={`px-2.5 py-1.5 text-xs rounded-md font-medium transition-colors ${
                 (link.href === '/' && location.pathname === '/' && !location.hash) ||
-                (link.href === '/interview' && location.pathname === '/interview')
+                (link.href === '/interview' && location.pathname === '/interview') ||
+                (link.href === '/cimm2' && (location.pathname === '/cimm2' || location.pathname === '/case-study/cimm2'))
                   ? 'text-[var(--color-accent)] bg-[var(--color-accent-subtle)]'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
               }`}
