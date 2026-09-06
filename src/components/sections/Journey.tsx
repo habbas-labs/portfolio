@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, ExternalLink } from 'lucide-react';
 import { journeyEras } from '../../data/content';
 import { useInView, useReducedMotion } from '../../hooks/useAnimations';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -81,6 +81,35 @@ export function Journey() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Associated Organizations & Clients */}
+      {era.companies && era.companies.length > 0 && (
+        <div className="mt-4 pt-3 border-t border-[var(--color-border)]">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+            Associated Organizations & Clients
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {era.companies.map((comp) => (
+              <a
+                key={comp.name}
+                href={comp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-surface-2)] hover:bg-[var(--color-surface-3)] text-xs text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--color-border-accent)] transition-all group/org"
+                title={`Visit ${comp.name} official website (${comp.url})`}
+              >
+                <span className="font-semibold group-hover/org:text-[var(--color-accent)] transition-colors">{comp.name}</span>
+                {comp.type && (
+                  <span className="text-[10px] text-[var(--color-text-tertiary)] font-mono">
+                    ({comp.type})
+                  </span>
+                )}
+                <ExternalLink size={11} className="text-[var(--color-accent)] opacity-70 group-hover/org:opacity-100 transition-opacity" />
+              </a>
+            ))}
+          </div>
         </div>
       )}
 

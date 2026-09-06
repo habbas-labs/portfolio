@@ -118,6 +118,11 @@ export const journeyEras: JourneyEra[] = [
       'Participated across full SDLC activities: requirement analysis, technical design, peer code reviews, JUnit unit testing, and production deployment support.',
       'Delivered enterprise-grade software in a highly integrated ecosystem with distributed airline transaction flows and strict uptime requirements.',
     ],
+    companies: [
+      { name: 'Qatar Airways', url: 'https://www.qatarairways.com', type: 'Enterprise Airline Client' },
+      { name: 'Aufait Technologies', url: 'https://aufaittechnologies.com', type: 'Consultancy / Employer' },
+      { name: 'Toqsoft Technologies', url: 'https://www.toqsoft.com', type: 'Product Employer' },
+    ],
     status: 'VERIFIED',
   },
   {
@@ -140,6 +145,12 @@ export const journeyEras: JourneyEra[] = [
       'Developed service, DAO, and JPA mapping layers in Spring and Hibernate against Oracle transactional database schemas.',
       'Delivered tailored client customizations and production deployments for enterprise distributors including PSC Distribution, Bearings & Drives, and Turner Supply Company.',
     ],
+    companies: [
+      { name: 'Unilog Content Solutions', url: 'https://www.unilogcorp.com', type: 'Platform Employer' },
+      { name: 'PSC Distribution', url: 'https://www.pscia.com', type: 'Distributor Client' },
+      { name: 'Bearings & Drives', url: 'https://www.4bdi.com', type: 'Distributor Client' },
+      { name: 'Turner Supply Company', url: 'https://www.turnersupply.com', type: 'Distributor Client' },
+    ],
     status: 'VERIFIED',
   },
   {
@@ -161,6 +172,13 @@ export const journeyEras: JourneyEra[] = [
       'Optimized data querying across heterogeneous databases (PostgreSQL, Cassandra, Oracle, and Elasticsearch).',
       'Containerized microservices with Docker and deployed across Kubernetes and OpenShift environments.',
     ],
+    companies: [
+      { name: 'NTT DATA', url: 'https://www.nttdata.com', type: 'Enterprise Services Employer' },
+      { name: 'Avis Budget Group', url: 'https://www.avisbudgetgroup.com', type: 'Enterprise Client' },
+      { name: 'HCLTech', url: 'https://www.hcltech.com', type: 'Global Services Employer' },
+      { name: 'T-Mobile', url: 'https://www.t-mobile.com', type: 'Telecom Client' },
+      { name: 'Broadcom', url: 'https://www.broadcom.com', type: 'Payment Security Client' },
+    ],
     status: 'PROVISIONAL',
   },
   {
@@ -181,6 +199,10 @@ export const journeyEras: JourneyEra[] = [
       'Independently designed and developed Minimum/Maximum Dosage and Drug Hoarding / Early Refill Detection modules per clinical specifications.',
       'Implemented asynchronous Kafka event publication for post-adjudication reporting and downstream business workflows.',
       'Served as Technical Lead, conducting architectural code reviews, mentoring 4 offshore developers, and supporting defect triage and production deployments.',
+    ],
+    companies: [
+      { name: 'SS&C Technologies', url: 'https://www.ssctech.com', type: 'Healthcare Tech Employer' },
+      { name: 'DomaniRx Platform', url: 'https://www.ssctech.com', type: 'Healthcare Platform' },
     ],
     status: 'USER-PROVIDED',
   },
@@ -1521,6 +1543,8 @@ export const resumeData: ResumeData = {
     {
       role: 'Technical Lead / Senior Software Developer',
       company: 'SS&C Technologies',
+      companyUrl: 'https://www.ssctech.com',
+      projectUrl: 'https://www.ssctech.com',
       period: 'May 2023 – Aug 2026',
       project: 'DomaniRx Pharmacy Claims Adjudication Platform',
       team: '~10',
@@ -1540,6 +1564,8 @@ export const resumeData: ResumeData = {
     {
       role: 'Senior Software Engineer',
       company: 'HCLTech',
+      companyUrl: 'https://www.hcltech.com',
+      clientUrl: 'https://www.t-mobile.com',
       period: 'Jun 2020 – Apr 2023',
       client: 'T-Mobile | Project: OSR (Order Search & Reporting) | Team: ~12',
       highlights: [
@@ -1553,6 +1579,8 @@ export const resumeData: ResumeData = {
     {
       role: 'Senior Software Engineer',
       company: 'NTT DATA',
+      companyUrl: 'https://www.nttdata.com',
+      clientUrl: 'https://www.avisbudgetgroup.com',
       period: 'May 2018 – May 2020',
       client: 'Avis Budget Group | Project: Avis Digital Platform | Team: 8',
       highlights: [
@@ -1564,6 +1592,7 @@ export const resumeData: ResumeData = {
     {
       role: 'Software Developer',
       company: 'Unilog Content Solutions Pvt. Ltd.',
+      companyUrl: 'https://www.unilogcorp.com',
       period: 'Oct 2015 – Apr 2018',
       project: 'CIMM2 / E-commerce Web Store | Team: 5',
       highlights: [
@@ -1575,6 +1604,8 @@ export const resumeData: ResumeData = {
     {
       role: 'IT Consultant / Software Developer',
       company: 'Aufait Technologies',
+      companyUrl: 'https://aufaittechnologies.com',
+      clientUrl: 'https://www.qatarairways.com',
       period: 'Dec 2014 – Aug 2015',
       client: 'Qatar Airways, Doha, Qatar | Project: New Sales Platform (NSP) | Team: 15',
       highlights: [
@@ -1585,6 +1616,7 @@ export const resumeData: ResumeData = {
     {
       role: 'Software Engineer',
       company: 'Toqsoft Technologies Pvt. Ltd.',
+      companyUrl: 'https://www.toqsoft.com',
       period: 'Apr 2012 – Nov 2014',
       highlights: [
         'Developed Java/J2EE web applications and database-driven business functionality using Spring, Hibernate, JSP/Servlets, JDBC and related enterprise technologies.',

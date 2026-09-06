@@ -38,6 +38,7 @@ export interface Cimm2Customer {
   industry: string;
   scope: string;
   customizations: string[];
+  websiteUrl?: string;
 }
 
 export const cimm2Meta = {
@@ -448,6 +449,7 @@ export const cimm2Customers: Cimm2Customer[] = [
   {
     name: 'PSC Distribution',
     industry: 'Plumbing, Heating & Industrial Supplies',
+    websiteUrl: 'https://www.pscia.com',
     scope: 'Enterprise B2B digital commerce channel with contractor-specific pricing, branch pickup options, and ERP connectivity.',
     customizations: [
       'Epicor ERP integration for real-time contractor pricing and customer credit checks',
@@ -458,6 +460,7 @@ export const cimm2Customers: Cimm2Customer[] = [
   {
     name: 'Bearings & Drives',
     industry: 'Power Transmission, Bearings & Industrial Motion',
+    websiteUrl: 'https://www.4bdi.com',
     scope: 'Complex technical parts catalog with multifaceted parametric search across dimensions, tolerances, and manufacturer specs.',
     customizations: [
       'Apache Solr search customization for technical part numbers with punctuation and hyphenation',
@@ -468,6 +471,7 @@ export const cimm2Customers: Cimm2Customer[] = [
   {
     name: 'Turner Supply Company',
     industry: 'Industrial Supplies, Tools & Fasteners',
+    websiteUrl: 'https://www.turnersupply.com',
     scope: 'Comprehensive distributor digital storefront supporting both commercial manufacturing accounts and walk-in retail buyers.',
     customizations: [
       'B2B / B2C dual commerce mode enabling guest checkout alongside authenticated corporate accounts',

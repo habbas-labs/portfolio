@@ -38,6 +38,12 @@ export interface TechNode {
   connections: string[];
 }
 
+export interface JourneyCompany {
+  name: string;
+  url: string;
+  type?: string;
+}
+
 export interface JourneyEra {
   id: string;
   title: string;
@@ -46,6 +52,7 @@ export interface JourneyEra {
   technologies: string[];
   highlights: string[];
   keyResponsibilities?: string[];
+  companies?: JourneyCompany[];
   status: ContentStatus;
 }
 
@@ -257,10 +264,13 @@ export interface AISolutionPattern {
 export interface ResumeExperience {
   role: string;
   company: string;
+  companyUrl?: string;
   period: string;
   location?: string;
   project?: string;
+  projectUrl?: string;
   client?: string;
+  clientUrl?: string;
   team?: string;
   highlights: string[];
 }

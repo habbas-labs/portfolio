@@ -15,7 +15,8 @@ import {
   CheckCircle2, 
   Code2, 
   Layers,
-  FileText
+  FileText,
+  ExternalLink
 } from 'lucide-react';
 import { resumeData, profile } from '../../data/content';
 
@@ -216,7 +217,21 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                       <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)]">
-                        {exp.role} <span className="text-[var(--color-accent)] font-semibold">| {exp.company}</span>
+                        {exp.role}{' '}
+                        {exp.companyUrl ? (
+                          <a
+                            href={exp.companyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[var(--color-accent)] hover:underline inline-flex items-center gap-1 font-semibold"
+                            title={`Visit ${exp.company} official website`}
+                          >
+                            <span>| {exp.company}</span>
+                            <ExternalLink size={11} className="opacity-70" />
+                          </a>
+                        ) : (
+                          <span className="text-[var(--color-accent)] font-semibold">| {exp.company}</span>
+                        )}
                       </h3>
                       <span className="text-xs font-mono text-[var(--color-text-tertiary)] bg-[var(--color-surface-2)] px-2 py-0.5 rounded border border-[var(--color-border)] w-fit">
                         {exp.period}
@@ -224,10 +239,42 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                     </div>
 
                     {(exp.project || exp.client || exp.team) && (
-                      <div className="text-xs text-[var(--color-text-tertiary)] font-mono">
-                        {exp.project && <span>Project: {exp.project}</span>}
-                        {exp.client && <span>Client: {exp.client}</span>}
-                        {exp.team && <span className="ml-2">| Team: {exp.team}</span>}
+                      <div className="text-xs text-[var(--color-text-tertiary)] font-mono flex flex-wrap items-center gap-x-2">
+                        {exp.project && (
+                          <span>
+                            Project: {exp.projectUrl ? (
+                              <a
+                                href={exp.projectUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] underline inline-flex items-center gap-0.5"
+                              >
+                                {exp.project}
+                                <ExternalLink size={10} className="opacity-60" />
+                              </a>
+                            ) : (
+                              exp.project
+                            )}
+                          </span>
+                        )}
+                        {exp.client && (
+                          <span>
+                            Client: {exp.clientUrl ? (
+                              <a
+                                href={exp.clientUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] underline inline-flex items-center gap-0.5"
+                              >
+                                {exp.client}
+                                <ExternalLink size={10} className="opacity-60" />
+                              </a>
+                            ) : (
+                              exp.client
+                            )}
+                          </span>
+                        )}
+                        {exp.team && <span>| Team: {exp.team}</span>}
                       </div>
                     )}
 

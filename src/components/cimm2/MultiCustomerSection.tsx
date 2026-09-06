@@ -1,4 +1,4 @@
-import { Building2, CheckCircle2, Layers, Wrench, ShieldCheck } from 'lucide-react';
+import { Building2, CheckCircle2, Layers, Wrench, ShieldCheck, ExternalLink } from 'lucide-react';
 import { cimm2Customers } from '../../data/cimm2Content';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -42,18 +42,32 @@ export function MultiCustomerSection() {
               className="p-6 rounded-2xl bg-[var(--color-surface-1)] border border-[var(--color-border)] hover:border-[var(--color-border-accent)] transition-all flex flex-col justify-between shadow-md"
             >
               <div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center">
-                    <Building2 size={16} />
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center shrink-0">
+                      <Building2 size={16} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)] truncate">
+                        {customer.name}
+                      </h3>
+                      <span className="text-[11px] text-[var(--color-accent)] font-medium block truncate">
+                        {customer.industry}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)]">
-                      {customer.name}
-                    </h3>
-                    <span className="text-[11px] text-[var(--color-accent)] font-medium">
-                      {customer.industry}
-                    </span>
-                  </div>
+                  {customer.websiteUrl && (
+                    <a
+                      href={customer.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold text-[var(--color-accent)] bg-[var(--color-accent-subtle)] hover:bg-[var(--color-accent)] hover:text-white transition-colors border border-[var(--color-border-accent)] shrink-0"
+                      title={`Visit ${customer.name} website`}
+                    >
+                      <span>Website</span>
+                      <ExternalLink size={10} />
+                    </a>
+                  )}
                 </div>
 
                 <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mb-4">
@@ -77,7 +91,20 @@ export function MultiCustomerSection() {
                 <span className="flex items-center gap-1">
                   <Wrench size={12} /> Custom Java Adapter
                 </span>
-                <span className="font-mono">Oct 2015 – Apr 2018</span>
+                {customer.websiteUrl ? (
+                  <a
+                    href={customer.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[var(--color-accent)] hover:underline inline-flex items-center gap-1"
+                    title={`Visit ${customer.websiteUrl}`}
+                  >
+                    <span>{new URL(customer.websiteUrl).hostname.replace('www.', '')}</span>
+                    <ExternalLink size={10} />
+                  </a>
+                ) : (
+                  <span className="font-mono">Oct 2015 – Apr 2018</span>
+                )}
               </div>
             </div>
           ))}

@@ -3,7 +3,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { Badge } from '../ui/Badge';
 import { Accordion } from '../ui/Accordion';
-import { Briefcase, Calendar, MapPin, ArrowRight, CheckCircle2, ShieldAlert, Cpu } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, ArrowRight, CheckCircle2, ShieldAlert, Cpu, ExternalLink } from 'lucide-react';
 
 export function ExperienceSection() {
   const [activeStageIndex, setActiveStageIndex] = useState(2);
@@ -56,7 +56,19 @@ export function ExperienceSection() {
             <div className="p-4 sm:p-8 border-b border-[var(--color-border)] bg-gradient-to-r from-[var(--color-surface-1)] to-[var(--color-surface-2)]">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">SS&C DomaniRx Adjudication</h3>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">SS&C DomaniRx Adjudication</h3>
+                    <a
+                      href="https://www.ssctech.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium text-[var(--color-accent)] bg-[var(--color-accent-subtle)] hover:bg-[var(--color-accent)] hover:text-white transition-colors border border-[var(--color-border-accent)]"
+                      title="Visit SS&C Technologies official website"
+                    >
+                      <span>ssctech.com</span>
+                      <ExternalLink size={11} />
+                    </a>
+                  </div>
                   <p className="text-lg text-[var(--color-accent)] mt-1 font-medium">Senior Software Developer → Technical Lead</p>
                 </div>
                 <Badge type="USER-PROVIDED" />
