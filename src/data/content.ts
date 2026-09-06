@@ -98,12 +98,12 @@ export const thinkingStages: ThinkingStage[] = [
 export const journeyEras: JourneyEra[] = [
   {
     id: 'java-foundations',
-    title: 'Java & Enterprise Foundations',
+    title: 'Enterprise Java & Airline Systems (Toqsoft & Aufait / Qatar Airways)',
     period: '2012 — 2015',
-    description: 'Built the foundation in Java, OOP, enterprise patterns, and database-driven systems. Learned to write clean, maintainable code in large codebases.',
-    technologies: ['Java', 'JDBC', 'Servlets', 'JSP', 'SQL', 'Oracle', 'Hibernate'],
-    highlights: ['Core Java mastery', 'Enterprise application patterns', 'Database design fundamentals', 'Object-oriented thinking'],
-    status: 'PROVISIONAL',
+    description: 'Worked on a large-scale airline digital platform for Qatar Airways, supporting online flight booking, reservation management and customer loyalty capabilities. Developed and enhanced Java/J2EE-based business services and integrations supporting booking workflows, flight-related information, customer data and Privilege Club functionality. Worked on API integrations with external airline systems, implemented robust exception/error-handling mechanisms, and contributed to application enhancements, production support and defect resolution.',
+    technologies: ['Java', 'JDBC', 'Servlets', 'JSP','JSF', 'SQL', 'Oracle', 'Hibernate','Amadeus API'],
+    highlights: ['Developed and enhanced Java/J2EE business components supporting airline booking and customer-service workflows', 'Implemented business logic for flight booking, reservation processing and booking retrieval.', 'Worked on Q-Calculator and Privilege Club functionality for Qatar Airways.', 'Developed and enhanced Java-based integrations with Amadeus APIs for airline booking workflows, implementing robust exception handling, response validation, and failure-handling mechanisms for external service interactions.','Enhanced application workflows related to customer, itinerary and loyalty information.','Performed troubleshooting and root-cause analysis for integration and production issues.', 'Participated in requirement analysis, development, code reviews, testing and deployment activities.','Worked in an enterprise environment with multiple integrated systems and business-critical transaction flows.'],
+    status: 'VERIFIED',
   },
   {
     id: 'spring-evolution',
