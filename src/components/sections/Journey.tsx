@@ -58,6 +58,23 @@ export function Journey() {
       <p className="mt-4 text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed pt-3 border-t border-[var(--color-border)]">
         {era.description}
       </p>
+
+      {/* Key Responsibilities section */}
+      {era.keyResponsibilities && era.keyResponsibilities.length > 0 && (
+        <div className="mt-4 pt-3 border-t border-[var(--color-border)]">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2.5">
+            Key Responsibilities
+          </h4>
+          <ul className="space-y-1.5">
+            {era.keyResponsibilities.map(r => (
+              <li key={r} className="flex items-start gap-2 text-xs sm:text-sm text-[var(--color-text-secondary)]">
+                <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: eraAccents[i] }} />
+                <span>{r}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 

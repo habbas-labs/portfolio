@@ -101,8 +101,23 @@ export const journeyEras: JourneyEra[] = [
     title: 'Enterprise Java & Airline Systems (Toqsoft & Aufait / Qatar Airways)',
     period: '2012 — 2015',
     description: 'Worked on a large-scale airline digital platform for Qatar Airways, supporting online flight booking, reservation management and customer loyalty capabilities. Developed and enhanced Java/J2EE-based business services and integrations supporting booking workflows, flight-related information, customer data and Privilege Club functionality. Worked on API integrations with external airline systems, implemented robust exception/error-handling mechanisms, and contributed to application enhancements, production support and defect resolution.',
-    technologies: ['Java', 'JDBC', 'Servlets', 'JSP','JSF', 'SQL', 'Oracle', 'Hibernate','Amadeus API'],
-    highlights: ['Developed and enhanced Java/J2EE business components supporting airline booking and customer-service workflows', 'Implemented business logic for flight booking, reservation processing and booking retrieval.', 'Worked on Q-Calculator and Privilege Club functionality for Qatar Airways.', 'Developed and enhanced Java-based integrations with Amadeus APIs for airline booking workflows, implementing robust exception handling, response validation, and failure-handling mechanisms for external service interactions.','Enhanced application workflows related to customer, itinerary and loyalty information.','Performed troubleshooting and root-cause analysis for integration and production issues.', 'Participated in requirement analysis, development, code reviews, testing and deployment activities.','Worked in an enterprise environment with multiple integrated systems and business-critical transaction flows.'],
+    technologies: ['Java', 'JDBC', 'Servlets', 'JSP', 'JSF', 'SQL', 'Oracle', 'Hibernate', 'Amadeus API'],
+    highlights: [
+      'Qatar Airways Online Booking & Loyalty Platform (Privilege Club)',
+      'Amadeus Reservation API Integration with Resilient Fault Handling',
+      'Enterprise Java/J2EE Core Services & Hibernate/Oracle Persistence',
+      'High-Availability Production Support & Rapid Defect Triage',
+    ],
+    keyResponsibilities: [
+      'Developed and enhanced Java/J2EE business components supporting airline booking and customer-service workflows',
+      'Implemented business logic for flight booking, reservation processing and booking retrieval.',
+      'Worked on Q-Calculator and Privilege Club functionality for Qatar Airways.',
+      'Developed and enhanced Java-based integrations with Amadeus APIs for airline booking workflows, implementing robust exception handling, response validation, and failure-handling mechanisms for external service interactions.',
+      'Enhanced application workflows related to customer, itinerary and loyalty information.',
+      'Performed troubleshooting and root-cause analysis for integration and production issues.',
+      'Participated in requirement analysis, development, code reviews, testing and deployment activities.',
+      'Worked in an enterprise environment with multiple integrated systems and business-critical transaction flows.',
+    ],
     status: 'VERIFIED',
   },
   {
@@ -111,7 +126,19 @@ export const journeyEras: JourneyEra[] = [
     period: '2015 — 2018',
     description: 'Adopted Spring ecosystem. Moved from monolithic to modular applications. Deepened understanding of dependency injection, AOP, and RESTful API design.',
     technologies: ['Spring', 'Spring Boot', 'REST APIs', 'Maven', 'JUnit', 'Git'],
-    highlights: ['Spring Boot adoption', 'RESTful API design', 'Automated testing discipline', 'CI/CD introduction'],
+    highlights: [
+      'Monolithic to Modular Spring Architecture Transition',
+      'RESTful API Design & Contract Standards',
+      'Automated Testing Discipline with JUnit & Mockito',
+      'Continuous Integration & Deployment (CI/CD) Adoption',
+    ],
+    keyResponsibilities: [
+      'Designed and developed modular backend components utilizing Spring Framework and Spring Boot.',
+      'Implemented RESTful Web Services adhering to HTTP standards, status codes, and JSON serialization.',
+      'Configured Spring Security, dependency injection (IoC), and aspect-oriented programming (AOP) cross-cutting concerns.',
+      'Authored unit and integration test suites using JUnit and Mockito to establish testing benchmarks.',
+      'Collaborated within Agile/Scrum ceremonies, participating in sprint planning, defect triage, and peer code reviews.',
+    ],
     status: 'PROVISIONAL',
   },
   {
@@ -120,7 +147,19 @@ export const journeyEras: JourneyEra[] = [
     period: '2018 — 2021',
     description: 'Designed and built microservices architectures. Worked with event-driven patterns, Kafka, and distributed data management.',
     technologies: ['Microservices', 'Kafka', 'Docker', 'PostgreSQL', 'Spring Cloud', 'API Gateway'],
-    highlights: ['Service boundary design', 'Event-driven architecture', 'Distributed data management', 'Containerization'],
+    highlights: [
+      'Avis Budget Group Car Rental & Booking Backend (NTT DATA)',
+      'T-Mobile Order Search & Reporting Microservices (HCLTech)',
+      'Broadcom 3-D Secure Payment Authentication (Paysec)',
+      'Apache Kafka Event Streaming & Containerized Deployments',
+    ],
+    keyResponsibilities: [
+      'Architected and implemented distributed Spring Boot microservices with independent persistence boundaries.',
+      'Developed real-time event streaming pipelines with Apache Kafka for order lifecycle and state updates.',
+      'Engineered high-security payment authentication services following 3-D Secure EMV protocols.',
+      'Optimized data querying across heterogeneous databases (PostgreSQL, Cassandra, Oracle, and Elasticsearch).',
+      'Containerized microservices with Docker and deployed across Kubernetes and OpenShift environments.',
+    ],
     status: 'PROVISIONAL',
   },
   {
@@ -129,7 +168,19 @@ export const journeyEras: JourneyEra[] = [
     period: '2021 — 2024',
     description: 'Led engineering efforts in complex enterprise domains. Healthcare claims processing, legacy modernization, and cross-team technical decision-making.',
     technologies: ['Java 21', 'Spring Boot', 'Kafka', 'PostgreSQL', 'DB2', 'Microservices'],
-    highlights: ['Technical leadership', 'Legacy COBOL modernization', 'Healthcare claims domain', 'Architecture decisions'],
+    highlights: [
+      'SS&C DomaniRx Pharmacy Claims Adjudication (~600M Annual Claims)',
+      'Legacy COBOL Adjudication Modernization to Java 21 Microservices',
+      'B1/B2/B3 Transaction Engines & Real-Time Accumulator Deductions',
+      'Technical Leadership & Mentorship of Offshore Engineering Teams',
+    ],
+    keyResponsibilities: [
+      'Served as Technical Lead designing Java 21 / Spring Boot 3 microservices for pharmacy claims adjudication.',
+      'Extracted legacy COBOL business rules into clean domain models utilizing Java 21 records and sealed interfaces.',
+      'Independently designed and built Minimum/Maximum Dosage and Drug Hoarding / Early Refill Detection modules.',
+      'Implemented asynchronous Kafka event publication for post-adjudication reporting and downstream integrations.',
+      'Led architectural code reviews, mentored 4 offshore developers, and aligned cross-functional teams with CMS IRA mandates.',
+    ],
     status: 'USER-PROVIDED',
   },
   {
@@ -138,14 +189,26 @@ export const journeyEras: JourneyEra[] = [
     period: '2024 — Present',
     description: 'Extending years of backend engineering expertise into AI-powered enterprise systems. Building with Spring AI, RAG, tool-calling agents, and multi-agent architectures.',
     technologies: ['Spring AI', 'Ollama', 'OpenAI', 'RAG', 'Vector DB', 'MCP', 'A2A', 'AI Agents'],
-    highlights: ['AI architecture patterns', 'RAG implementations', 'Tool-calling agents', 'Multi-agent systems'],
+    highlights: [
+      'Interactive Book Reading System (IBRS) Multi-Agent AI Platform',
+      'Spring AI Integration with OpenAI GPT-4o & Local Ollama Llama 3',
+      'RAG Pipelines with PGVector Embeddings & Semantic Document Search',
+      'Tool Calling & Model Context Protocol (MCP) Autonomous Workflows',
+    ],
+    keyResponsibilities: [
+      'Designed and engineered the Interactive Book Reading System (IBRS) processing multimodal documents up to 500MB.',
+      'Implemented Retrieval-Augmented Generation (RAG) pipelines using Spring AI, PGVector, and semantic chunking.',
+      'Integrated hybrid LLM architectures connecting cloud frontier models (OpenAI/Claude) with local Ollama instances.',
+      'Developed tool-calling agents and multi-agent coordination using Model Context Protocol (MCP) and ReAct patterns.',
+      'Evaluated cost, latency, context-window, and deterministic reliability trade-offs in enterprise AI systems.',
+    ],
     status: 'USER-PROVIDED',
   },
 ];
 
-/* ═══════════════════════════════════════════
+/* ═════════════════════════════════════════════════════════
    ENGINEERING KNOWLEDGE MAP — Graph Nodes
-   ═══════════════════════════════════════════ */
+   ═════════════════════════════════════════════════════════ */
 export const techNodes: TechNode[] = [
   { id: 'java', label: 'Java', category: 'core', x: 15, y: 30, description: 'Core language — 13+ years. Java 21, concurrency, streams, modern patterns.', connections: ['spring', 'databases', 'concurrency'] },
   { id: 'spring', label: 'Spring Boot', category: 'framework', x: 35, y: 25, description: 'Primary framework. Auto-configuration, dependency injection, production-ready applications.', connections: ['microservices', 'apis', 'spring-ai'] },

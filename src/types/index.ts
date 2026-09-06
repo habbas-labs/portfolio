@@ -1,8 +1,8 @@
-/* ═══════════════════════════════════════════
+/* ═════════════════════════════════════════════════════════
    TYPES — Content Data Architecture
    Master Prompt V4 Compliant
    All content separated from presentation
-   ═══════════════════════════════════════════ */
+   ═════════════════════════════════════════════════════════ */
 
 export type ContentStatus = 'VERIFIED' | 'USER-PROVIDED' | 'PUBLIC-CONTEXT' | 'PROVISIONAL' | 'PLACEHOLDER';
 
@@ -45,6 +45,7 @@ export interface JourneyEra {
   description: string;
   technologies: string[];
   highlights: string[];
+  keyResponsibilities?: string[];
   status: ContentStatus;
 }
 
@@ -201,9 +202,9 @@ export interface AIConceptNode {
   example: string;
 }
 
-/* ═══════════════════════════════════════════
+/* ═════════════════════════════════════════════════════════
    MASTER PROMPT V4 — CONSULTING & CLIENT TYPES
-   ═══════════════════════════════════════════ */
+   ═════════════════════════════════════════════════════════ */
 
 export interface ConsultingService {
   id: string;
