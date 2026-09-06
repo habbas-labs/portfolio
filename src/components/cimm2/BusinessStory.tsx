@@ -22,7 +22,7 @@ export function BusinessStory() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="cimm2-problem" className="py-16 sm:py-20 border-b border-[var(--color-border)]">
+    <section id="cimm2-problem" className="py-14 sm:py-20 border-b border-[var(--color-border)] scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Business Context"
@@ -31,8 +31,8 @@ export function BusinessStory() {
         />
 
         {/* View Toggle */}
-        <div className="mt-8 flex justify-center">
-          <div className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl flex gap-1">
+        <div className="mt-8 flex justify-center w-full">
+          <div className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl grid grid-cols-2 sm:flex gap-1 w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('before')}
               className={`px-4 sm:px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 ${
@@ -42,7 +42,7 @@ export function BusinessStory() {
               }`}
             >
               <XCircle size={14} className="text-amber-400" />
-              <span>Before CIMM2 (Traditional Distribution)</span>
+              <span className="hidden sm:inline">Before CIMM2 (Traditional Distribution)</span><span className="sm:hidden">Before CIMM2</span>
             </button>
             <button
               onClick={() => setActiveTab('after')}
@@ -53,7 +53,7 @@ export function BusinessStory() {
               }`}
             >
               <Sparkles size={14} />
-              <span>After CIMM2 (Digital Architecture)</span>
+              <span className="hidden sm:inline">After CIMM2 (Digital Architecture)</span><span className="sm:hidden">After CIMM2</span>
             </button>
           </div>
         </div>

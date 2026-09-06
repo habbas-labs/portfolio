@@ -84,15 +84,22 @@ export function Projects() {
                     {project.category}
                   </span>
 
-                  {project.status === 'PROVISIONAL' ? (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                      <AlertTriangle size={11} /> Concept Template
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                      <CheckCircle2 size={11} /> Verified Production
-                    </span>
-                  )}
+                  <div className="flex items-center gap-1.5">
+                    {project.caseStudyUrl && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[var(--color-accent)] bg-[var(--color-accent-subtle)] px-2 py-0.5 rounded border border-[var(--color-border-accent)]">
+                        Case Study
+                      </span>
+                    )}
+                    {project.status === 'PROVISIONAL' ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                        <AlertTriangle size={11} /> Concept Template
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                        <CheckCircle2 size={11} /> Verified Production
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <h3 className="text-base font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors leading-snug">
@@ -130,9 +137,19 @@ export function Projects() {
                   )}
                 </div>
 
-                <span className="text-xs font-semibold text-[var(--color-accent)] inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                  View Spec <ArrowRight size={13} />
-                </span>
+                {project.caseStudyUrl ? (
+                  <Link
+                    to={project.caseStudyUrl}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-xs font-semibold text-[var(--color-accent)] inline-flex items-center gap-1 hover:underline shrink-0"
+                  >
+                    Open Case Study <ArrowRight size={13} />
+                  </Link>
+                ) : (
+                  <span className="text-xs font-semibold text-[var(--color-accent)] inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0">
+                    View Spec <ArrowRight size={13} />
+                  </span>
+                )}
               </div>
             </div>
           ))}

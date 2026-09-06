@@ -86,12 +86,25 @@ export function Journey() {
 
       {/* Case Study Deep Link for Era 2 */}
       {era.id === 'spring-evolution' && (
-        <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex justify-end">
+        <div className="mt-5 p-4 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border-accent)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
+                Case Study
+              </span>
+              <h5 className="text-xs sm:text-sm font-bold text-[var(--color-text-primary)]">
+                Unilog CIMM2 Enterprise E-Commerce Platform
+              </h5>
+            </div>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+              Explore interactive architecture diagrams, Solr faceted search flows, Epicor/Infor SX ERP XML adapters, and client customizations.
+            </p>
+          </div>
           <Link
             to="/cimm2"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[var(--color-accent-subtle)] hover:bg-[var(--color-accent)] text-[var(--color-accent)] hover:text-white border border-[var(--color-border-accent)] text-xs font-semibold transition-all shadow-sm group"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-semibold transition-all shadow-xs shrink-0 group"
           >
-            <span>Explore Unilog CIMM2 Architecture Case Study</span>
+            <span>Read Case Study</span>
             <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -168,6 +181,17 @@ export function Journey() {
                     <p className="text-xs text-[var(--color-text-tertiary)] line-clamp-2">
                       {era.description}
                     </p>
+
+                    {era.id === 'spring-evolution' && (
+                      <div className="mt-2.5 flex items-center justify-between pt-2 border-t border-[var(--color-border)]/60">
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-border-accent)]">
+                          Case Study
+                        </span>
+                        <span className="text-[11px] font-semibold text-[var(--color-accent)] inline-flex items-center gap-0.5">
+                          Deep Dive <ArrowRight size={10} />
+                        </span>
+                      </div>
+                    )}
 
                     <div className="mt-3 flex items-center gap-1 text-xs text-[var(--color-text-muted)]">
                       <ChevronRight

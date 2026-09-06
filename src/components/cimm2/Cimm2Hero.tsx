@@ -20,12 +20,19 @@ export function Cimm2Hero() {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      const isDesktop = window.innerWidth >= 768;
+      const offset = isDesktop ? 128 : 72;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
     }
   };
 
   return (
-    <section id="cimm2-hero" className="relative pt-12 pb-16 sm:pb-20 border-b border-[var(--color-border)] overflow-hidden">
+    <section id="cimm2-hero" className="relative pt-8 sm:pt-12 pb-14 sm:pb-20 border-b border-[var(--color-border)] overflow-hidden scroll-mt-24 md:scroll-mt-32">
       {/* Subtle background ambient glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />

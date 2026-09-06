@@ -70,7 +70,7 @@ export function TechnologyMap() {
   ];
 
   return (
-    <section id="cimm2-tech" className="py-16 sm:py-20 border-b border-[var(--color-border)]">
+    <section id="cimm2-tech" className="py-14 sm:py-20 border-b border-[var(--color-border)] scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Engineering Stack & Timeline"
