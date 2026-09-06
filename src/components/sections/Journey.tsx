@@ -55,9 +55,16 @@ export function Journey() {
           </ul>
         </div>
       </div>
-      <p className="mt-4 text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed pt-3 border-t border-[var(--color-border)]">
-        {era.description}
-      </p>
+
+      {/* About Section */}
+      <div className="mt-4 pt-3 border-t border-[var(--color-border)]">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+          About
+        </h4>
+        <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed">
+          {era.description}
+        </p>
+      </div>
 
       {/* Key Responsibilities section */}
       {era.keyResponsibilities && era.keyResponsibilities.length > 0 && (
